@@ -26,17 +26,16 @@ class Animal:
 
     @classmethod
     def update_parameters(cls, new_par_dict):
-
         for par in new_par_dict.keys():
             if par in cls.param:
                 pass
             else:
                 raise ValueError(f'Invalid input: {par} is not a key in class parameters')
 
-
+        cls.param.update(new_par_dict)
 
     @classmethod
-    def probability(cls, fitness):
+    def move_probability(cls, fitness):
         pass
 
     @classmethod
@@ -45,8 +44,8 @@ class Animal:
         # numpy random choice whit custom prpbability
         pass
 
-    @staticmethod
-    def compute_prob_death(fitness):
+    @classmethod
+    def compute_prob_death(cls, fitness):
         pass
 
     @classmethod
@@ -60,7 +59,7 @@ class Animal:
 
     @classmethod
     def _normal_weight(cls, weight_birth, sigma_birth):
-        start_weight = np.random.normal(weight_birth, sigma_birth)
+        start_weight = np.random.normal(cls.param[str(weight_birth)], [str(sigma_birth)])
         return start_weight
 
     def update_weight(self, fodder):
@@ -73,7 +72,7 @@ class Animal:
         return 1 / (1 + math.exp(signum * rate * (x - x_half)))
 
     @classmethod
-    def _update_fitness(cls, weight, age, parameter):
+    def _update_fitness(cls, weight, age):
         # Denne bruker _q_sigmoid funksjonen
         pass
 
