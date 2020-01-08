@@ -4,6 +4,8 @@ __author__ = 'Amir Arfan, Sebastian Becker'
 __email__ = 'amar@nmbu.no, sebabeck@nmbu.no'
 
 import math
+import numpy as np
+
 
 
 
@@ -46,18 +48,21 @@ class Animal:
 
     @classmethod
     def _normal_weight(cls, weight_birth, sigma_birth):
-        # Bruker numpy.random.normal(w_birth, sigma_birth)
-
-    @staticmethod
-    def _q_sigmoid(x, x_half, rate, signum):
-        return 1 / (1+ math.exp(signum*rate*(x-x_half)))
+        start_weight = np.random.normal(weight_birth, sigma_birth)
+        return start_weight
+    
 
     def update_weight(self, fodder):
         # Increase if eaten
         # Decrease each year
         pass
 
-    def update_fitness(self, weight, age):
+    @staticmethod
+    def _q_sigmoid(x, x_half, rate, signum):
+        return 1 / (1 + math.exp(signum * rate * (x - x_half)))
+
+    @classmethod
+    def _update_fitness(cls, weight, age, parameter):
         # Denne bruker _q_sigmoid funksjonen
         pass
 
