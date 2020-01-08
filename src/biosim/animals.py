@@ -23,26 +23,35 @@ class Animal:
         # Denne bruker _q_sigmoid funksjonen
         pass
 
-    @classmethod
     def update_weight(cls, fodder):
         # Increase if eaten
         # Decrease each year
         pass
 
+    #@classmethod
+    #def eat(cls):
+        # pass --  Flytte til Board/Map?
+
+    #@classmethod
+    #def update_age(cls):
+        # pass --  Flytte til Board/Map?
+
     @classmethod
-    def eat(cls):
+    def probability(cls, fitness):
         pass
 
     @classmethod
-    def age(cls):
+    def migration(cls, cell):
+        #relative abundance of fodder(Ek) regnes ut i map
+        #numpy random choice whit custom prpbability
+        pass
+
+    @staticmethod
+    def compute_prob_death(fitness):
         pass
 
     @classmethod
-    def migration(cls):
-        pass
-    
-    @classmethod
-    def death(cls):
+    def death(cls, fitness):
         pass
 
     class Herbivore(Animal):
