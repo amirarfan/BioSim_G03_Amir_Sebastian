@@ -5,36 +5,18 @@ __email__ = 'amar@nmbu.no, sebabeck@nmbu.no'
 
 
 class Animal:
-    def __init__(self):
-        self.weight = weight
+    def __init__(self, age=None, location=None):
+        self.location = location # IF TEST må legges til
+        self.age = age # IF TEST må legges til
         pass
 
-    #@classmethod
-    #def birth(cls, num_species, weight):
-     # Update weight after birth
-     #   pass --  Flytte til Board/Map?
+    # @classmethod
+    # def eat(cls):
+    # pass --  Flytte til Board/Map?
 
-    @staticmethod
-    def _q_sigmoid(x, x_half, rate):
-        pass
-
-    @classmethod
-    def fitness(cls, weight, age):
-        # Denne bruker _q_sigmoid funksjonen
-        pass
-
-    def update_weight(cls, fodder):
-        # Increase if eaten
-        # Decrease each year
-        pass
-
-    #@classmethod
-    #def eat(cls):
-        # pass --  Flytte til Board/Map?
-
-    #@classmethod
-    #def update_age(cls):
-        # pass --  Flytte til Board/Map?
+    # @classmethod
+    # def update_age(cls):
+    # pass --  Flytte til Board/Map?
 
     @classmethod
     def probability(cls, fitness):
@@ -42,8 +24,8 @@ class Animal:
 
     @classmethod
     def migration(cls, cell):
-        #relative abundance of fodder(Ek) regnes ut i map
-        #numpy random choice whit custom prpbability
+        # relative abundance of fodder(Ek) regnes ut i map
+        # numpy random choice whit custom prpbability
         pass
 
     @staticmethod
@@ -53,6 +35,30 @@ class Animal:
     @classmethod
     def death(cls, fitness):
         pass
+
+    # @classmethod
+    # def birth(cls, num_species, weight):
+    # Update weight after birth
+    #   pass --  Flytte til Board/Map?
+
+    @classmethod
+    def _normal_weight(cls, weight_birth, sigma_birth):
+        # Bruker numpy.random.normal(w_birth, sigma_birth)
+
+    @staticmethod
+    def _q_sigmoid(x, x_half, rate):
+        pass
+
+    def update_weight(self, fodder):
+        # Increase if eaten
+        # Decrease each year
+        pass
+
+    def update_fitness(self, weight, age):
+        # Denne bruker _q_sigmoid funksjonen
+        pass
+
+
 
     class Herbivore(Animal):
         # Parameterene til Herbivore
