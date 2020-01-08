@@ -34,19 +34,26 @@ class Animal:
 
         cls.param.update(new_par_dict)
 
-    @classmethod
-    def move_probability(cls, fitness):
+    def move_probability(self):
+        # Endret fra class fordi da kan man bruke self.fitness istedenfor at man må gi fitness, ettersom parameterene
+        # er tilgjengelig via self.parameters også.
         pass
 
     @classmethod
     def migration(cls, cell):
         # relative abundance of fodder(Ek) regnes ut i map
-        # numpy random choice whit custom prpbability
+        # numpy random choice with custom probability
         pass
 
-    @classmethod
-    def compute_prob_death(cls, fitness):
-        pass
+    def compute_prob_death(self):
+        # Endret fra class method fordi da kan man bruke self.fitness istedenfor at man må gi fitness,
+        # ettersom parameterene er tilgjengelig via self.parameters også.
+        if self.fitness == 0:
+            return True
+        elif self.fitness > 0:
+            death_prob = self.param['omega']*(1-self.fitness)
+
+        return np.random.choice([True, False], [death_prob, 1-death_prob]) # Chooses randomly with given probabilities
 
     @classmethod
     def death(cls, fitness):
@@ -84,7 +91,7 @@ class Animal:
                  "a_half": 40.0,
                  "phi_age": 0.2,
                  "w_half": 10.0,
-                 "phi_wheight": 0.1,
+                 "phi_weight": 0.1,
                  "mu": 0.25,
                  "lambda": 1.0,
                  "gamma": 0.2,
@@ -105,7 +112,7 @@ class Animal:
                  "a_half": 60.0,
                  "phi_age": 0.4,
                  "w_half": 4.0,
-                 "phi_wheight": 0.4,
+                 "phi_weight": 0.4,
                  "mu": 0.4,
                  "lambda": 1.0,
                  "gamma": 0.8,
