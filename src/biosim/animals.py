@@ -3,6 +3,9 @@
 __author__ = 'Amir Arfan, Sebastian Becker'
 __email__ = 'amar@nmbu.no, sebabeck@nmbu.no'
 
+import math
+
+
 
 class Animal:
     def __init__(self, age=None, location=None):
@@ -46,8 +49,8 @@ class Animal:
         # Bruker numpy.random.normal(w_birth, sigma_birth)
 
     @staticmethod
-    def _q_sigmoid(x, x_half, rate):
-        pass
+    def _q_sigmoid(x, x_half, rate, signum):
+        return 1 / (1+ math.exp(signum*rate*(x-x_half)))
 
     def update_weight(self, fodder):
         # Increase if eaten
