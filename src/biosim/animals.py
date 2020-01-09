@@ -86,6 +86,11 @@ class Animal:
 
     @classmethod
     def _update_fitness(cls, weight, age):
+        if self.weight == 0
+            return 0
+        else:
+            return  cls._q_sigmoid(self.age), cls.param["a_half"],cls.param["phi_age"]
+
         # Denne bruker _q_sigmoid funksjonen
         pass
 
