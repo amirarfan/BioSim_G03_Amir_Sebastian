@@ -21,12 +21,10 @@ class Cell:
     def intercourse(self):
         pass
 
-    def eat(self):
-        pass
 
     def aging(self):
         for animal in self.animal_classes:
-            animal.age()
+            animal.add_age()
 
     def delete_animal(self):
         pass

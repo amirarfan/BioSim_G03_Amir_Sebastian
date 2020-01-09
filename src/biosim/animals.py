@@ -51,6 +51,10 @@ class Animal:
     def add_age(self):
         self.age += 1
 
+    def eat(self):
+
+        pass
+
     def move_probability(self):
         probability_move = self.fitness * self.param["mu"]
         return np.random.choice([True, False], p=[probability_move,
