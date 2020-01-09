@@ -14,6 +14,8 @@ class Animal:
     def __init__(self, age=None, location=None):
         self.location = location  # IF TEST må legges til
         self.age = age  # IF TEST må legges til
+        self.weight =
+        self.fitness = self._update_fitness(age, )
         pass
 
     # @classmethod
@@ -30,7 +32,8 @@ class Animal:
             if par in cls.param:
                 pass
             else:
-                raise ValueError(f'Invalid input: {par} is not a key in class parameters')
+                raise ValueError(f'Invalid input: {par} is not a key in '
+                                 f'class parameters')
 
         cls.param.update(new_par_dict)
 
@@ -48,6 +51,7 @@ class Animal:
     def compute_prob_death(self):
         # Endret fra class method fordi da kan man bruke self.fitness istedenfor at man må gi fitness,
         # ettersom parameterene er tilgjengelig via self.parameters også.
+        death_prob = 0
         if self.fitness == 0:
             return True
         elif self.fitness > 0:
@@ -65,8 +69,8 @@ class Animal:
     #   pass --  Flytte til Board/Map?
 
     @classmethod
-    def _normal_weight(cls, weight_birth, sigma_birth):
-        start_weight = np.random.normal(cls.param[str(weight_birth)], [str(sigma_birth)])
+    def _normal_weight(cls):
+        start_weight = np.random.normal(cls.param['w_birth'], cls.param['sigma_birth'])
         return start_weight
 
     def update_weight(self, fodder):
@@ -83,53 +87,53 @@ class Animal:
         # Denne bruker _q_sigmoid funksjonen
         pass
 
-    class Herbivore(Animal):
-        param = {"weight_birth": 8.0,
-                 "sigma_birth": 1.5,
-                 "beta": 0.9,
-                 "eta": 0.05,
-                 "a_half": 40.0,
-                 "phi_age": 0.2,
-                 "w_half": 10.0,
-                 "phi_weight": 0.1,
-                 "mu": 0.25,
-                 "lambda": 1.0,
-                 "gamma": 0.2,
-                 "zeta": 3.5,
-                 "xi": 1.2,
-                 "omega": 0.4,
-                 "Fodder": 10.0,
-                 "deltaPhimax": 0}
+class Herbivore(Animal):
+    param = {"w_birth": 8.0,
+             "sigma_birth": 1.5,
+             "beta": 0.9,
+             "eta": 0.05,
+             "a_half": 40.0,
+             "phi_age": 0.2,
+             "w_half": 10.0,
+             "phi_weight": 0.1,
+             "mu": 0.25,
+             "lambda": 1.0,
+             "gamma": 0.2,
+             "zeta": 3.5,
+             "xi": 1.2,
+             "omega": 0.4,
+             "F": 10.0,
+             "DeltaPhiMax": 0}
 
-        def __init__(self, weight=None, age=None):
-            pass  # Super location
+    def __init__(self, weight=None, age=None):
+        pass  # Super location
 
-    class Carnivore(Animal):
-        param = {"weight_birth": 6.0,
-                 "sigma_birth": 1.0,
-                 "beta": 0.75,
-                 "eta": 0.125,
-                 "a_half": 60.0,
-                 "phi_age": 0.4,
-                 "w_half": 4.0,
-                 "phi_weight": 0.4,
-                 "mu": 0.4,
-                 "lambda": 1.0,
-                 "gamma": 0.8,
-                 "zeta": 3.5,
-                 "xi": 1.1,
-                 "omega": 0.9,
-                 "Fodder": 50.0,
-                 "deltaPhimax": 10.0}
+class Carnivore(Animal):
+    param = {"w_birth": 6.0,
+             "sigma_birth": 1.0,
+             "beta": 0.75,
+             "eta": 0.125,
+             "a_half": 60.0,
+             "phi_age": 0.4,
+             "w_half": 4.0,
+             "phi_weight": 0.4,
+             "mu": 0.4,
+             "lambda": 1.0,
+             "gamma": 0.8,
+             "zeta": 3.5,
+             "xi": 1.1,
+             "omega": 0.9,
+             "F": 50.0,
+             "DeltaPhiMax": 10.0}
 
-        def __init__(self, weight=None, age=None):
-            # IF none sett til standard verdi
-            pass  # Super
+    def __init__(self, weight=None, age=None):
+        # IF none sett til standard verdi
+        pass  # Super
 
-        @classmethod
-        def compute_kill_prob(cls, min_fit_kill):
-            # if
-            pass
+    @classmethod
+    def compute_kill_prob(cls, min_fit_kill):
+        # if
+        pass
 
-        def kill(self, min_fit_kill):
-            pass
+    def kill(self, min_fit_kill):
+        pass
