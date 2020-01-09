@@ -8,13 +8,26 @@ import numpy as np
 
 
 class Animal:
-
     param = {}
 
     def __init__(self, age=None, weight=None):
-        self.age = age  # IF TEST må legges til
-        self.weight = weight
-        self.fitness = self.update_fitness()
+
+        if age is not None:
+            self.age = age
+        else:
+            self.age = 0
+
+        if weight is not None:
+            self.weight = weight
+        else:
+            self.weight = self._normal_weight()
+
+        self.fitness = None
+
+        if self.fitness is not None:
+            pass
+        else:
+            self.update_fitness()
 
     # @classmethod
     # def eat(cls):
@@ -35,33 +48,36 @@ class Animal:
 
         cls.param.update(new_par_dict)
 
-    def age(self):
+    def add_age(self):
         self.age += 1
 
     def move_probability(self):
         probability_move = self.fitness * self.param["mu"]
-        return np.random.choice([True, False], [probability_move, 1 - probability_move])
+        return np.random.choice([True, False], p=[probability_move,
+                                                  1 - probability_move])
 
-    @classmethod
-    def migration(cls, cell):
-        # relative abundance of fodder(Ek) regnes ut i map
-        # numpy random choice with custom probability
-        pass
+    # @classmethod
+    # def migration(cls, cell):
+    # relative abundance of fodder(Ek) regnes ut i map
+    # numpy random choice with custom probability
+    #   pass
 
     def compute_prob_death(self):
-        # Endret fra class method fordi da kan man bruke self.fitness istedenfor at man må gi fitness,
-        # ettersom parameterene er tilgjengelig via self.parameters også.
+        # Endret fra class method fordi da kan man bruke self.fitness
+        # istedenfor at man må gi fitness, ettersom parameterene er
+        # tilgjengelig via self.parameters også.
         death_prob = 0
         if self.fitness == 0:
             return True
         elif self.fitness > 0:
-            death_prob = self.param['omega']*(1-self.fitness)
+            death_prob = self.param['omega'] * (1 - self.fitness)
 
-        return np.random.choice([True, False], [death_prob, 1-death_prob]) # Chooses randomly with given probabilities
+        return np.random.choice([True, False], p=[death_prob,
+                                                  1 - death_prob])  # Chooses randomly with given probabilities
 
-    @classmethod
-    def death(cls, fitness):
-        pass
+    #@classmethod
+    #def death(cls, fitness):
+    #    pass
 
     # @classmethod
     # def birth(cls, num_species, weight):
@@ -70,14 +86,15 @@ class Animal:
 
     @classmethod
     def _normal_weight(cls):
-        start_weight = np.random.normal(cls.param['w_birth'], cls.param['sigma_birth'])
+        start_weight = np.random.normal(cls.param['w_birth'],
+                                        cls.param['sigma_birth'])
         return start_weight
 
     def increase_weight(self, fodder):
-        self.weight += self.param['beta']*fodder
+        self.weight += self.param['beta'] * fodder
 
     def decrease_weight(self):
-        self.weight -= self.param['eta']*self.weight
+        self.weight -= self.param['eta'] * self.weight
 
     @staticmethod
     def _q_sigmoid(x, x_half, rate, signum):
@@ -88,10 +105,13 @@ class Animal:
         if weight == 0:
             return 0
         else:
-            return cls._q_sigmoid(age, cls.param["a_half"], cls.param["phi_age"], +1) * cls._q_sigmoid(weight, cls.param['w_half'], cls.param['phi_weight'], -1)
+            return cls._q_sigmoid(age, cls.param["a_half"],
+                                  cls.param["phi_age"], +1) * cls._q_sigmoid(
+                weight, cls.param['w_half'], cls.param['phi_weight'], -1)
 
     def update_fitness(self):
-        return self._calculate_fitness(self.weight, self.age)
+        self.fitness = self._calculate_fitness(self.weight, self.age)
+
 
 class Herbivore(Animal):
     param = {"w_birth": 8.0,
@@ -112,7 +132,9 @@ class Herbivore(Animal):
              "DeltaPhiMax": 0}
 
     def __init__(self, weight=None, age=None):
+        super().__init__(weight, age)
         pass  # Super location
+
 
 class Carnivore(Animal):
     param = {"w_birth": 6.0,
