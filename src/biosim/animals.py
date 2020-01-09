@@ -11,10 +11,9 @@ class Animal:
 
     param = {}
 
-    def __init__(self, age=None, location=None):
-        self.location = location  # IF TEST må legges til
+    def __init__(self, age=None, weight=None):
         self.age = age  # IF TEST må legges til
-        self.weight =
+        self.weight = weight
         self.fitness = self._update_fitness(age, )
         pass
 
@@ -36,6 +35,9 @@ class Animal:
                                  f'class parameters')
 
         cls.param.update(new_par_dict)
+
+    def age(self):
+        self.age += 1
 
     def move_probability(self):
         # Endret fra class fordi da kan man bruke self.fitness istedenfor at man må gi fitness, ettersom parameterene
