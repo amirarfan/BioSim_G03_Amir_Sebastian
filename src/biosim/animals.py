@@ -14,8 +14,7 @@ class Animal:
     def __init__(self, age=None, weight=None):
         self.age = age  # IF TEST må legges til
         self.weight = weight
-        self.fitness = self._update_fitness(age, )
-        pass
+        self.fitness = self.update_fitness()
 
     # @classmethod
     # def eat(cls):
@@ -75,24 +74,25 @@ class Animal:
         start_weight = np.random.normal(cls.param['w_birth'], cls.param['sigma_birth'])
         return start_weight
 
-    def update_weight(self, fodder):
-        # Increase if eaten
-        # Decrease each year
-        pass
+    def increase_weight(self, fodder):
+        self.weight += self.param['beta']*fodder
+
+    def decrease_weight(self):
+        self.weight -= self.param['eta']*self.weight
 
     @staticmethod
     def _q_sigmoid(x, x_half, rate, signum):
         return 1 / (1 + math.exp(signum * rate * (x - x_half)))
 
     @classmethod
-    def _update_fitness(cls, weight, age):
-        if self.weight == 0
+    def _calculate_fitness(cls, weight, age):
+        if weight == 0:
             return 0
         else:
-            return  cls._q_sigmoid(self.age), cls.param["a_half"],cls.param["phi_age"]
+            return cls._q_sigmoid(age, cls.param["a_half"], cls.param["phi_age"], +1) * cls._q_sigmoid(weight, cls.param['w_half'], cls.param['phi_weight'], -1)
 
-        # Denne bruker _q_sigmoid funksjonen
-        pass
+    def update_fitness(self):
+        return self._calculate_fitness(self.weight, self.age)
 
 class Herbivore(Animal):
     param = {"w_birth": 8.0,
