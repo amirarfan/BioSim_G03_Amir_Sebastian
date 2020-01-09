@@ -40,9 +40,8 @@ class Animal:
         self.age += 1
 
     def move_probability(self):
-        # Endret fra class fordi da kan man bruke self.fitness istedenfor at man må gi fitness, ettersom parameterene
-        # er tilgjengelig via self.parameters også.
-        pass
+        probability_move = self.fitness * self.param["mu"]
+        return np.random.choice([True, False], [probability_move, 1 - probability_move])
 
     @classmethod
     def migration(cls, cell):
