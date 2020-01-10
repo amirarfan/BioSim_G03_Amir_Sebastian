@@ -30,14 +30,15 @@ class Cell:
             animal.add_age()
 
     def delete_animal(self, animal):
-        animal_classes_list = self.animal_classes[animal.__class__.__name__]
+        name_animal = type(animal).__name__
+        animal_classes_list = self.animal_classes[name_animal]
         if animal not in animal_classes_list:
-            raise ValueError("ikke i listen pe")
+            raise ValueError(f'Class {name_animal} is not in this cell')
         else:
             for element in animal_classes_list:
                 if element == animal:
-                    animal_classes_list.pop(animal_classes_list.pop(element))
-        pass
+                    return animal_classes_list.pop(
+                        animal_classes_list.pop(element))
 
     def add_animal(self, list_animal):
         for dicts in list_animal:
@@ -45,7 +46,8 @@ class Cell:
             age = dicts['age']
             weight = dicts['weight']
             if animal_name in self.allowed_species.keys():
-                current_class = self.allowed_species['animal_name'](age, weight)
+                current_class = self.allowed_species['animal_name'](age,
+                                                                    weight)
                 self.animal_classes[animal_name].append(current_class)
             else:
                 raise ValueError(f'The animal type is not allowed')
