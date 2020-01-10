@@ -25,21 +25,28 @@ class Cell:
 
         cls.param.update(new_par_dict)
 
-
     def propensity(self):
         pass
 
     def intercourse(self):
+
         pass
 
     def compute_relative_abundance(self, animal_class):
         animal_name = type(animal_class).__name__
-        return self.current_fodder/((self.cell_pop[animal_name]+1)* animal_class.param["F"])
-
+        return self.current_fodder / (
+                    (self.cell_pop[animal_name] + 1) * animal_class.param["F"])
 
     def aging(self):
-        for animal in self.animal_classes.values():
-            animal.add_age()
+        """
+
+        Loops through all animals in the cell and uses add age function from
+        'animals.py' to add one age.
+
+        """
+        for all_animals in self.animal_classes.values():
+            for animal in all_animals:
+                animal.add_age()
 
     def delete_animal(self, animal):
         name_animal = type(animal).__name__
@@ -47,7 +54,9 @@ class Cell:
         if animal not in animal_classes_list:
             raise ValueError(f'Class {name_animal} is not in this cell')
 
-        animal_classes_list.remove(animal) # Tenkte at siden remove tar den første, er det mer brukbart å bruke remove.
+        animal_classes_list.remove(
+            animal)  # Tenkte at siden remove tar den første LIKE INSTANCEN,
+        # er det mer brukbart å bruke remove.
 
     def add_animal(self, list_animal):
         for dicts in list_animal:
