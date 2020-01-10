@@ -16,17 +16,17 @@ class Animal:
             raise ValueError('Age cannot be lower than 0')
 
         if age is not None:
-            self.age = age
+            self._age = age
         else:
-            self.age = 0
+            self._age = 0
 
         if weight is not None and weight < 0:
             raise ValueError('Weight cannot be lower than 0')
 
         if weight is not None:
-            self.weight = weight
+            self._weight = weight
         else:
-            self.weight = self._normal_weight()
+            self._weight = self._normal_weight()
 
         self.fitness = None
 
@@ -37,24 +37,24 @@ class Animal:
 
     @property
     def age(self):
-        return self.age
+        return self._age
 
     @age.setter
     def age(self, val):
         if val < 0:
             raise ValueError('Age must be higher than 0')
-        self.age = val
+        self._age = val
         self.update_fitness()
 
     @property
     def weight(self):
-        return self.weight
+        return self._weight
 
     @weight.setter
     def weight(self, val):
         if val < 0:
             raise ValueError('Weight must be higher than 0')
-        self.weight = val
+        self._weight = val
         self.update_fitness()
 
 
@@ -77,7 +77,8 @@ class Animal:
         cls.param.update(new_par_dict)
 
     def add_age(self):
-        self.age += 1
+        self._age += 1
+        self.update_fitness()
 
     def determine_to_move(self):
         probability_move = self.fitness * self.param["mu"]
@@ -105,7 +106,7 @@ class Animal:
         sigma_birth = self.param['sigma_birth']
         prob_birth = self.compute_prob_birth(gamma, self.fitness, nearby_animals)
 
-        if self.weight < zeta * (w_birth + sigma_birth):
+        if self._weight < zeta * (w_birth + sigma_birth):
             return False
         np.random.choice([True, False], p=[prob_birth, 1 - prob_birth])
 
@@ -117,15 +118,18 @@ class Animal:
 
     def decrease_birth_weight(self, birth_weight):
         xi = self.param['xi']
-        self.weight -= xi * birth_weight
+        self._weight -= xi * birth_weight
+        self.update_fitness()
 
     def increase_eat_weight(self, fodder):
         beta = self.param['beta']
-        self.weight += beta * fodder
+        self._weight += beta * fodder
+        self.update_fitness()
 
     def decrease_annual_weight(self):
         eta = self.param['eta']
-        self.weight -= eta * self.weight
+        self._weight -= eta * self._weight
+        self.update_fitness()
 
     @staticmethod
     def _q_sigmoid(x, x_half, rate, signum):
@@ -143,7 +147,7 @@ class Animal:
             return cls._q_sigmoid(age, a_half, phi_age, +1) * cls._q_sigmoid(weight, w_half, phi_weight, -1)
 
     def update_fitness(self):
-        self.fitness = self._calculate_fitness(self.weight, self.age)
+        self.fitness = self._calculate_fitness(self._weight, self._age)
 
 
 class Herbivore(Animal):

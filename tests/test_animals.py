@@ -28,9 +28,17 @@ def test_animal_weight():
 
 def test_change_weight():
     herb = animal.Herbivore()
-    first_fitness = herb.fitness
     herb.weight = 2
-    assert herb.weight == 2 and first_fitness != herb.fitness
+    print(herb.fitness)
+    assert herb.weight == 2
+
+
+def test_fitness_changes_with_weight():
+    herb = animal.Herbivore()
+    before_fitness = herb.fitness
+    herb.weight = 30
+    after_fitness = herb.fitness
+    assert before_fitness != after_fitness
 
 
 def test_animal_fitness():
