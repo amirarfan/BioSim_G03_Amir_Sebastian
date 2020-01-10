@@ -3,7 +3,9 @@
 __author__ = 'Amir Arfan, Sebastian Becker'
 __email__ = 'amar@nmbu.no, sebabeck@nmbu.no'
 
-from biosim.animals import Herbivore, Carnivore, Animal
+from .animals import Herbivore, Carnivore, Animal
+import numpy as np
+
 
 class Cell:
     param = {}
@@ -12,21 +14,16 @@ class Cell:
         self.cell_pop = {'Herbivore': 0, 'Carnivore': 0}
         self.animal_classes = []
         self.allowed_species = ['Herbivore', 'Carnivore']
+        self.current_fodder = self.param['f_max']
 
     def propensity(self):
-        for animal in self.animal_classes:
-            if animal.param["lambda"] == 0:
-                return 0
-            elif 0 < animal.param["lambda"] :
-                return
-            else:
-                return 1
-
         pass
 
     def intercourse(self):
         pass
 
+    def compute_relative_abundance(self):
+        pass
 
     def aging(self):
         for animal in self.animal_classes:
@@ -35,21 +32,19 @@ class Cell:
     def delete_animal(self):
         pass
 
+
     def add_animal(self, list_animal):
         for dicts in list_animal:
             if dicts['species'] in self.allowed_species:
-                self.animal_classes.append(animals.dicts['species'](dicts['age'], dicts['weight']))
+                self.animal_classes.append(
+                    dicts['species'](dicts['age'], dicts['weight']))
             else:
                 raise ValueError(f'The animal type is not allowed')
-
-
-
 
 
 class Ocean(Cell):
     def __init__(self):
         self.relevant_fodder = None
-        pass
 
 
 class Mountain(Cell):
@@ -68,12 +63,11 @@ class Savannah(Cell):
     param = {'f_max': 300, 'alpha': 0.3}
 
     def __init__(self):
-        self.current_fodder = self.param['f_max']
-        pass
+        super().__init__()
 
     def gen_fodder_sav(self):
         self.current_fodder = self.current_fodder + self.param['alpha'] * (
-                    self.param['f_max'] - self.current_fodder)
+                self.param['f_max'] - self.current_fodder)
 
 
 class Jungle(Cell):
