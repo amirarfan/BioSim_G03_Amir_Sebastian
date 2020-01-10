@@ -26,10 +26,17 @@ class Cell:
         pass
 
     def aging(self):
-        for animal in self.animal_classes:
+        for animal in self.animal_classes.values():
             animal.add_age()
 
     def delete_animal(self, animal):
+        animal_classes_list = self.animal_classes[animal.__class__.__name__]
+        if animal not in animal_classes_list:
+            raise ValueError("ikke i listen pe")
+        else:
+            for element in animal_classes_list:
+                if element == animal:
+                    animal_classes_list.pop(animal_classes_list.pop(element))
         pass
 
     def add_animal(self, list_animal):
