@@ -13,8 +13,15 @@ class Cell:
         self.animal_classes = []
         self.allowed_species = ['Herbivore', 'Carnivore']
 
-    @classmethod
-    def propensity(cls):
+    def propensity(self):
+        for animal in self.animal_classes:
+            if animal.param["lambda"] == 0:
+                return 0
+            elif 0 < animal.param["lambda"] :
+                return
+            else:
+                return 1
+
         pass
 
     def intercourse(self):
