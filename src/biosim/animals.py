@@ -66,10 +66,7 @@ class Animal:
     # numpy random choice with custom probability
     #   pass
 
-    def compute_prob_death(self):
-        # Endret fra class method fordi da kan man bruke self.fitness
-        # istedenfor at man må gi fitness, ettersom parameterene er
-        # tilgjengelig via self.parameters også.
+    def determine_death(self):
         death_prob = 0
         if self.fitness == 0:
             return True
@@ -79,14 +76,20 @@ class Animal:
         return np.random.choice([True, False], p=[death_prob,
                                                   1 - death_prob])  # Chooses randomly with given probabilities
 
-    #@classmethod
-    #def death(cls, fitness):
-    #    pass
+    @staticmethod
+    def compute_prob_birth(gamma, fitness, nearby_animals):
+        return min(1, gamma*fitness*(nearby_animals-1))
 
-    # @classmethod
-    # def birth(cls, num_species, weight):
-    # Update weight after birth
-    #   pass --  Flytte til Board/Map?
+    def determine_birth(self, nearby_animals):
+        gamma = self.param['gamma']
+        zeta = self.param['zeta']
+        w_birth = self.param['w_birth']
+        sigma_birth = self.param['sigma_birth']
+        prob_birth = self.compute_prob_birth(gamma, self.fitness, nearby_animals)
+
+        if self.weight < zeta*(w_birth+sigma_birth):
+            return False
+        np.random.choice([True, False], p=[prob_birth, 1-prob_birth])
 
     @classmethod
     def _normal_weight(cls):
@@ -94,11 +97,17 @@ class Animal:
                                         cls.param['sigma_birth'])
         return start_weight
 
-    def increase_weight(self, fodder):
-        self.weight += self.param['beta'] * fodder
+    def decrease_birth_weight(self, birth_weight):
+        xi = self.param['xi']
+        self.weight -= xi*birth_weight
 
-    def decrease_weight(self):
-        self.weight -= self.param['eta'] * self.weight
+    def increase_eat_weight(self, fodder):
+        beta = self.param['beta']
+        self.weight += beta * fodder
+
+    def decrease_annual_weight(self):
+        eta = self.param['eta']
+        self.weight -= eta* self.weight
 
     @staticmethod
     def _q_sigmoid(x, x_half, rate, signum):
