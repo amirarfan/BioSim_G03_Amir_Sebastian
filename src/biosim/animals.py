@@ -116,9 +116,9 @@ class Animal:
                                         cls.param['sigma_birth'])
         return start_weight
 
-    def decrease_birth_weight(self, birth_weight):
+    def decrease_birth_weight(self, child_weight):
         xi = self.param['xi']
-        self._weight -= xi * birth_weight
+        self._weight -= xi * child_weight
         self.update_fitness()
 
     def increase_eat_weight(self, fodder):

@@ -11,7 +11,7 @@ class Cell:
     param = {}
 
     def __init__(self):
-        self.cell_pop = {'Herbivore': 0, 'Carnivore': 0}
+        # self.cell_pop = {'Herbivore': 0, 'Carnivore': 0} Ubrukelig ?? kaan telle fra animal_classes!
         self.animal_classes = {'Herbivore': [], 'Carnivore': []}
         self.allowed_species = {'Herbivore': Herbivore, 'Carnivore': Carnivore}
         self.current_fodder = self.param['f_max']
@@ -28,14 +28,20 @@ class Cell:
     def propensity(self):
         pass
 
-    def intercourse(self):
+    def mating(self):
 
-        pass
+        for animal_list in self.animal_classes.values():  # Får tilgang til hver liste i dicten
+            curr_children = []
+            for animal_class in animal_list:
+                if animal_class.determine_birth(len(animal_list)):
+                    new_child = animal_class.__class__()
+                    self.animal_classes[type(new_child).__name__].append(new_child)
+                    animal_class.decrease_birth_weight(new_child.weight)
 
     def compute_relative_abundance(self, animal_class):
         animal_name = type(animal_class).__name__
         return self.current_fodder / (
-                    (self.cell_pop[animal_name] + 1) * animal_class.param["F"])
+                (self.cell_pop[animal_name] + 1) * animal_class.param["F"])
 
     def aging(self):
         """
