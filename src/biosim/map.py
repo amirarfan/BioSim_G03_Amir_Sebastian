@@ -22,8 +22,10 @@ class Cell:
     def intercourse(self):
         pass
 
-    def compute_relative_abundance(self):
-        pass
+    def compute_relative_abundance(self, animal_class):
+        animal_name = type(animal_class).__name__
+        Ek= self.current_fodder/((self.cell_pop[animal_name]+1)* animal_class.param["F"])
+        return Ek
 
     def aging(self):
         for animal in self.animal_classes.values():
