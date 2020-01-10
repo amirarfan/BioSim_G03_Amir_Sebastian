@@ -12,8 +12,8 @@ class Cell:
 
     def __init__(self):
         self.cell_pop = {'Herbivore': 0, 'Carnivore': 0}
-        self.animal_classes = []
-        self.allowed_species = ['Herbivore', 'Carnivore']
+        self.animal_classes = {'Herbivore': [], 'Carnivore': []}
+        self.allowed_species = {'Herbivore': Herbivore, 'Carnivore': Carnivore}
         self.current_fodder = self.param['f_max']
 
     def propensity(self):
@@ -29,15 +29,17 @@ class Cell:
         for animal in self.animal_classes:
             animal.add_age()
 
-    def delete_animal(self):
+    def delete_animal(self, animal):
         pass
-
 
     def add_animal(self, list_animal):
         for dicts in list_animal:
-            if dicts['species'] in self.allowed_species:
-                self.animal_classes.append(
-                    dicts['species'](dicts['age'], dicts['weight']))
+            animal_name = dicts['species']
+            age = dicts['age']
+            weight = dicts['weight']
+            if animal_name in self.allowed_species.keys():
+                current_class = self.allowed_species['animal_name'](age, weight)
+                self.animal_classes[animal_name].append(current_class)
             else:
                 raise ValueError(f'The animal type is not allowed')
 
