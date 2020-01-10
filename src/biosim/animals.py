@@ -12,10 +12,16 @@ class Animal:
 
     def __init__(self, age=None, weight=None):
 
+        if age is not None and age < 0:
+            raise ValueError('Age cannot be lower than 0')
+
         if age is not None:
             self.age = age
         else:
             self.age = 0
+
+        if weight is not None and weight < 0:
+            raise ValueError('Weight cannot be lower than 0')
 
         if weight is not None:
             self.weight = weight
@@ -29,7 +35,21 @@ class Animal:
         else:
             self.update_fitness()
 
-    # @classmethod
+    @property
+    def age(self):
+        return self.age
+
+    @age.setter
+    def age(self, val):
+        if val < 0:
+            raise ValueError('Age must be higher than 0')
+        self.age = val
+        self.update_fitness()
+
+    @property
+    def weight(self):
+        return wei
+
     # def eat(cls):
     # pass --  Flytte til Board/Map?
 
@@ -51,20 +71,10 @@ class Animal:
     def add_age(self):
         self.age += 1
 
-    def eat(self):
-
-        pass
-
-    def move_probability(self):
+    def determine_to_move(self):
         probability_move = self.fitness * self.param["mu"]
         return np.random.choice([True, False], p=[probability_move,
                                                   1 - probability_move])
-
-    # @classmethod
-    # def migration(cls, cell):
-    # relative abundance of fodder(Ek) regnes ut i map
-    # numpy random choice with custom probability
-    #   pass
 
     def determine_death(self):
         death_prob = 0
@@ -78,7 +88,7 @@ class Animal:
 
     @staticmethod
     def compute_prob_birth(gamma, fitness, nearby_animals):
-        return min(1, gamma*fitness*(nearby_animals-1))
+        return min(1, gamma * fitness * (nearby_animals - 1))
 
     def determine_birth(self, nearby_animals):
         gamma = self.param['gamma']
@@ -87,9 +97,9 @@ class Animal:
         sigma_birth = self.param['sigma_birth']
         prob_birth = self.compute_prob_birth(gamma, self.fitness, nearby_animals)
 
-        if self.weight < zeta*(w_birth+sigma_birth):
+        if self.weight < zeta * (w_birth + sigma_birth):
             return False
-        np.random.choice([True, False], p=[prob_birth, 1-prob_birth])
+        np.random.choice([True, False], p=[prob_birth, 1 - prob_birth])
 
     @classmethod
     def _normal_weight(cls):
@@ -99,7 +109,7 @@ class Animal:
 
     def decrease_birth_weight(self, birth_weight):
         xi = self.param['xi']
-        self.weight -= xi*birth_weight
+        self.weight -= xi * birth_weight
 
     def increase_eat_weight(self, fodder):
         beta = self.param['beta']
@@ -107,7 +117,7 @@ class Animal:
 
     def decrease_annual_weight(self):
         eta = self.param['eta']
-        self.weight -= eta* self.weight
+        self.weight -= eta * self.weight
 
     @staticmethod
     def _q_sigmoid(x, x_half, rate, signum):
@@ -115,12 +125,14 @@ class Animal:
 
     @classmethod
     def _calculate_fitness(cls, weight, age):
+        a_half = cls.param['a_half']
+        phi_age = cls.param['phi_age']
+        w_half = cls.param['w_half']
+        phi_weight = cls.param['phi_weight']
         if weight == 0:
             return 0
         else:
-            return cls._q_sigmoid(age, cls.param["a_half"],
-                                  cls.param["phi_age"], +1) * cls._q_sigmoid(
-                weight, cls.param['w_half'], cls.param['phi_weight'], -1)
+            return cls._q_sigmoid(age, a_half, phi_age, +1) * cls._q_sigmoid(weight, w_half, phi_weight, -1)
 
     def update_fitness(self):
         self.fitness = self._calculate_fitness(self.weight, self.age)
