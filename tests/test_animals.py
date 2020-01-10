@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-__author__ = 'Amir Arfan, Sebastian Becker'
-__email__ = 'amar@nmbu.no, sebabeck@nmbu.no'
+__author__ = "Amir Arfan, Sebastian Becker"
+__email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 import biosim.animals as animal
 
@@ -49,4 +49,4 @@ def test_animal_fitness():
 def test_move_probability_herb():
     herb = animal.Herbivore()
     bool_val = herb.determine_to_move()
-    assert bool_val == True or bool_val == False
+    assert bool_val is True or bool_val is False
