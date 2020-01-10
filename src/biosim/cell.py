@@ -3,7 +3,7 @@
 __author__ = 'Amir Arfan, Sebastian Becker'
 __email__ = 'amar@nmbu.no, sebabeck@nmbu.no'
 
-from .animals import Herbivore, Carnivore, Animal
+from .animals import Herbivore, Carnivore
 import numpy as np
 
 
@@ -15,6 +15,16 @@ class Cell:
         self.animal_classes = {'Herbivore': [], 'Carnivore': []}
         self.allowed_species = {'Herbivore': Herbivore, 'Carnivore': Carnivore}
         self.current_fodder = self.param['f_max']
+
+    @classmethod
+    def update_parameters(cls, new_par_dict):
+        for par in new_par_dict.keys():
+            if par not in cls.param:
+                raise ValueError(f'Invalid input: {par} is not a key in '
+                                 f'class parameters')
+
+        cls.param.update(new_par_dict)
+
 
     def propensity(self):
         pass
@@ -36,11 +46,8 @@ class Cell:
         animal_classes_list = self.animal_classes[name_animal]
         if animal not in animal_classes_list:
             raise ValueError(f'Class {name_animal} is not in this cell')
-        else:
-            for element in animal_classes_list:
-                if element == animal:
-                    return animal_classes_list.pop(
-                        animal_classes_list.pop(element))
+
+        animal_classes_list.remove(animal) # Tenkte at siden remove tar den første, er det mer brukbart å bruke remove.
 
     def add_animal(self, list_animal):
         for dicts in list_animal:
