@@ -48,7 +48,15 @@ class Animal:
 
     @property
     def weight(self):
-        return wei
+        return self.weight
+
+    @weight.setter
+    def weight(self, val):
+        if val < 0:
+            raise ValueError('Weight must be higher than 0')
+        self.weight = val
+        self.update_fitness()
+
 
     # def eat(cls):
     # pass --  Flytte til Board/Map?
