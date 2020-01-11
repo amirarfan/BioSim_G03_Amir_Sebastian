@@ -46,6 +46,30 @@ def test_animal_fitness():
     assert herb.fitness != 0
 
 
+def test_non_existing_parameter():
+    herb = animal.Herbivore()
+    try:
+        herb.update_parameters({'non_exist': 20})
+    except ValueError as ve:
+        print(ve)
+
+
+def test_negative_parameter():
+    herb = animal.Herbivore()
+    try:
+        herb.update_parameters({'sigma_birth': -20})
+    except ValueError as ve:
+        print(ve)
+
+
+def test_eta_greater_than_one():
+    herb = animal.Herbivore()
+    try:
+        herb.update_parameters({'eta': 2})
+    except ValueError:
+        print('Successfully returned ValueError for eta > 1')
+
+
 def test_move_probability_herb():
     herb = animal.Herbivore()
     bool_val = herb.determine_to_move()

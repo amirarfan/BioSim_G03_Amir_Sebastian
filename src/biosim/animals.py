@@ -67,13 +67,17 @@ class Animal:
     @classmethod
     def update_parameters(cls, new_par_dict):
         for par in new_par_dict.keys():
-            if par in cls.param:
-                pass
-            else:
+            if par not in cls.param:
                 raise ValueError(
                     f"Invalid input: {par} is not a key in "
                     f"class parameters"
                 )
+            if new_par_dict[par] <= 0 and par == "DeltaPhiMax":
+                raise ValueError(f"{par} must be strictly positive")
+            elif new_par_dict[par] < 0 and par != "DeltaPhiMax":
+                raise ValueError(f"{par} must be positive")
+            elif new_par_dict[par] > 1 and par == "eta":
+                raise ValueError(f"{par} must be less or equal to 1")
 
         cls.param.update(new_par_dict)
 
