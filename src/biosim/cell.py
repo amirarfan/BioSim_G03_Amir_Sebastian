@@ -11,7 +11,8 @@ class Cell:
     param = {}
 
     def __init__(self):
-        # self.cell_pop = {'Herbivore': 0, 'Carnivore': 0} Ubrukelig ?? kaan telle fra animal_classes!
+        # self.cell_pop = {'Herbivore': 0, 'Carnivore': 0} Ubrukelig ?? kaan
+        # telle fra animal_classes!
         self.animal_classes = {"Herbivore": [], "Carnivore": []}
         self.allowed_species = {"Herbivore": Herbivore, "Carnivore": Carnivore}
         self.current_fodder = self.param["f_max"]
@@ -25,10 +26,11 @@ class Cell:
                     f"class parameters"
                 )
 
+            if new_par_dict["par"] < 0:
+                raise ValueError(
+                    f"Invalid input: {par} is of non-positive value"
+                )
         cls.param.update(new_par_dict)
-
-    def propensity(self):
-        pass
 
     def mating(self):
         for (
@@ -44,11 +46,21 @@ class Cell:
                     self.animal_classes[new_child_specie].append(new_child)
                     animal_class.decrease_birth_weight(new_child.weight)
 
-    def compute_relative_abundance(self, animal_class):  # DO THIS NEXT
+    def compute_relative_abundance(self, animal_class):
         animal_name = type(animal_class).__name__
-        return self.current_fodder / (
-            (self.cell_pop[animal_name] + 1) * animal_class.param["F"]
-        )
+        amount_same_spec = len(self.animal_classes[animal_name])
+        food_wanting = self.animal_class.param["F"]
+        return self.current_fodder / ((amount_same_spec + 1) * food_wanting)
+
+    def propensity(self, specie):
+        name = type(specie).__name__
+        cell_name = type(self).__name__
+        if (name == "Herbivore" or name == "Carnivore") and (
+            cell_name == "Ocean" or cell_name == "Mountain"
+        ):
+            return 0
+
+        pass
 
     def aging(self):
         """
