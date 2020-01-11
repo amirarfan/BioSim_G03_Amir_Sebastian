@@ -60,7 +60,10 @@ class Cell:
         ):
             return 0
 
-        pass
+        relative_abundance = self.compute_relative_abundance(specie)
+        lambda_specie = specie.param['lambda']
+
+        return np.exp(lambda_specie*relative_abundance)
 
     def aging(self):
         """
