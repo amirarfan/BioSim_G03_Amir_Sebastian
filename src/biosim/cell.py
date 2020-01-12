@@ -44,6 +44,8 @@ class Cell:
     def eat_herbivore(self):
         # Sortere herbivore med fitness, lage en getFitness i class Animal,
         # Bruke sortedHerbivores = sorted(self.animal_classes['Herbivore'], key=getFitness)
+        pass
+
     def compute_relative_abundance(self, animal_class):
         animal_name = type(animal_class).__name__
         amount_same_spec = len(self.animal_classes[animal_name])
