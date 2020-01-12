@@ -29,21 +29,21 @@ def test_animal_weight():
 def test_change_weight():
     herb = animal.Herbivore()
     herb.weight = 2
-    print(herb.fitness)
+    print(herb._fitness)
     assert herb.weight == 2
 
 
 def test_fitness_changes_with_weight():
     herb = animal.Herbivore()
-    before_fitness = herb.fitness
+    before_fitness = herb._fitness
     herb.weight = 30
-    after_fitness = herb.fitness
+    after_fitness = herb._fitness
     assert before_fitness != after_fitness
 
 
 def test_animal_fitness():
     herb = animal.Herbivore()
-    assert herb.fitness != 0
+    assert herb._fitness != 0
 
 
 def test_non_existing_parameter():

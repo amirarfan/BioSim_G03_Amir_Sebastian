@@ -43,6 +43,9 @@ class Cell:
 
     def eat_herbivore(self):
         # Sortere herbivore med fitness, lage en getFitness i class Animal,
+        sortedHerbivores = sorted(
+            self.animal_classes["Herbivore"], key=lambda animal: animal.fitness
+        )
         # Bruke sortedHerbivores = sorted(self.animal_classes['Herbivore'], key=getFitness)
         pass
 
@@ -131,7 +134,7 @@ class Savannah(Cell):
 
     def __init__(self):
         super().__init__()
-        self.current_fodder = self.param['f_max']
+        self.current_fodder = self.param["f_max"]
 
     def gen_fodder_sav(self):
         self.current_fodder = self.current_fodder + self.param["alpha"] * (

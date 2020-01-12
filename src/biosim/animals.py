@@ -28,9 +28,9 @@ class Animal:
         else:
             self._weight = self._normal_weight()
 
-        self.fitness = None
+        self._fitness = None
 
-        if self.fitness is not None:
+        if self._fitness is not None:
             pass
         else:
             self.update_fitness()
@@ -45,7 +45,7 @@ class Animal:
             raise ValueError("Age must be higher than 0")
 
         if type(val) != int:
-            raise ValueError('Age must be a positive integer')
+            raise ValueError("Age must be a positive integer")
 
         self._age = val
         self.update_fitness()
@@ -60,6 +60,26 @@ class Animal:
             raise ValueError("Weight must be higher than 0")
         self._weight = val
         self.update_fitness()
+
+    @property
+    def fitness(self):
+        return self._fitness
+
+    @classmethod
+    def _calculate_fitness(cls, weight, age):
+        a_half = cls.param["a_half"]
+        phi_age = cls.param["phi_age"]
+        w_half = cls.param["w_half"]
+        phi_weight = cls.param["phi_weight"]
+        if weight == 0:
+            return 0
+        else:
+            return cls._q_sigmoid(age, a_half, phi_age, +1) * cls._q_sigmoid(
+                weight, w_half, phi_weight, -1
+            )
+
+    def update_fitness(self):
+        self._fitness = self._calculate_fitness(self._weight, self._age)
 
     # def eat(cls):
     # pass --  Flytte til Board/Map?
@@ -90,17 +110,17 @@ class Animal:
         self.update_fitness()
 
     def determine_to_move(self):
-        probability_move = self.fitness * self.param["mu"]
+        probability_move = self._fitness * self.param["mu"]
         return np.random.choice(
             [True, False], p=[probability_move, 1 - probability_move]
         )
 
     def determine_death(self):
         death_prob = 0
-        if self.fitness == 0:
+        if self._fitness == 0:
             return True
-        elif self.fitness > 0:
-            death_prob = self.param["omega"] * (1 - self.fitness)
+        elif self._fitness > 0:
+            death_prob = self.param["omega"] * (1 - self._fitness)
 
         return np.random.choice(
             [True, False], p=[death_prob, 1 - death_prob]
@@ -116,7 +136,7 @@ class Animal:
         w_birth = self.param["w_birth"]
         sigma_birth = self.param["sigma_birth"]
         prob_birth = self.compute_prob_birth(
-            gamma, self.fitness, nearby_animals
+            gamma, self._fitness, nearby_animals
         )
 
         if self._weight < zeta * (w_birth + sigma_birth):
@@ -148,22 +168,6 @@ class Animal:
     @staticmethod
     def _q_sigmoid(x, x_half, rate, signum):
         return 1 / (1 + math.exp(signum * rate * (x - x_half)))
-
-    @classmethod
-    def _calculate_fitness(cls, weight, age):
-        a_half = cls.param["a_half"]
-        phi_age = cls.param["phi_age"]
-        w_half = cls.param["w_half"]
-        phi_weight = cls.param["phi_weight"]
-        if weight == 0:
-            return 0
-        else:
-            return cls._q_sigmoid(age, a_half, phi_age, +1) * cls._q_sigmoid(
-                weight, w_half, phi_weight, -1
-            )
-
-    def update_fitness(self):
-        self.fitness = self._calculate_fitness(self._weight, self._age)
 
 
 class Herbivore(Animal):
