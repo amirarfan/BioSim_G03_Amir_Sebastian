@@ -37,8 +37,7 @@ class Cell:
             animal_list
         ) in (
             self.animal_classes.values()
-        ):  # Får tilgang til hver liste i dicten
-            curr_children = []
+        ): 
             for animal_class in animal_list:
                 if animal_class.determine_birth(len(animal_list)):
                     new_child = animal_class.__class__()
