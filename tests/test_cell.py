@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+
+__author__ = "Amir Arfan, Sebastian Becker"
+__email__ = "amar@nmbu.no, sebabeck@nmbu.no"
+
 import biosim.cell as cell
 
 def test_fodder_Mountain():
