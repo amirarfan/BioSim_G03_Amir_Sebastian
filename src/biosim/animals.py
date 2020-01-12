@@ -43,6 +43,10 @@ class Animal:
     def age(self, val):
         if val < 0:
             raise ValueError("Age must be higher than 0")
+
+        if type(val) != int:
+            raise ValueError('Age must be a positive integer')
+
         self._age = val
         self.update_fitness()
 
