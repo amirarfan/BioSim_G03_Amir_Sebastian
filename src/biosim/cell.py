@@ -81,15 +81,13 @@ class Cell:
 
                 self.animal_classes[
                     "Herbivore"
-                ] = self.remove_multiple_animals(
-                    self.animal_classes["Herbivore"], remove_herb
-                )
+                ] = self.remove_multiple_animals("Herbivore", remove_herb)
 
-    @staticmethod
-    def remove_multiple_animals(animal_list, animals_to_remove):
+    @classmethod
+    def remove_multiple_animals(cls, specie, animals_to_remove):
         return [
             animal
-            for index, animal in enumerate(animal_list)
+            for index, animal in enumerate(cls.animal_classes[specie])
             if index not in animals_to_remove
         ]
 
