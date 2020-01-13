@@ -192,7 +192,6 @@ class Herbivore(Animal):
 
     def __init__(self, weight=None, age=None):
         super().__init__(weight, age)
-        pass  # Super location
 
 
 class Carnivore(Animal):
@@ -216,13 +215,20 @@ class Carnivore(Animal):
     }
 
     def __init__(self, weight=None, age=None):
-        # IF none sett til standard verdi
-        pass  # Super
+        super().__init__(weight, age)
 
-    @classmethod
-    def compute_kill_prob(cls, min_fit_kill):
-        # if
-        pass
+    @staticmethod
+    def compute_kill_prob(fit_carn, fit_herb, delta_phi_max):
+        if fit_carn <= fit_herb:
+            return 0
+        elif 0 < fit_carn - fit_herb < delta_phi_max:
+            return (fit_carn - fit_herb) / delta_phi_max
+        else:
+            return 1
 
-    def kill(self, min_fit_kill):
-        pass
+    def determine_kill(self, min_fit_herb):
+        delta_phi_max = self.param["DeltaPhiMax"]
+        kill_prob = self.compute_kill_prob(
+            self.fitness, min_fit_herb, delta_phi_max
+        )
+        return np.random.choice([True, False], p=[kill_prob, 1 - kill_prob])
