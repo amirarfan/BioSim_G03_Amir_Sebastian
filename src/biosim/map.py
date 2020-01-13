@@ -4,7 +4,7 @@ __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 
-class Map():
+class Map:
     dict_cells = {}
 
     def __init(self, map_string):

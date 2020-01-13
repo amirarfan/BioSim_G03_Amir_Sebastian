@@ -10,6 +10,7 @@ def test_fodder_Mountain():
     mountain_cell = cell.Mountain()
     assert mountain_cell.current_fodder == 0
 
+
 def test_fodder_Ocean():
     ocean_cell = cell.Ocean()
     assert ocean_cell.current_fodder == 0
@@ -20,7 +21,6 @@ def test_gen_fodder_jung():
     jun_cell.current_fodder = 700
     jun_cell.gen_fodder_jung()
     assert jun_cell.current_fodder == jun_cell.param["f_max"]
-
 
 
 def test_gen_fodder_Savannah():

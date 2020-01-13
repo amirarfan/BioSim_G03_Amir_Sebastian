@@ -11,8 +11,6 @@ class Cell:
     param = {}
 
     def __init__(self):
-        # self.cell_pop = {'Herbivore': 0, 'Carnivore': 0} Ubrukelig ?? kaan
-        # telle fra animal_classes!
         self.animal_classes = {"Herbivore": [], "Carnivore": []}
         self.allowed_species = {"Herbivore": Herbivore, "Carnivore": Carnivore}
         self.current_fodder = 0
@@ -61,13 +59,48 @@ class Cell:
                 animals.increase_eat_weight(self.current_fodder)
                 self.current_fodder -= self.current_fodder
 
-    def eat_carnivore(self): # NESTE
-        pass
+    def eat_carnivore(self):
+        if len(self.animal_classes["Herbivore"]) > 0:
+            self.animal_classes["Carnivore"].sort(
+                key=lambda animal: animal.fitness, reverse=True
+            )
+            for car in self.animal_classes["Carnivore"]:
+                herb_survivors = []
+                self.animal_classes["Herbivore"].sort(
+                    key=lambda animal: animal.fitness
+                )
+                for herb in self.animal_classes["Herbivore"]:
+                    if car.determine_kill(herb):
+                        car.increase_eat_weight(herb.weight)
+                        herb_survivors = [
+                            curr_herb
+                            for curr_herb in self.animal_classes["Herbivore"]
+                            if curr_herb != herb
+                        ]
+                self.animal_classes["Herbivore"] = herb_survivors
 
-    def migration(self): # NESTE
-        pass
+    def migration(self, neighbour_cells):
+        for animal_list in self.animal_classes.values():
+            for animal in animal_list:
+                if animal.determine_to_move():
+                    move_prob = self.compute_move_prob(animal, neighbour_cells)
+                    chosen_cell = np.random.choice(
+                        neighbour_cells, p=move_prob
+                    )
+                    chosen_cell.emigrate_animal(animal)
+                    self.delete_animal(animal)
 
-    # Gjøre om til static method??
+    @staticmethod
+    def compute_move_prob(animal_type, neighbour_cells):
+        total_propensity = 0
+        cell_propensity = []
+        for cell in neighbour_cells:
+            propenisty_cell = cell.propensity(animal_type)
+            cell_propensity.append(propenisty_cell)
+            total_propensity += propenisty_cell
+
+        return [cell_prop / total_propensity for cell_prop in cell_propensity]
+
     def compute_relative_abundance(self, animal_class):
         animal_name = type(animal_class).__name__
         amount_same_spec = len(self.animal_classes[animal_name])
@@ -117,6 +150,10 @@ class Cell:
             animal
         )  # Tenkte at siden remove tar den første LIKE INSTANCEN,
         # er det mer brukbart å bruke remove.
+
+    def emigrate_animal(self, animal):
+        animal_name = type(animal).__name__
+        self.animal_classes[animal_name].append(animal)
 
     def add_animal(self, list_animal):
         for dicts in list_animal:
