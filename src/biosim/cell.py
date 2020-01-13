@@ -61,7 +61,17 @@ class Cell:
                 animals.increase_eat_weight(self.current_fodder)
                 self.current_fodder -= self.current_fodder
 
-    def eat_carnivore(self): # NESTE
+    def eat_carnivore(self):
+        if len(self.animal_classes["Herbivore"])>0
+            self.animal_classes["Carnivore"].sort(key= lambda animal: animal.fitness, reverse= True)
+            for car in self.animal_classes["Carnivore"]
+                herb_survivers = []
+                for herb in self.animal_classes["Carnivore"].sort(key = lambda animal: animal.fitness)
+                    if car.determine_kill(herb):
+                        car.increase_eat_weight(herb.weight)
+                        herb_survivers = [herb for herb in self.animal_classes["Herbivore"] if amir != herb]
+            self.animal_classes["Herbivore"] = herb_survivers
+
         pass
 
     def migration(self): # NESTE
