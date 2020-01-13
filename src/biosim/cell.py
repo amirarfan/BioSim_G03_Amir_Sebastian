@@ -72,8 +72,6 @@ class Cell:
                         herb_survivers = [herb for herb in self.animal_classes["Herbivore"] if amir != herb]
             self.animal_classes["Herbivore"] = herb_survivers
 
-        pass
-
     def migration(self): # NESTE
         pass
 
