@@ -79,13 +79,19 @@ class Cell:
                         car.increase_eat_weight(herb.weight)
                         remove_herb.add(index)
 
-                self.animal_classes["Herbivore"] = [
-                    herb
-                    for index, herb in enumerate(
-                        self.animal_classes["Herbivore"]
-                    )
-                    if index not in remove_herb
-                ]
+                self.animal_classes[
+                    "Herbivore"
+                ] = self.remove_multiple_animals(
+                    self.animal_classes["Herbivore"], remove_herb
+                )
+
+    @staticmethod
+    def remove_multiple_animals(animal_list, animals_to_remove):
+        return [
+            animal
+            for index, animal in enumerate(animal_list)
+            if index not in animals_to_remove
+        ]
 
     def migration(self, neighbour_cells):
         for animal_list in self.animal_classes.values():
