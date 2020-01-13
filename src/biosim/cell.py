@@ -42,8 +42,32 @@ class Cell:
                     animal_class.decrease_birth_weight(new_child.weight)
 
     def eat_herbivore(self):
-        # Sortere herbivore med fitness, lage en getFitness i class Animal,
-        # Bruke sortedHerbivores = sorted(self.animal_classes['Herbivore'], key=getFitness)
+        sorted_herbivores = sorted(
+            self.animal_classes["Herbivore"],
+            key=lambda animal: animal.fitness,
+            reverse=True,
+        )
+
+        for animals in sorted_herbivores:
+            fodder_eat = animals.param["F"]
+
+            if self.current_fodder == 0:
+                break
+
+            if fodder_eat <= self.current_fodder:
+                animals.increase_eat_weight(fodder_eat)
+                self.current_fodder -= fodder_eat
+            elif 0 < self.current_fodder < fodder_eat:
+                animals.increase_eat_weight(self.current_fodder)
+                self.current_fodder -= self.current_fodder
+
+    def eat_carnivore(self): # NESTE
+        pass
+
+    def migration(self): # NESTE
+        pass
+
+    # Gjøre om til static method??
     def compute_relative_abundance(self, animal_class):
         animal_name = type(animal_class).__name__
         amount_same_spec = len(self.animal_classes[animal_name])
@@ -129,7 +153,7 @@ class Savannah(Cell):
 
     def __init__(self):
         super().__init__()
-        self.current_fodder = self.param['f_max']
+        self.current_fodder = self.param["f_max"]
 
     def gen_fodder_sav(self):
         self.current_fodder = self.current_fodder + self.param["alpha"] * (

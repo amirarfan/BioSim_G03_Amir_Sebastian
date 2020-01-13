@@ -5,24 +5,24 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 import biosim.cell as cell
 
-def test_fodder_Mountain():
-    fodder = cell.Mountain()
-    assert fodder.relevant_fodder == None
 
-def test_add_animal():
-    cell.Cell
-    assert ValueError
+def test_fodder_Mountain():
+    mountain_cell = cell.Mountain()
+    assert mountain_cell.current_fodder == 0
 
 def test_fodder_Ocean():
-    fodder = cell.Ocean()
-    assert fodder.relevant_fodder == None
+    ocean_cell = cell.Ocean()
+    assert ocean_cell.current_fodder == 0
+
 
 def test_gen_fodder_jung():
-    fodder = cell.Jungle()
-    assert fodder.current_fodder == fodder.param["f_max"]
-    assert fodder.current_fodder != None
+    jun_cell = cell.Jungle()
+    jun_cell.current_fodder = 700
+    jun_cell.gen_fodder_jung()
+    assert jun_cell.current_fodder == jun_cell.param["f_max"]
+
+
 
 def test_gen_fodder_Savannah():
-    fodder = cell.Savannah()
-    assert fodder.param["f_max"] == 300
-    assert fodder.current_fodder != None
+    savannah_cell = cell.Savannah()
+    assert savannah_cell.current_fodder == 300
