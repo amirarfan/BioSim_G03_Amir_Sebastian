@@ -64,20 +64,28 @@ class Cell:
             self.animal_classes["Carnivore"].sort(
                 key=lambda animal: animal.fitness, reverse=True
             )
+            self.animal_classes["Herbivore"].sort(
+                key=lambda animal: animal.fitness
+            )
             for car in self.animal_classes["Carnivore"]:
-                herb_survivors = []
-                self.animal_classes["Herbivore"].sort(
-                    key=lambda animal: animal.fitness
-                )
-                for herb in self.animal_classes["Herbivore"]:
+                remove_herb = set()
+                food_des = car.param["F"]
+                current_food = 0
+                for index, herb in enumerate(self.animal_classes["Herbivore"]):
+                    if food_des >= current_food:
+                        break
                     if car.determine_kill(herb):
+                        current_food += herb.weight
                         car.increase_eat_weight(herb.weight)
-                        herb_survivors = [
-                            curr_herb
-                            for curr_herb in self.animal_classes["Herbivore"]
-                            if curr_herb != herb
-                        ]
-                self.animal_classes["Herbivore"] = herb_survivors
+                        remove_herb.add(index)
+
+                self.animal_classes["Herbivore"] = [
+                    herb
+                    for index, herb in enumerate(
+                        self.animal_classes["Herbivore"]
+                    )
+                    if index not in remove_herb
+                ]
 
     def migration(self, neighbour_cells):
         for animal_list in self.animal_classes.values():
