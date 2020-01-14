@@ -78,16 +78,12 @@ class Cell:
                         current_food += herb.weight
                         car.increase_eat_weight(herb.weight)
                         remove_herb.add(index)
+                self.remove_multiple_animals("Herbivore", remove_herb)
 
-                self.animal_classes[
-                    "Herbivore"
-                ] = self.remove_multiple_animals("Herbivore", remove_herb)
-
-    @classmethod
-    def remove_multiple_animals(cls, specie, animals_to_remove):
-        return [
+    def remove_multiple_animals(self, specie, animals_to_remove):
+        self.animal_classes[specie] = [
             animal
-            for index, animal in enumerate(cls.animal_classes[specie])
+            for index, animal in enumerate(self.animal_classes[specie])
             if index not in animals_to_remove
         ]
 
@@ -101,6 +97,19 @@ class Cell:
                     )
                     chosen_cell.emigrate_animal(animal)
                     self.delete_animal(animal)
+
+    def annual_death(self):
+        for animal_list in self.animal_classes.values():
+            current_specie = None
+            remove_list = set()
+            for index, animal in enumerate(animal_list):
+                if animal.death:
+                    remove_list.add(index)
+
+
+
+
+
 
     @staticmethod
     def compute_move_prob(animal_type, neighbour_cells):
@@ -132,7 +141,7 @@ class Cell:
         name = type(specie).__name__
         cell_name = type(self).__name__
         if (name == "Herbivore" or name == "Carnivore") and (
-            cell_name == "Ocean" or cell_name == "Mountain"
+                cell_name == "Ocean" or cell_name == "Mountain"
         ):
             return 0
 
@@ -206,7 +215,7 @@ class Savannah(Cell):
 
     def gen_fodder_sav(self):
         self.current_fodder = self.current_fodder + self.param["alpha"] * (
-            self.param["f_max"] - self.current_fodder
+                self.param["f_max"] - self.current_fodder
         )
 
 
