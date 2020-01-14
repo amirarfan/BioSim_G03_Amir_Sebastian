@@ -31,7 +31,7 @@ class Map:
 
         for cell in self.outer_limits:
             if type(cell).__name__ != "Ocean":
-                raise ValueError(f"Cell is not {Ocean}")
+                raise ValueError(f"Outer Cell is not {Ocean}")
 
     @classmethod
     def map_factory(cls, list_to_alter):
