@@ -99,17 +99,12 @@ class Cell:
                     self.delete_animal(animal)
 
     def annual_death(self):
-        for animal_list in self.animal_classes.values():
-            current_specie = None
+        for type_of_animal, animal_list in self.animal_classes.items():
             remove_list = set()
             for index, animal in enumerate(animal_list):
                 if animal.death:
                     remove_list.add(index)
-
-
-
-
-
+            self.remove_multiple_animals(type_of_animal, remove_list)
 
     @staticmethod
     def compute_move_prob(animal_type, neighbour_cells):
@@ -141,7 +136,7 @@ class Cell:
         name = type(specie).__name__
         cell_name = type(self).__name__
         if (name == "Herbivore" or name == "Carnivore") and (
-                cell_name == "Ocean" or cell_name == "Mountain"
+            cell_name == "Ocean" or cell_name == "Mountain"
         ):
             return 0
 
@@ -169,8 +164,7 @@ class Cell:
 
         animal_classes_list.remove(
             animal
-        )  # Tenkte at siden remove tar den første LIKE INSTANCEN,
-        # er det mer brukbart å bruke remove.
+        )
 
     def emigrate_animal(self, animal):
         animal_name = type(animal).__name__
@@ -215,7 +209,7 @@ class Savannah(Cell):
 
     def gen_fodder_sav(self):
         self.current_fodder = self.current_fodder + self.param["alpha"] * (
-                self.param["f_max"] - self.current_fodder
+            self.param["f_max"] - self.current_fodder
         )
 
 
