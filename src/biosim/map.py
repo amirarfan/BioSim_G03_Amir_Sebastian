@@ -27,7 +27,9 @@ class Map:
 
     def neighbour_cells(self, loc):
         x, y = loc
-        pass
+        neighbour_cords = [(x-1, y), (x+1, y), (x, y-1), (x, y+1)]
+        return [self.map[cell] for cell in neighbour_cords]
+
 
     def add_animals(self):
         pass
