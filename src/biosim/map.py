@@ -61,18 +61,21 @@ class Map:
             cell_type = self.map[loc]
 
             if type(cell_type).__name__ not in self.allowed_cells:
-                raise ValueError(f'This location is inhabitable')
+                raise ValueError(f"This location is inhabitable")
 
             cell_type.add_animal(pop)
 
     def move_all_animals(self):
-        for list_loc in enumerate(self.map):
-            for cell in enumerate(self.map):
-                cell.migration(self.get_neighbour())
-        pass
+        for y, list_loc in enumerate(self.map):
+            for x, cell in enumerate(self.map):
+                cell.migration(self.get_neighbour((x, y)))
 
-    def eat_all_animals(self):
-        pass
+    def all_animals_eat(self):
+        for list_loc in self.map:
+            for cell in list_loc:
+                if type(cell).__name__ in self.allowed_cells:
+                    cell.eat_herbivore()
+                    cell.eat_carnivore()
 
     def mate_all_animals(self):
         pass
