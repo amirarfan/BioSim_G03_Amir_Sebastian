@@ -78,7 +78,10 @@ class Map:
                     cell.eat_carnivore()
 
     def mate_all_animals(self):
-        pass
+        for list_loc in self.map:
+            for cell in list_loc:
+                if type(cell).__name__ in self.allowed_cells:
+                    cell.mating()
 
     def age_all_animals(self):
         pass
