@@ -43,13 +43,22 @@ class Map:
 
         return temp_list
 
-    def neighbour_cells(self, loc):
+    def r(self, loc):
         x, y = loc
         neighbour_cords = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
         return [self.map[cell] for cell in neighbour_cords]
 
+<<<<<<< Updated upstream
     def add_animals(self):
         pass
+=======
+
+    def add_animals(self, ini_list):
+        loc = ini_list["loc"]
+        if loc in self.map:
+
+
+>>>>>>> Stashed changes
 
     def move_all_animals(self):
         pass
