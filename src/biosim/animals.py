@@ -8,18 +8,40 @@ import numpy as np
 
 
 class Animal:
+    """
+    Animal class used as a base for Herbivore and Carnivore sub-classes
+    """
     param = {}
 
     def __init__(self, age=None, weight=None):
+        """
 
-        if age is not None and age < 0:
+        Initializes the Animal class instance.
+
+        Parameters
+        ----------
+        age: int [default=none]
+            The age of the animal to be initialised
+        weight: float or int [default=none]
+            The weight of the animal to be initialised
+        """
+
+        # Check if age is an integer
+        if type(age) != int:
+            raise ValueError('Age must be a positive integer')
+
+        if age is not None and age < 0:  # Check if Age is positive
+            # Stop the initialisation if age is non positive
+            # By raising a ValueError
             raise ValueError("Age cannot be lower than 0")
 
+        # Assigning age value
         if age is not None:
             self._age = age
         else:
             self._age = 0
 
+        # Check if weight is not None
         if weight is not None and weight < 0:
             raise ValueError("Weight cannot be lower than 0")
 
@@ -37,10 +59,30 @@ class Animal:
 
     @property
     def age(self):
+        """
+        Property method for age
+
+        Returns
+        -------
+        _age: int
+            The current age of the animal instance
+
+        """
         return self._age
 
     @age.setter
     def age(self, val):
+        """
+
+        Setter method for age property. Updates self._age, and updates the
+        fitness of the animal as well
+
+        Parameters
+        ----------
+        val: int
+            The new age the animal is supposed to be
+
+        """
         if val < 0:
             raise ValueError("Age must be higher than 0")
 
@@ -52,10 +94,29 @@ class Animal:
 
     @property
     def weight(self):
+        """
+        Property function for the Animal's weight
+
+        Returns
+        -------
+        _weight: int or float
+            Returns the current weight of the animal instance
+
+        """
         return self._weight
 
     @weight.setter
     def weight(self, val):
+        """
+        Setter method for the weight property. Updates the weight value and
+        also updates the fitness
+
+        Parameters
+        ----------
+        val: int or float
+            New weight value to be assigned
+
+        """
         if val < 0:
             raise ValueError("Weight must be higher than 0")
         self._weight = val
@@ -63,10 +124,33 @@ class Animal:
 
     @property
     def fitness(self):
+        """
+
+        Property method for the fitness
+
+        Returns
+        -------
+        _fitness = int or float
+            The current fitness value of the animal instance
+
+        """
         return self._fitness
 
     @classmethod
     def _calculate_fitness(cls, weight, age):
+        """
+
+        Calculates the fitness 
+
+        Parameters
+        ----------
+        weight
+        age
+
+        Returns
+        -------
+
+        """
         a_half = cls.param["a_half"]
         phi_age = cls.param["phi_age"]
         w_half = cls.param["w_half"]
