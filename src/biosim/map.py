@@ -94,3 +94,9 @@ class Map:
             for cell in list_loc:
                 if type(cell).__name__ in self.allowed_cells:
                     cell.annual_weightloss()
+
+    def annual_death_all_animals(self):
+        for list_loc in self.map:
+            for cell in list_loc:
+                if type(cell).__name__ in self.allowed_cells:
+                    cell.annual_death()
