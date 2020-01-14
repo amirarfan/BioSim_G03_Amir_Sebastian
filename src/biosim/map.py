@@ -25,7 +25,8 @@ class Map:
 
         return temp_list
 
-    def neighbour_cells(self, loc:
+    def neighbour_cells(self, loc):
+        x, y = loc
         pass
 
     def add_animals(self):
