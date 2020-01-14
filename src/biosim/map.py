@@ -45,7 +45,7 @@ class Map:
 
         return temp_list
 
-    def r(self, loc):
+    def get_neighbour(self, loc):
         x, y = loc
         neighbour_cords = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
         return [self.map[cell] for cell in neighbour_cords]
@@ -66,6 +66,9 @@ class Map:
             cell_type.add_animal(pop)
 
     def move_all_animals(self):
+        for list_loc in enumerate(self.map):
+            for cell in enumerate(self.map):
+                cell.migration(self.get_neighbour())
         pass
 
     def eat_all_animals(self):
