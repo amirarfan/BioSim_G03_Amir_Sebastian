@@ -162,9 +162,7 @@ class Cell:
         if animal not in animal_classes_list:
             raise ValueError(f"Class {name_animal} is not in this cell")
 
-        animal_classes_list.remove(
-            animal
-        )
+        animal_classes_list.remove(animal)
 
     def emigrate_animal(self, animal):
         animal_name = type(animal).__name__
