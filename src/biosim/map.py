@@ -90,4 +90,7 @@ class Map:
                     cell.aging()
 
     def annual_weightloss_all_animals(self):
-        pass
+        for list_loc in self.map:
+            for cell in list_loc:
+                if type(cell).__name__ in self.allowed_cells:
+                    cell.annual_weightloss()

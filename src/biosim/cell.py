@@ -39,6 +39,14 @@ class Cell:
                     self.animal_classes[new_child_specie].append(new_child)
                     animal_class.decrease_birth_weight(new_child.weight)
 
+    def annual_weightloss(self):
+        for animal_list in self.animal_classes.values():
+            for animal_classes in animal_list:
+                animal_classes.decrease_annual_weight()
+
+
+
+
     def eat_herbivore(self):
         sorted_herbivores = sorted(
             self.animal_classes["Herbivore"],
