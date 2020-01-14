@@ -64,20 +64,28 @@ class Cell:
             self.animal_classes["Carnivore"].sort(
                 key=lambda animal: animal.fitness, reverse=True
             )
+            self.animal_classes["Herbivore"].sort(
+                key=lambda animal: animal.fitness
+            )
             for car in self.animal_classes["Carnivore"]:
-                herb_survivors = []
-                self.animal_classes["Herbivore"].sort(
-                    key=lambda animal: animal.fitness
-                )
-                for herb in self.animal_classes["Herbivore"]:
+                remove_herb = set()
+                food_des = car.param["F"]
+                current_food = 0
+                for index, herb in enumerate(self.animal_classes["Herbivore"]):
+                    if food_des >= current_food:
+                        break
                     if car.determine_kill(herb):
+                        current_food += herb.weight
                         car.increase_eat_weight(herb.weight)
-                        herb_survivors = [
-                            curr_herb
-                            for curr_herb in self.animal_classes["Herbivore"]
-                            if curr_herb != herb
-                        ]
-                self.animal_classes["Herbivore"] = herb_survivors
+                        remove_herb.add(index)
+                self.remove_multiple_animals("Herbivore", remove_herb)
+
+    def remove_multiple_animals(self, specie, animals_to_remove):
+        self.animal_classes[specie] = [
+            animal
+            for index, animal in enumerate(self.animal_classes[specie])
+            if index not in animals_to_remove
+        ]
 
     def migration(self, neighbour_cells):
         for animal_list in self.animal_classes.values():
@@ -89,6 +97,14 @@ class Cell:
                     )
                     chosen_cell.emigrate_animal(animal)
                     self.delete_animal(animal)
+
+    def annual_death(self):
+        for type_of_animal, animal_list in self.animal_classes.items():
+            remove_list = set()
+            for index, animal in enumerate(animal_list):
+                if animal.death:
+                    remove_list.add(index)
+            self.remove_multiple_animals(type_of_animal, remove_list)
 
     @staticmethod
     def compute_move_prob(animal_type, neighbour_cells):
@@ -148,8 +164,7 @@ class Cell:
 
         animal_classes_list.remove(
             animal
-        )  # Tenkte at siden remove tar den første LIKE INSTANCEN,
-        # er det mer brukbart å bruke remove.
+        )
 
     def emigrate_animal(self, animal):
         animal_name = type(animal).__name__
