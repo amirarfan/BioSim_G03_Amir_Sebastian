@@ -16,6 +16,8 @@ class Map:
         "J": Jungle,
     }
 
+    allowed_cells = ["Jungle", "Savannah", "Desert"]
+
     def __init__(self, map_string):
 
         self.map = np.array(
@@ -48,16 +50,20 @@ class Map:
         neighbour_cords = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
         return [self.map[cell] for cell in neighbour_cords]
 
-
     def add_animals(self, ini_list):
-        loc = ini_list["loc"]
-        cells = ["Jungle", "Savannah", "Desert"]
-        if type(self.map[loc]).__name__ in cells:
-            loc.add_animal(ini_list)
+        for dictionary in ini_list:
+            try:
+                loc = dictionary["loc"]
+            except IndexError:
+                print(f'{dictionary["loc"]} is not a location on map')
+                break
+            pop = dictionary["pop"]
+            cell_type = self.map[loc]
 
+            if type(cell_type).__name__ not in self.allowed_cells:
+                raise ValueError(f'This location is inhabitable')
 
-
-
+            cell_type.add_animal(pop)
 
     def move_all_animals(self):
         pass
