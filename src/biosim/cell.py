@@ -39,6 +39,11 @@ class Cell:
                     self.animal_classes[new_child_specie].append(new_child)
                     animal_class.decrease_birth_weight(new_child.weight)
 
+    def annual_weightloss(self):
+        for animal_list in self.animal_classes.values():
+            for animal_classes in animal_list:
+                animal_classes.decrease_annual_weight()
+
     def eat_herbivore(self):
         sorted_herbivores = sorted(
             self.animal_classes["Herbivore"],
@@ -162,9 +167,7 @@ class Cell:
         if animal not in animal_classes_list:
             raise ValueError(f"Class {name_animal} is not in this cell")
 
-        animal_classes_list.remove(
-            animal
-        )
+        animal_classes_list.remove(animal)
 
     def emigrate_animal(self, animal):
         animal_name = type(animal).__name__
@@ -176,7 +179,7 @@ class Cell:
             age = dicts["age"]
             weight = dicts["weight"]
             if animal_name in self.allowed_species.keys():
-                current_class = self.allowed_species["animal_name"](
+                current_class = self.allowed_species[animal_name](
                     age, weight
                 )
                 self.animal_classes[animal_name].append(current_class)
