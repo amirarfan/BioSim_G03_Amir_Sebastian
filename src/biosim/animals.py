@@ -132,9 +132,10 @@ class Animal:
 
     @classmethod
     def _calculate_fitness(cls, weight, age):
-        """
+        r"""
 
-        Calculates the fitness 
+        Calculates the fitness by using the '_q_sigmoid' function, uses the
+        parameters from the class.
 
         Parameters
         ----------
@@ -145,12 +146,13 @@ class Animal:
 
         Returns
         -------
-        The new value of fitness using the _q_sigmoid function:
+        The new value of fitness using the _q_sigmoid function with different
+        sign values :math: `+`, and  :math: `-`
 
         .. math::
         \Phi =
         \begin{cases}
-         0 & \text{for}w\le0\\
+         0 & \text{for }w\le0\\
          q^{+}(a, a_{\frac{1}{2}},\phi_{age}) \times
           q^{-}(w, w_{\frac{1}{2}},\phi_{weight}) & \text{else}
          \end{cases}
@@ -169,10 +171,25 @@ class Animal:
             )
 
     def update_fitness(self):
+        """
+        Updates the 'self._fitness' variable using '_calculate_fitness'
+        method
+        """
         self._fitness = self._calculate_fitness(self._weight, self._age)
 
     @classmethod
     def update_parameters(cls, new_par_dict):
+        """
+        Updates the current parameters and also checks that no parameters are
+        negative.
+
+        Parameters
+        ----------
+        new_par_dict: Dictionary
+                    New dictionary containing the new parameters which need to
+                    be updated.
+
+        """
         for par in new_par_dict.keys():
             if par not in cls.param:
                 raise ValueError(
@@ -189,16 +206,43 @@ class Animal:
         cls.param.update(new_par_dict)
 
     def add_age(self):
+        """
+        Updates the '_age' variable in the class instance by one, also updates
+        the fitness when age is updated.
+
+        """
         self._age += 1
         self.update_fitness()
 
     def determine_to_move(self):
+        """
+
+        Calculates the probability to move, and then returns a bool value
+        deciding whether animal is to move.
+
+        Returns
+        -------
+        bool: True or False
+            Returns True if Animal is to move, or false if it is not to move
+
+        """
         probability_move = self._fitness * self.param["mu"]
         return np.random.choice(
             [True, False], p=[probability_move, 1 - probability_move]
         )
 
     def determine_death(self):
+        """"
+        Calculates the probability of death for the animal instance, uses that
+        probability and Numpy's random.choice function to return a bool value.
+
+        Returns
+        -------
+        bool: True or False
+            Returns True if Animal instance is to die, and False if it is not
+            to die
+
+        """
         death_prob = 0
         if self._fitness == 0:
             return True
@@ -207,13 +251,55 @@ class Animal:
 
         return np.random.choice(
             [True, False], p=[death_prob, 1 - death_prob]
-        )  # Chooses randomly with given probabilities
+        ) 
 
     @staticmethod
     def compute_prob_birth(gamma, fitness, nearby_animals):
+        r"""
+
+        Computes the probability of birth for the animal, using the equation
+
+        .. :math::
+
+        \text{min}(1, \gamma \times \Phi \times (N-1))
+
+        Parameters
+        ----------
+        gamma: int or float
+            Gamma parameter which is gotten from the animal class parameters.
+            It is the probability factor for giving birth.
+        fitness: int or float
+            Fitness value for the animal instance
+        nearby_animals: int
+            How many animals of the same specie is in the same area as the
+            animal.
+
+
+        Returns
+        -------
+        value: float or int
+            The probability of giving birth.
+
+        """
         return min(1, gamma * fitness * (nearby_animals - 1))
 
     def determine_birth(self, nearby_animals):
+        """
+        Determines whether the animal is to give birth or not using
+        the 'compute_prob_birth' function to
+
+        Parameters
+        ----------
+        nearby_animals: int
+                       The amount of animals nearby in the same area (cell)
+
+        Returns
+        -------
+        bool: True or False
+            True if the animal is to give birth, False if the animal is not
+            to give birth.
+
+        """
         gamma = self.param["gamma"]
         zeta = self.param["zeta"]
         w_birth = self.param["w_birth"]
