@@ -8,15 +8,33 @@ import numpy as np
 
 
 class Cell:
+    """
+    Cell base class, which refers to a area or a square in a map. From this
+    base class all cell types will be based upon, they will in other words
+    be subclasses of Cell.
+    """
+
     param = {}
 
     def __init__(self):
+        """
+        Initialises the cell class
+        """
         self.animal_classes = {"Herbivore": [], "Carnivore": []}
         self.allowed_species = {"Herbivore": Herbivore, "Carnivore": Carnivore}
         self.current_fodder = 0
 
     @classmethod
     def update_parameters(cls, new_par_dict):
+        """
+        Uses the new dictionary to update the current parameters set.
+
+        Parameters
+        ----------
+        new_par_dict: dict
+                    Dictionary containing new parameter values.
+
+        """
         for par in new_par_dict.keys():
             if par not in cls.param:
                 raise ValueError(
@@ -31,6 +49,17 @@ class Cell:
         cls.param.update(new_par_dict)
 
     def mating(self):
+        """
+
+        Mating function which makes all the animals in current cell have
+        intercourse if 'determine_birth' is True and there are more than one
+        animal of the same specie in the cell. Adds a new animal class to cell
+        if the current animal is to give birth, and also updates the weight
+        of the birth-giving animal.
+
+
+
+        """
         for animal_list in self.animal_classes.values():
             for animal_class in animal_list:
                 if animal_class.determine_birth(len(animal_list)):
@@ -39,12 +68,39 @@ class Cell:
                     self.animal_classes[new_child_specie].append(new_child)
                     animal_class.decrease_birth_weight(new_child.weight)
 
-    def annual_weightloss(self):
+    def annual_weight_loss(self):
+        """
+        Makes all animals in the current cell lose their annual weight.
+
+        """
         for animal_list in self.animal_classes.values():
             for animal_classes in animal_list:
                 animal_classes.decrease_annual_weight()
 
     def eat_herbivore(self):
+        r"""
+
+        Makes all herbivores in the current cell eat and updates their weight
+        by doing so.
+
+        The eating method is determined by this:
+
+        :math:`F` is the animals appetite, and :math:`f_{ij}` is the current
+        fodder in the cell.
+
+        if :math:`F\le f_{ij}`
+            There is enough fodder in the cell, because F is the apetite, and
+            the herbivore eats till it's full.
+        if :math:`0 < f_{ij} < F`
+            the animal eats is what is left of fodder, remaining fodder in the
+            cell will be then set to 0.
+        if :math:`f_{ij} = 0`
+            the animal receives no food at all, because the current fodder
+            in the cell is equal to 0.
+
+        """
+
+        # The fittest herbivore is to eat first
         sorted_herbivores = sorted(
             self.animal_classes["Herbivore"],
             key=lambda animal: animal.fitness,
@@ -65,6 +121,19 @@ class Cell:
                 self.current_fodder -= self.current_fodder
 
     def eat_carnivore(self):
+        r"""
+
+        Feeds the carnivores in the current cell and updates their weight by
+        doing so. The prey which is eaten by the predator (carnivore) is
+        deleted from the cell.
+
+        The carnivore eats till it has eaten an amnount :math:`F`, which means
+        that it has eaten himself full of herbivores, i.e.
+        :math:`\sum w_{herb-eaten} \geq F`
+
+
+
+        """
         if len(self.animal_classes["Herbivore"]) > 0:
             self.animal_classes["Carnivore"].sort(
                 key=lambda animal: animal.fitness, reverse=True
@@ -86,6 +155,20 @@ class Cell:
                 self.remove_multiple_animals("Herbivore", remove_herb)
 
     def remove_multiple_animals(self, specie, animals_to_remove):
+        """
+
+        Deletes multiple animals from the cell instance, given the specie
+        and the indexes of the animals to remove.
+
+        Parameters
+        ----------
+        specie: string
+            The specie type which is to be deleted from a cell instance
+        animals_to_remove: list
+        The list of indexes of the animals which are to be deleted from
+        the cell list containing the animals.
+
+        """
         self.animal_classes[specie] = [
             animal
             for index, animal in enumerate(self.animal_classes[specie])
@@ -93,6 +176,19 @@ class Cell:
         ]
 
     def migration(self, neighbour_cells):
+        """
+        Moves animals from one cell to another cell, whether the animal is to
+        move is determined by the animal instance with the function
+        'determine_to_move'. Which cell it will move to is determined
+        by computing the move probability for each cell, and is chosen by using
+        Numpy's random choice method with fixed probabilities.
+
+        Parameters
+        ----------
+        neighbour_cells: list
+                        List of class instances containing neighbouring cells
+
+        """
         for animal_list in self.animal_classes.values():
             for animal in animal_list:
                 if animal.determine_to_move():
@@ -104,10 +200,17 @@ class Cell:
                     self.delete_animal(animal)
 
     def annual_death(self):
+        """
+
+        Loops through all animals in a cell and checks whether the animal is
+        to die by using the animal instance function 'determine_death'.
+
+
+        """
         for type_of_animal, animal_list in self.animal_classes.items():
             remove_list = set()
             for index, animal in enumerate(animal_list):
-                if animal.death:
+                if animal.determine_death:
                     remove_list.add(index)
             self.remove_multiple_animals(type_of_animal, remove_list)
 

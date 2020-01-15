@@ -93,7 +93,7 @@ class Map:
         for list_loc in self.map:
             for cell in list_loc:
                 if type(cell).__name__ in self.allowed_cells:
-                    cell.annual_weightloss()
+                    cell.annual_weight_loss()
 
     def annual_death_all_animals(self):
         for list_loc in self.map:
