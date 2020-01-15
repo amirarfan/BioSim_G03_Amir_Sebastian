@@ -2,6 +2,8 @@
 from biosim.animals import Herbivore, Carnivore
 from biosim.map import Map
 import numpy as np
+import pandas as pd
+
 """
 """
 
@@ -11,14 +13,14 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 class BioSim:
     def __init__(
-        self,
-        island_map,
-        ini_pop,
-        seed,
-        ymax_animals=None,
-        cmax_animals=None,
-        img_base=None,
-        img_fmt="png",
+            self,
+            island_map,
+            ini_pop,
+            seed,
+            ymax_animals=None,
+            cmax_animals=None,
+            img_base=None,
+            img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -46,8 +48,10 @@ class BioSim:
         self.map = Map(island_map)
         self.map.add_animals(ini_pop)
         np.random.seed(seed)
-
-
+        self._year = 0
+        self._num_animals = 0
+        self._num_animals_per_species = 0
+        self._animal_distribution
 
     def set_animal_parameters(self, species, params):
         """
@@ -93,14 +97,17 @@ class BioSim:
     @property
     def year(self):
         """Last year simulated."""
+        return self._year
 
     @property
     def num_animals(self):
         """Total number of animals on island."""
+        return self._num_animals
 
     @property
     def num_animals_per_species(self):
         """Number of animals per species in island, as dictionary."""
+        return self._num_animals_per_species
 
     @property
     def animal_distribution(self):
