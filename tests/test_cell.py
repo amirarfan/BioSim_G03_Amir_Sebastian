@@ -23,6 +23,32 @@ def test_gen_fodder_jung():
     assert jun_cell.current_fodder == jun_cell.param["f_max"]
 
 
-def test_gen_fodder_Savannah():
+def test_gen_fodder_savannah():
     savannah_cell = cell.Savannah()
     assert savannah_cell.current_fodder == 300
+
+def test_aging():
+    jungle_cell = cell.Jungle()
+    jungle_cell.add_animal([{"species": "Carnivore", "age": 5, "weight": 20},
+                            {"species": "Carnivore", "age": 5, "weight": 20}])
+    jungle_cell.aging()
+    for class_name in jungle_cell.animal_classes.values():
+        for animal in class_name:
+            assert animal.age == 6
+
+def test_annual_weightloss():
+    jungle_cell = cell.Jungle()
+    jungle_cell.add_animal([{"species": "Carnivore", "age": 5, "weight": 20},
+                            {"species": "Carnivore", "age": 5, "weight": 20}])
+    jungle_cell.annual_weightloss()
+    for class_name in jungle_cell.animal_classes.values():
+        for animal in class_name:
+            assert animal.weight != 20
+
+def test_propensity():
+    ocenan_cell = cell.Ocean()
+    ocenan_cell.add_animal([{"species": "Carnivore", "age": 5, "weight": 20},
+                            {"species": "Carnivore", "age": 5, "weight": 20}])
+    for class_name in ocenan_cell.animal_classes.values():
+        for animal in class_name:
+            assert ocenan_cell.propensity(specie=animal) == 0
