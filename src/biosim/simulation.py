@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-
+from biosim.animals import Herbivore, Carnivore
+from biosim.map import Map
+import numpy as np
 """
 """
 
-__author__ = ""
-__email__ = ""
+__author__ = "Amir Arfan, Sebastian Becker"
+__email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 
 class BioSim:
@@ -41,6 +43,11 @@ class BioSim:
         where img_no are consecutive image numbers starting from 0.
         img_base should contain a path and beginning of a file name.
         """
+        self.map = Map(island_map)
+        self.map.add_animals(ini_pop)
+        np.random.seed(seed)
+
+
 
     def set_animal_parameters(self, species, params):
         """
@@ -50,6 +57,10 @@ class BioSim:
         :param params: Dict with valid parameter specification for species
         """
 
+        for cell in self.map:
+            for animal in cell.animal_classes[species]:
+                animal.update_parameters(params)
+
     def set_landscape_parameters(self, landscape, params):
         """
         Set parameters for landscape type.
@@ -57,6 +68,9 @@ class BioSim:
         :param landscape: String, code letter for landscape
         :param params: Dict with valid parameter specification for landscape
         """
+
+        for cell in self.map:
+            cell.update_parameters()
 
     def simulate(self, num_years, vis_years=1, img_years=None):
         """
