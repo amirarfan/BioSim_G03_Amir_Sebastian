@@ -8,6 +8,9 @@ import numpy as np
 
 
 class Map:
+    """
+    Map class which will represent a map containing different cells
+    """
     dict_cells = {
         "O": Ocean,
         "M": Mountain,
@@ -19,6 +22,14 @@ class Map:
     allowed_cells = ["Jungle", "Savannah", "Desert"]
 
     def __init__(self, map_string):
+        """
+        Initialises the map class instance
+
+        Parameters
+        ----------
+        map_string: string
+                    String representing a map of cells
+        """
 
         self.map = np.array(
             [
@@ -37,8 +48,23 @@ class Map:
 
     @classmethod
     def map_factory(cls, list_to_alter):
+        """
+        A map factory function which transforms a list containing strings into
+        a list containing cell instances.
+
+        Parameters
+        ----------
+        list_to_alter: list
+                    List containing different string letters, which need to be
+                    transformed to class types.
+
+        Returns
+        -------
+
+        """
         temp_list = []
         for letter in list_to_alter:
+            # Only 
             if letter not in cls.dict_cells.values():
                 raise ValueError(f"{letter} is not a cell type")
             temp_list.append(cls.dict_cells[letter])

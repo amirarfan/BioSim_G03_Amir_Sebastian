@@ -124,7 +124,7 @@ class Animal:
 
         Returns
         -------
-        _fitness = int or float
+        _fitness = float
             The current fitness value of the animal instance
 
         """
@@ -154,8 +154,9 @@ class Animal:
 
         Returns
         -------
-        The new value of fitness using the _q_sigmoid function with different
-        sign values :math: `+`, and  :math: `-`
+        float
+            The new value of fitness using the _q_sigmoid function with
+            different sign values :math: `+`, and  :math: `-`
 
         """
         a_half = cls.param["a_half"]
@@ -221,7 +222,7 @@ class Animal:
 
         Returns
         -------
-        bool: True or False
+        bool
             Returns True if Animal is to move, or false if it is not to move
 
         """
@@ -237,7 +238,7 @@ class Animal:
 
         Returns
         -------
-        bool: True or False
+        bool
             Returns True if Animal instance is to die, and False if it is not
             to die
 
@@ -273,7 +274,7 @@ class Animal:
 
         Returns
         -------
-        value: float or int
+        float
             The probability of giving birth.
 
         """
@@ -293,7 +294,7 @@ class Animal:
 
         Returns
         -------
-        bool: True or False
+        bool
             True if the animal is to give birth, False if the animal is not
             to give birth.
 
@@ -404,7 +405,8 @@ class Animal:
 
         Returns
         -------
-        Sigmoid value given the inputs
+        float
+            Sigmoid value given the inputs
 
         """
         return 1 / (1 + math.exp(signum * rate * (x - x_half)))
@@ -517,9 +519,8 @@ class Carnivore(Animal):
 
         Returns
         -------
-        probability: float or int
-            Returns a float or int value which is the probability of
-            the carnivore killing
+        float or int
+            The probability of the carnivore killing the herbivore
 
         """
         if fit_carn <= fit_herb:
@@ -545,9 +546,9 @@ class Carnivore(Animal):
 
         Returns
         -------
-        bool: True or False
+        bool
             Returns true or false determining whether the carnivore is to kill
-            the herbivore or not.
+            the herbivore or not
 
         """
 
