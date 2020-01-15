@@ -11,6 +11,7 @@ class Animal:
     """
     Animal class used as a base for Herbivore and Carnivore sub-classes
     """
+
     param = {}
 
     def __init__(self, age=None, weight=None):
@@ -26,32 +27,25 @@ class Animal:
             The weight of the animal to be initialised
         """
 
-        # Check if age is an integer
         if type(age) != int:
-            raise ValueError('Age must be a positive integer')
+            raise ValueError("Age must be a positive integer")
 
-        if age is not None and age < 0:  # Check if Age is positive
-            # Stop the initialisation if age is non positive
-            # By raising a ValueError
+        if age is not None and age < 0:
             raise ValueError("Age cannot be lower than 0")
 
-        # Assigning age value
         if age is not None:
             self._age = age
         else:
             self._age = 0
 
-        # Check if weight is not None
         if weight is not None and weight < 0:
             raise ValueError("Weight cannot be lower than 0")
-
-        if weight is not None:
+        elif weight is not None and weight > 0:
             self._weight = weight
         else:
             self._weight = self._normal_weight()
 
         self._fitness = None
-
         if self._fitness is not None:
             pass
         else:
@@ -144,11 +138,23 @@ class Animal:
 
         Parameters
         ----------
-        weight
-        age
+        weight: int or float
+            Weight of the animal class instance
+        age: int
+            Age of the animal class instance
 
         Returns
         -------
+        The new value of fitness using the _q_sigmoid function:
+
+        .. math::
+        \Phi =
+        \begin{cases}
+         0 & \text{for}w\le0\\
+         q^{+}(a, a_{\frac{1}{2}},\phi_{age}) \times
+          q^{-}(w, w_{\frac{1}{2}},\phi_{weight}) & \text{else}
+         \end{cases}
+
 
         """
         a_half = cls.param["a_half"]
@@ -164,13 +170,6 @@ class Animal:
 
     def update_fitness(self):
         self._fitness = self._calculate_fitness(self._weight, self._age)
-
-    # def eat(cls):
-    # pass --  Flytte til Board/Map?
-
-    # @classmethod
-    # def update_age(cls):
-    # pass --  Flytte til Board/Map?
 
     @classmethod
     def update_parameters(cls, new_par_dict):

@@ -44,9 +44,6 @@ class Cell:
             for animal_classes in animal_list:
                 animal_classes.decrease_annual_weight()
 
-
-
-
     def eat_herbivore(self):
         sorted_herbivores = sorted(
             self.animal_classes["Herbivore"],
