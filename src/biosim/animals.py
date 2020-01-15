@@ -137,6 +137,14 @@ class Animal:
         Calculates the fitness by using the '_q_sigmoid' function, uses the
         parameters from the class.
 
+        .. math::
+            \Phi =
+            \begin{cases}
+            0 & \text{for }w\le0\\
+            q^{+}(a, a_{\frac{1}{2}},\phi_{age}) \times
+            q^{-}(w, w_{\frac{1}{2}},\phi_{weight}) & \text{else}
+            \end{case}
+
         Parameters
         ----------
         weight: int or float
@@ -148,15 +156,6 @@ class Animal:
         -------
         The new value of fitness using the _q_sigmoid function with different
         sign values :math: `+`, and  :math: `-`
-
-        .. math::
-        \Phi =
-        \begin{cases}
-         0 & \text{for }w\le0\\
-         q^{+}(a, a_{\frac{1}{2}},\phi_{age}) \times
-          q^{-}(w, w_{\frac{1}{2}},\phi_{weight}) & \text{else}
-         \end{cases}
-
 
         """
         a_half = cls.param["a_half"]
@@ -260,8 +259,7 @@ class Animal:
         Computes the probability of birth for the animal, using the equation
 
         .. :math::
-
-        \text{min}(1, \gamma \times \Phi \times (N-1))
+            \text{min}(1, \gamma \times \Phi \times (N-1))
 
         Parameters
         ----------
@@ -286,7 +284,9 @@ class Animal:
     def determine_birth(self, nearby_animals):
         """
         Determines whether the animal is to give birth or not using
-        the 'compute_prob_birth' function to
+        the 'compute_prob_birth' function to gain a value. The function then
+        uses numpy.random.choice to choose between True or False with fixed
+        probabilities.
 
         Parameters
         ----------
@@ -314,32 +314,109 @@ class Animal:
 
     @classmethod
     def _normal_weight(cls):
+        r"""
+        Class method which returns the birth weight using a Gaussian
+        distribution, where it gets the mean and standard deviation from the
+        class parameters.
+
+        .. :math::
+            \text{w} \sim \cal{N}(\text{w}_{\text{birth}},\sigma_{
+            \text{birth}})
+
+        Where :math::`w_{birth}` is the mean, and :math::`sigma_{birth}` is
+        the standard deviation.
+
+        Returns
+        -------
+        start_weight = int or float
+            The birth weight value gotten from the normal distribution.
+
+
+        """
         start_weight = np.random.normal(
             cls.param["w_birth"], cls.param["sigma_birth"]
         )
         return start_weight
 
     def decrease_birth_weight(self, child_weight):
+        r"""
+        Updates '_weight' each time an animal class instance gives birth,
+        by reducing the animal class instance's birth by :math:`\zeta` times
+        the birth-giving animal's weight.
+
+        It also updates the fitness after the weight has been altered.
+
+        Parameters
+        ----------
+        child_weight: int or float
+            The weight of the new-born child.
+
+        """
         xi = self.param["xi"]
         self._weight -= xi * child_weight
         self.update_fitness()
 
     def increase_eat_weight(self, fodder):
+        """
+        Increases the animal class instance's weight by :math:`\beta` times
+        the current weight of the instance. The function also updates
+        the fitness of the animal class instance using 'update_fitness'.
+
+        Parameters
+        ----------
+        fodder: int or float
+            Amount of food the animal instance is to eat.
+
+        """
         beta = self.param["beta"]
         self._weight += beta * fodder
         self.update_fitness()
 
     def decrease_annual_weight(self):
+        r"""
+        Decreases weight by :math:`\eta times the current weight. The function
+        also updates the fitness of the animal instance by using the
+        'update_fitness' method.
+
+        """
         eta = self.param["eta"]
         self._weight -= eta * self._weight
         self.update_fitness()
 
     @staticmethod
     def _q_sigmoid(x, x_half, rate, signum):
+        r"""
+        This is the standard sigmoid function besides that the sign can be
+        specified.
+
+        It is given by:
+
+        .. :math::
+            q^{\pm}(x, x_{\frac{1}{2}},\phi) =
+             \frac{1}{1 + e^{\pm \phi (x - x_{\frac{1}{2})}}}
+
+            
+
+        Parameters
+        ----------
+        x: int or float
+        x_half: int or float
+        rate: int or float
+        signum: +- 1
+
+        Returns
+        -------
+        Sigmoid value given the inputs
+
+        """
         return 1 / (1 + math.exp(signum * rate * (x - x_half)))
 
 
 class Herbivore(Animal):
+    """
+    Herbivore is a subclass of Animal class. Uses super method to inherit
+    the attributes and methods from animal class.
+    """
     param = {
         "w_birth": 8.0,
         "sigma_birth": 1.5,
@@ -360,10 +437,25 @@ class Herbivore(Animal):
     }
 
     def __init__(self, weight=None, age=None):
+        """
+
+         Initialises the Herbivore class
+
+        Parameters
+        ----------
+        weight: int or float
+            Weight of the Herbivore to be initialised
+        age
+            Age of the Herbivore to be initalised
+        """
         super().__init__(weight, age)
 
 
 class Carnivore(Animal):
+    """
+    Carnivore is a subclass of Animal. Uses super method to inherit methods
+    and specified attributes from Animal class.
+    """
     param = {
         "w_birth": 6.0,
         "sigma_birth": 1.0,
@@ -384,10 +476,42 @@ class Carnivore(Animal):
     }
 
     def __init__(self, weight=None, age=None):
+        """
+        Initialises the Carnivore class.
+
+        Parameters
+        ----------
+        weight: int or float
+            Weight of the Herbivore to be initialised
+        age: int
+            Age of the Herbivore to be initialised
+        """
         super().__init__(weight, age)
 
     @staticmethod
-    def compute_kill_prob(fit_carn, fit_herb, delta_phi_max):
+    def _compute_kill_prob(fit_carn, fit_herb, delta_phi_max):
+        """
+        Computes probability of a Carnivore killing Herbivore which is
+        determined through:
+
+        .. ::math:: 
+
+        Parameters
+        ----------
+        fit_carn: int or float
+            Fitness of the Carnivore which is the predator
+        fit_herb: int or float
+            Fitness of the Herbivore which is the prey
+        delta_phi_max: int or float
+            Parameter for Carnivore
+
+
+        Returns
+        -------
+        probability: float or int
+            Returns 0,
+
+        """
         if fit_carn <= fit_herb:
             return 0
         elif 0 < fit_carn - fit_herb < delta_phi_max:
@@ -397,7 +521,7 @@ class Carnivore(Animal):
 
     def determine_kill(self, min_fit_herb):
         delta_phi_max = self.param["DeltaPhiMax"]
-        kill_prob = self.compute_kill_prob(
+        kill_prob = self._compute_kill_prob(
             self.fitness, min_fit_herb, delta_phi_max
         )
         return np.random.choice([True, False], p=[kill_prob, 1 - kill_prob])
