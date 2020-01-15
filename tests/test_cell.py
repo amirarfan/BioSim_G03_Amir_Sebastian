@@ -50,7 +50,7 @@ def test_annual_weightloss():
             {"species": "Carnivore", "age": 5, "weight": 20},
         ]
     )
-    jungle_cell.annual_weightloss()
+    jungle_cell.annual_weight_loss()
     for class_name in jungle_cell.animal_classes.values():
         for animal in class_name:
             assert animal.weight != 20
