@@ -318,7 +318,7 @@ class Cell:
         name = type(specie).__name__
         cell_name = type(self).__name__
         if (name == "Herbivore" or name == "Carnivore") and (
-                cell_name == "Ocean" or cell_name == "Mountain"
+            cell_name == "Ocean" or cell_name == "Mountain"
         ):
             return 0
 
@@ -405,6 +405,7 @@ class Ocean(Cell):
     """
     Ocean subclass, which inherits from the Cell superclass
     """
+
     def __init__(self):
         """
         Initialises the Ocean cell instance.
@@ -416,6 +417,7 @@ class Mountain(Cell):
     """
     Mountain subclass, which inherits from the Cell superclass
     """
+
     def __init__(self):
         """
         Initialises the Mountain cell instance.
@@ -427,6 +429,7 @@ class Desert(Cell):
     """
     Desert subclass which inherits from the Cell superclass
     """
+
     def __init__(self):
         """
         Initialises the Desert cell instance.
@@ -438,6 +441,7 @@ class Savannah(Cell):
     """
     Savannah subclass, which inherits from the Cell superclass
     """
+
     param = {"f_max": 300, "alpha": 0.3}
 
     def __init__(self):
@@ -465,7 +469,7 @@ class Savannah(Cell):
 
         """
         self.current_fodder = self.current_fodder + self.param["alpha"] * (
-                self.param["f_max"] - self.current_fodder
+            self.param["f_max"] - self.current_fodder
         )
 
 
@@ -473,6 +477,7 @@ class Jungle(Cell):
     """
     Jungle subclass, which inherits from the Cell superclass
     """
+
     param = {"f_max": 800, "alpha": 0}
 
     def __init__(self):
