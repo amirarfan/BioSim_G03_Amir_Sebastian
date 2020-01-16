@@ -19,6 +19,13 @@ def test_herbivore_actually_ages():
     second_age = herb.age
     assert first_age < second_age
 
+def test_herbivore_continual_aging():
+    herb = animal.Herbivore()
+    for i in range(10):
+        herb.add_age()
+        assert i+1 == herb.age
+
+
 
 def test_herbivore_weight():
     herb = animal.Herbivore()

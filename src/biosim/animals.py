@@ -27,10 +27,8 @@ class Animal:
             The weight of the animal to be initialised
         """
 
-        if type(age) != int:
-            raise ValueError("Age must be a positive integer")
 
-        if age is not None and age < 0:
+        if age is not None and age < 0 and (type(age) != int):
             raise ValueError("Age cannot be lower than 0")
 
         if age is not None:
