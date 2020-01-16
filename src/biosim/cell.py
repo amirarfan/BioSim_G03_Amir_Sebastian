@@ -395,7 +395,7 @@ class Cell:
                 weight = None
 
             if animal_name in self.allowed_species.keys():
-                current_class = self.allowed_species[animal_name](age, weight)
+                current_class = self.allowed_species[animal_name](weight, age)
                 self.animal_classes[animal_name].append(current_class)
             else:
                 raise ValueError(f"The animal type is not allowed")

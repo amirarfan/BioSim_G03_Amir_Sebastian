@@ -125,6 +125,12 @@ class Animal:
         """
         return self._fitness
 
+    @fitness.setter
+    def fitness_setter(self, val):
+        if val < 0:
+            raise ValueError("Custom fitness must be higher than 0")
+        self._fitness = val
+
     @classmethod
     def _calculate_fitness(cls, weight, age):
         r"""

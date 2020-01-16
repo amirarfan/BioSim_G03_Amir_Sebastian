@@ -146,7 +146,9 @@ def test_parameters_actually_update():
     herb.update_parameters({"DeltaPhiMax": 5})
     assert prev_param != herb.param
 
-def test_parameter
+def test_determine_death():
+    herb = animal.Herbivore()
+    herb.fitness = 0
 
 
 def test_move_probability_herb():
