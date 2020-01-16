@@ -164,6 +164,17 @@ class BioSim:
                     np.hstack((xdata, xnew)), np.hstack((ydata, ynew))
                 )
 
+    def _update_graphics(self):
+        pass
+
+    def _update_system_map(self):
+        pass
+
+    def _update_mean_graph(self, mean):
+
+    def _save_graphics(self):
+        pass
+
     def add_population(self, population):
         """
         Add a population to the island
