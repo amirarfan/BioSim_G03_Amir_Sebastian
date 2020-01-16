@@ -66,7 +66,7 @@ class BioSim:
         self._year = 0
         self._final_year = None
         self._num_animals = 0
-        self._num_animals_per_species = 0
+        self._num_animals_per_species = {}
         self._animal_distribution = None
 
         self._fig = None
@@ -187,6 +187,10 @@ class BioSim:
     @property
     def num_animals_per_species(self):
         """Number of animals per species in island, as dictionary."""
+        tot_herbivore , tot_carnivore = self.map.num_species_on_map()
+        self._num_animals_per_species['Herbivores'] = tot_herbivore
+        self._num_animals_per_species['Carnivores'] = tot_carnivore
+
         return self._num_animals_per_species
 
     @property

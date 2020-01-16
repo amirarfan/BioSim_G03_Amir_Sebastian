@@ -208,6 +208,17 @@ class Map:
             for cell in cell_list:
                 tot_animals += cell.num_animals_per_cell()
 
+    def num_species_on_map(self)
+        tot_herbivores = 0
+        tot_carnivores = 0
+        for cell_list in  self.map:
+            for cells in cell_list:
+                curr_herbivore, curr_carnivore = cells.num_sepcies_per_cell()
+                tot_herbivores += curr_herbivore
+                tot_carnivores += curr_carnivore
+
+        return tot_herbivores, tot_carnivores
+
     def cycle(self):
         """
         Simulates the annual cycle for all animals on the map

@@ -418,6 +418,11 @@ class Cell:
 
         return tot_animals
 
+    def num_sepcies_per_cell(self):
+        tot_herbivores = len(self.animal_classes['Herbivore'])
+        tot_carnivores = len(self.animal_classes['Carnivore'])
+        return tot_herbivores, tot_carnivores
+
 
 class Ocean(Cell):
     """
