@@ -14,7 +14,7 @@ class Animal:
 
     param = {}
 
-    def __init__(self, age=None, weight=None):
+    def __init__(self, weight=None, age=None):
         """
 
         Initializes the Animal class instance.
@@ -27,8 +27,7 @@ class Animal:
             The weight of the animal to be initialised
         """
 
-
-        if age is not None and age < 0 and (type(age) != int):
+        if age is not None and ((age < 0) or (type(age) != int)):
             raise ValueError("Age cannot be lower than 0")
 
         if age is not None:
@@ -44,9 +43,7 @@ class Animal:
             self._weight = self._normal_weight()
 
         self._fitness = None
-        if self._fitness is not None:
-            pass
-        else:
+        if self._fitness is None:
             self.update_fitness()
 
     @property
