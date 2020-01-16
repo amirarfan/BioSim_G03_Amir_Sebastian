@@ -39,8 +39,8 @@ class Map:
             ]
         )
 
-        self.outer_limits = np.concatenate(
-            self.map[0], self.map[:, 0], self.map[:, -1], self.map[-1]
+        self.outer_limits = np.concatenate([
+            self.map[0], self.map[:, 0], self.map[:, -1], self.map[-1]]
         )
 
         for cell in self.outer_limits:
@@ -71,7 +71,7 @@ class Map:
             # Only cell types which are allowed can be transformed
             if letter not in cls.dict_cells.keys():
                 raise ValueError(f"{letter} is not an allowed cell type")
-            temp_list.append(cls.dict_cells[letter])
+            temp_list.append(cls.dict_cells[letter]())
 
         return temp_list
 
@@ -114,13 +114,13 @@ class Map:
             except IndexError:
                 print(f'{dictionary["loc"]} is not a location on map')
                 break
-            pop = dictionary["pop"]
+            pop_list = dictionary["pop"]
             cell_type = self.map[loc]
 
             if type(cell_type).__name__ not in self.allowed_cells:
                 raise ValueError(f"This location is inhabitable")
 
-            cell_type.add_animal(pop)
+            cell_type.add_animal(list_animal_dicts=pop_list)
 
     def move_all_animals(self):
         """

@@ -68,7 +68,7 @@ class BioSim:
         """
         self.map_rgb = [
             [self.rgb_value[column] for column in row]
-            for row in island_map.splitlines
+            for row in island_map.splitlines()
         ]
 
         self._map = Map(island_map)
@@ -83,6 +83,7 @@ class BioSim:
 
         self.img_fmt = img_fmt
         self.img_count = 0
+        self.img_base = None
 
         self._island_map = None
         self._fig = None
@@ -96,11 +97,6 @@ class BioSim:
 
         self.herb_img_axis = None
         self.carn_img_axis = None
-
-        if img_base is not None:
-            self.img_base = img_base
-        else:
-            self.img_base = None
 
         if ymax_animals is None:
             self.ymax_animals = None
@@ -147,6 +143,7 @@ class BioSim:
             img_years = vis_years
 
         self._final_year = self._year + num_years
+        self._setup_graphics()
 
         while self._year < self._final_year:
 
@@ -196,22 +193,30 @@ class BioSim:
     def _update_graphics(self):
         pop_dataframe = self.animal_distribution
 
-        rows, col = np.shape(self._map.map)
+        rows, cols = np.shape(self._map.map)
 
         herb_count = pop_dataframe.Herbivores
+        herb_array = np.array(herb_count).reshape(rows, cols)
 
         carn_count = pop_dataframe.Carnivores
-
+        carn_array = np.array(carn_count).reshape(rows, cols)
 
         self._update_specie_lines()
+        self._update_herb_heatmap(herb_array)
+        self._update_carn_heatmap(carn_array)
 
-
-
-
-        pass
+        plt.pause(1e-6)
 
     def _save_graphics(self):
-        pass
+
+        if self.img_base is None:
+            return
+
+        plt.savefig('{base}_{num:05d}.{type}'.format(base=self.img_base,
+                                                     num=self.img_count,
+                                                     type=self.img_fmt))
+
+        self.img_count += 1
 
     def create_map(self):
         self._island_map = self._fig.add_subplot(2, 2, 1)
@@ -285,12 +290,12 @@ class BioSim:
         self.carn_heat.set_yticklabels(range(1, 1 + len(self.map_rgb)))
 
     def _update_specie_lines(self):
-        herb_amount = len(self.num_animals_per_species["Herbivores"])
+        herb_amount = self.num_animals_per_species["Herbivores"]
         ydata_herb = self._herb_line.get_ydata()
         ydata_herb[self.year] = herb_amount
         self._herb_line.set_ydata(ydata_herb)
 
-        carn_amount = len(self.num_animals_per_species["Carnivores"])
+        carn_amount = self.num_animals_per_species["Carnivores"]
         ydata_carn = self._carn_line.get_ydata()
         ydata_carn[self.year] = carn_amount
         self._carn_line.set_ydata(ydata_carn)
@@ -334,7 +339,7 @@ class BioSim:
                 (
                     curr_herbivores,
                     curr_carnivores,
-                ) = cells.num_animals_per_species()
+                ) = cells.num_sepcies_per_cell()
                 curr_dict = {
                     "x": x,
                     "y": y,
@@ -349,3 +354,4 @@ class BioSim:
 
     def make_movie(self):
         """Create MPEG4 movie from visualization images saved."""
+        pass
