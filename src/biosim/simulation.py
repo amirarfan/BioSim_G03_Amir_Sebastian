@@ -194,12 +194,20 @@ class BioSim:
             self.carn_img_axis = None
 
     def _update_graphics(self):
-        pass
+        pop_dataframe = self.animal_distribution
 
-    def _update_system_map(self):
-        pass
+        rows, col = np.shape(self._map.map)
 
-    def _update_mean_graph(self, mean):
+        herb_count = pop_dataframe.Herbivores
+
+        carn_count = pop_dataframe.Carnivores
+
+
+        self._update_specie_lines()
+
+
+
+
         pass
 
     def _save_graphics(self):
@@ -246,7 +254,47 @@ class BioSim:
                     np.hstack((xdata, xnew)), np.hstack((ydata, ynew))
                 )
 
-    def _update_
+    def _update_herb_heatmap(self, herb_heat):
+
+        if self.herb_img_axis is not None:
+            self.herb_img_axis.set_data(herb_heat)
+        else:
+            self.herb_img_axis = self.herb_heat.imshow(
+                herb_heat, interpolation="nearest", vmin=0, vmax=250
+            )
+
+        self.herb_heat.set_title('Herbivore Heat Map')
+        self.herb_heat.set_xticks(range(len(self.map_rgb[0])))
+        self.herb_heat.set_xticklabels(range(1, 1 + len(self.map_rgb[0])))
+        self.herb_heat.set_yticks(range(len(self.map_rgb)))
+        self.herb_heat.set_yticklabels(range(1, 1 + len(self.map_rgb)))
+
+    def _update_carn_heatmap(self, carn_heat):
+
+        if self.carn_img_axis is not None:
+            self.carn_img_axis.set_data(carn_heat)
+        else:
+            self.carn_img_axis = self.carn_heat.imshow(
+                carn_heat, interpolation="nearest", vmin=0, vmax=250
+            )
+
+        self.carn_heat.set_title('Carnivore Heat Map')
+        self.carn_heat.set_xticks(range(len(self.map_rgb[0])))
+        self.carn_heat.set_xticklabels(range(1, 1 + len(self.map_rgb[0])))
+        self.carn_heat.set_yticks(range(len(self.map_rgb)))
+        self.carn_heat.set_yticklabels(range(1, 1 + len(self.map_rgb)))
+
+    def _update_specie_lines(self):
+        herb_amount = len(self.num_animals_per_species["Herbivores"])
+        ydata_herb = self._herb_line.get_ydata()
+        ydata_herb[self.year] = herb_amount
+        self._herb_line.set_ydata(ydata_herb)
+
+        carn_amount = len(self.num_animals_per_species["Carnivores"])
+        ydata_carn = self._carn_line.get_ydata()
+        ydata_carn[self.year] = carn_amount
+        self._carn_line.set_ydata(ydata_carn)
+
     def add_population(self, population):
         """
         Add a population to the island
@@ -278,7 +326,8 @@ class BioSim:
 
     @property
     def animal_distribution(self):
-        """Pandas DataFrame with animal count per species for each cell on island."""
+        """Pandas DataFrame with animal count per species for each cell on
+        island. """
         list_of_dicts = []
         for y, cell_list in enumerate(self._map.map):
             for x, cells in enumerate(cell_list):
@@ -295,7 +344,7 @@ class BioSim:
                 list_of_dicts.append(curr_dict)
 
         return pd.DataFrame(
-            list_of_dicts, columns=["x", "y", "herbivores", "carnivores"]
+            list_of_dicts, columns=["x", "y", "Herbivores", "Carnivores"]
         )
 
     def make_movie(self):
