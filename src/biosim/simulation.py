@@ -7,7 +7,6 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 Must be filled out
 """
 
-
 from biosim.animals import Herbivore, Carnivore
 from biosim.map import Map
 import numpy as np
@@ -17,12 +16,12 @@ import matplotlib
 import subprocess
 import os
 
-_FFMPEG_BINARY = 'ffmpeg'
-_CONVERT_BINARY = 'magick'
+_FFMPEG_BINARY = "ffmpeg"
+_CONVERT_BINARY = "magick"
 
-_DEFAULT_GRAPHICS_DIR = os.path.join('..', 'data')
-_DEFAULT_GRAPHICS_NAME = 'dv'
-_DEFAULT_MOVIE_FORMAT = 'mp4'   # alternatives: mp4, gif
+_DEFAULT_GRAPHICS_DIR = os.path.join("..", "data")
+_DEFAULT_GRAPHICS_NAME = "dv"
+_DEFAULT_MOVIE_FORMAT = "mp4"  # alternatives: mp4, gif
 
 
 class BioSim:
@@ -35,14 +34,14 @@ class BioSim:
     }
 
     def __init__(
-        self,
-        island_map,
-        ini_pop,
-        seed,
-        ymax_animals=None,
-        cmax_animals=None,
-        img_base=None,
-        img_fmt="png",
+            self,
+            island_map,
+            ini_pop,
+            seed,
+            ymax_animals=None,
+            cmax_animals=None,
+            img_base=None,
+            img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -91,8 +90,12 @@ class BioSim:
         self._mean_ax = None
         self._herb_line = None
         self._carn_line = None
-        self._herb_img_axis = None
-        self._carn_img_axis = None
+
+        self.herb_heat = None
+        self.carn_heat = None
+
+        self.herb_img_axis = None
+        self.carn_img_axis = None
 
         if img_base is not None:
             self.img_base = img_base
@@ -143,7 +146,7 @@ class BioSim:
         if img_years is None:
             img_years = vis_years
 
-        self._final_year = self._year + img_years
+        self._final_year = self._year + num_years
 
         while self._year < self._final_year:
 
@@ -153,7 +156,7 @@ class BioSim:
             if self._year % vis_years == 0:
                 self._update_graphics()
 
-            if self._year %  img_years == 0:
+            if self._year % img_years == 0:
                 self._save_graphics()
 
             self._map.cycle()
@@ -167,10 +170,9 @@ class BioSim:
         if self._island_map is None:
             self.create_map()
 
-
-        #if self._map_ax is None:
-         #   self._max_ax = self._fig.add_subplot(1, 2, 1)
-         #   self._img_axis = None
+        # if self._map_ax is None:
+        #   self._max_ax = self._fig.add_subplot(1, 2, 1)
+        #   self._img_axis = None
 
         if self._mean_ax is None:
             self._mean_ax = self._fig.add_subplot(2, 2, 2)
@@ -183,20 +185,13 @@ class BioSim:
         self.create_herb_line()
         self.create_carn_line()
 
+        if self.herb_heat is None:
+            self.herb_heat = self._fig.add_subplot(2, 2, 3)
+            self.herb_img_axis = None
 
-        if self._mean_line is None:
-            mean_plot = self._mean_ax.plot(
-                np.arange(0, self._final_year),
-                np.full(self._final_year, np.nan),
-            )
-        else:
-            xdata, ydata = self._mean_line.get_data()
-            xnew = np.arange(xdata[-1] + 1, self._final_year)
-            if len(xnew) > 0:
-                ynew = np.full(xnew.shape, np.nan)
-                self._mean_line.set_data(
-                    np.hstack((xdata, xnew)), np.hstack((ydata, ynew))
-                )
+        if self.carn_heat is None:
+            self.carn_heat = self._fig.add_subplot(2, 2, 4)
+            self.carn_img_axis = None
 
     def _update_graphics(self):
         pass
@@ -210,12 +205,48 @@ class BioSim:
     def _save_graphics(self):
         pass
 
+    def create_map(self):
+        self._island_map = self._fig.add_subplot(2, 2, 1)
+        self._island_map.imshow(self.map_rgb)
+
+        self._island_map.set_xticks(range(len(self.map_rgb[0])))
+        self._island_map.set_xticklabels(range(1, 1 + len(self.map_rgb[0])))
+        self._island_map.set_yticks(range(len(self.map_rgb)))
+        self._island_map.set_yticklabels(range(1, 1 + len(self.map_rgb)))
+
     def create_herb_line(self):
-        pass
+        if self._herb_line is None:
+            herb_plot = self._mean_ax.plot(
+                np.arange(0, self._final_year),
+                np.full(self._final_year, np.nan),
+            )
+            self._herb_line = herb_plot[0]
+        else:
+            xdata, ydata = self._herb_line.get_data()
+            xnew = np.arange(xdata[-1] + 1, self._final_year)
+            if len(xnew) > 0:
+                ynew = np.full(xnew.shape, np.nan)
+                self._herb_line.set_data(
+                    np.hstack((xdata, xnew)), np.hstack((ydata, ynew))
+                )
 
     def create_carn_line(self):
-    pass
+        if self._carn_line is None:
+            carn_plot = self._mean_ax.plot(
+                np.arange(0, self._final_year),
+                np.full(self._final_year, np.nan),
+            )
+            self._carn_line = carn_plot[0]
+        else:
+            xdata, ydata = self._carn_line.get_data()
+            xnew = np.arange(xdata[-1] + 1, self._final_year)
+            if len(xnew) > 0:
+                ynew = np.full(xnew.shape, np.nan)
+                self._carn_line.set_data(
+                    np.hstack((xdata, xnew)), np.hstack((ydata, ynew))
+                )
 
+    def _update_
     def add_population(self, population):
         """
         Add a population to the island
@@ -251,9 +282,10 @@ class BioSim:
         list_of_dicts = []
         for y, cell_list in enumerate(self._map.map):
             for x, cells in enumerate(cell_list):
-                curr_herbivores, curr_carnivores = (
-                    cells.num_animals_per_species()
-                )
+                (
+                    curr_herbivores,
+                    curr_carnivores,
+                ) = cells.num_animals_per_species()
                 curr_dict = {
                     "x": x,
                     "y": y,
