@@ -64,7 +64,7 @@ class BioSim:
         np.random.seed(seed)
 
         self._year = 0
-        self._final_year
+        self._final_year = None
         self._num_animals = 0
         self._num_animals_per_species = 0
         self._animal_distribution = None
