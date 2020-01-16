@@ -191,6 +191,34 @@ class Map:
                 if type(cell).__name__ in self.allowed_cells:
                     cell.annual_death()
 
+    def num_animals_on_map(self):
+        """
+
+        Calculates the total amount of animals on the map, by entering
+        each cell and checking how many animals are there.
+
+        Returns
+        -------
+        int
+            The amount of animals on the whole map
+        """
+
+        tot_animals = 0
+        for cell_list in self.map:
+            for cell in cell_list:
+                tot_animals += cell.num_animals_per_cell()
+
+    def num_species_on_map(self):
+        tot_herbivores = 0
+        tot_carnivores = 0
+        for cell_list in self.map:
+            for cells in cell_list:
+                curr_herbivore, curr_carnivore = cells.num_sepcies_per_cell()
+                tot_herbivores += curr_herbivore
+                tot_carnivores += curr_carnivore
+
+        return tot_herbivores, tot_carnivores
+
     def cycle(self):
         """
         Simulates the annual cycle for all animals on the map

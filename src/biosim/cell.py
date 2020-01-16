@@ -42,7 +42,7 @@ class Cell:
                     f"class parameters"
                 )
 
-            if new_par_dict["par"] < 0:
+            if new_par_dict[par] < 0:
                 raise ValueError(
                     f"Invalid input: {par} is of non-positive value"
                 )
@@ -395,10 +395,33 @@ class Cell:
                 weight = None
 
             if animal_name in self.allowed_species.keys():
-                current_class = self.allowed_species[animal_name](age, weight)
+                current_class = self.allowed_species[animal_name](weight, age)
                 self.animal_classes[animal_name].append(current_class)
             else:
                 raise ValueError(f"The animal type is not allowed")
+
+    def num_animals_per_cell(self):
+        """
+
+        Calculates the amount of animals per cell and returns that value
+
+        Returns
+        -------
+
+        int
+            The total number of animals per cell
+
+        """
+        tot_animals = 0
+        for list_animals in self.animal_classes.values():
+            tot_animals += len(list_animals)
+
+        return tot_animals
+
+    def num_sepcies_per_cell(self):
+        tot_herbivores = len(self.animal_classes["Herbivore"])
+        tot_carnivores = len(self.animal_classes["Carnivore"])
+        return tot_herbivores, tot_carnivores
 
 
 class Ocean(Cell):

@@ -14,7 +14,7 @@ class Animal:
 
     param = {}
 
-    def __init__(self, age=None, weight=None):
+    def __init__(self, weight=None, age=None):
         """
 
         Initializes the Animal class instance.
@@ -27,10 +27,7 @@ class Animal:
             The weight of the animal to be initialised
         """
 
-        if type(age) != int:
-            raise ValueError("Age must be a positive integer")
-
-        if age is not None and age < 0:
+        if age is not None and ((age < 0) or (type(age) != int)):
             raise ValueError("Age cannot be lower than 0")
 
         if age is not None:
@@ -46,9 +43,8 @@ class Animal:
             self._weight = self._normal_weight()
 
         self._fitness = None
-        if self._fitness is not None:
-            pass
-        else:
+
+        if self._fitness is None:
             self.update_fitness()
 
     @property
@@ -129,6 +125,12 @@ class Animal:
 
         """
         return self._fitness
+
+    @fitness.setter
+    def fitness(self, value):
+        if value < 0:
+            raise ValueError("Custom fitness must be higher than 0")
+        self._fitness = value
 
     @classmethod
     def _calculate_fitness(cls, weight, age):
@@ -309,7 +311,7 @@ class Animal:
 
         if self._weight < zeta * (w_birth + sigma_birth):
             return False
-        np.random.choice([True, False], p=[prob_birth, 1 - prob_birth])
+        return np.random.choice([True, False], p=[prob_birth, 1 - prob_birth])
 
     @classmethod
     def _normal_weight(cls):
