@@ -124,7 +124,7 @@ class Animal:
 
         Returns
         -------
-        _fitness = int or float
+        _fitness = float
             The current fitness value of the animal instance
 
         """
@@ -154,8 +154,9 @@ class Animal:
 
         Returns
         -------
-        The new value of fitness using the _q_sigmoid function with different
-        sign values :math: `+`, and  :math: `-`
+        float
+            The new value of fitness using the _q_sigmoid function with
+            different sign values :math: `+`, and  :math: `-`
 
         """
         a_half = cls.param["a_half"]
@@ -221,7 +222,7 @@ class Animal:
 
         Returns
         -------
-        bool: True or False
+        bool
             Returns True if Animal is to move, or false if it is not to move
 
         """
@@ -237,7 +238,7 @@ class Animal:
 
         Returns
         -------
-        bool: True or False
+        bool
             Returns True if Animal instance is to die, and False if it is not
             to die
 
@@ -248,9 +249,7 @@ class Animal:
         elif self._fitness > 0:
             death_prob = self.param["omega"] * (1 - self._fitness)
 
-        return np.random.choice(
-            [True, False], p=[death_prob, 1 - death_prob]
-        ) 
+        return np.random.choice([True, False], p=[death_prob, 1 - death_prob])
 
     @staticmethod
     def compute_prob_birth(gamma, fitness, nearby_animals):
@@ -275,7 +274,7 @@ class Animal:
 
         Returns
         -------
-        value: float or int
+        float
             The probability of giving birth.
 
         """
@@ -295,7 +294,7 @@ class Animal:
 
         Returns
         -------
-        bool: True or False
+        bool
             True if the animal is to give birth, False if the animal is not
             to give birth.
 
@@ -406,7 +405,8 @@ class Animal:
 
         Returns
         -------
-        Sigmoid value given the inputs
+        float
+            Sigmoid value given the inputs
 
         """
         return 1 / (1 + math.exp(signum * rate * (x - x_half)))
@@ -417,6 +417,7 @@ class Herbivore(Animal):
     Herbivore is a subclass of Animal class. Uses super method to inherit
     the attributes and methods from animal class.
     """
+
     param = {
         "w_birth": 8.0,
         "sigma_birth": 1.5,
@@ -456,6 +457,7 @@ class Carnivore(Animal):
     Carnivore is a subclass of Animal. Uses super method to inherit methods
     and specified attributes from Animal class.
     """
+
     param = {
         "w_birth": 6.0,
         "sigma_birth": 1.0,
@@ -490,11 +492,20 @@ class Carnivore(Animal):
 
     @staticmethod
     def _compute_kill_prob(fit_carn, fit_herb, delta_phi_max):
-        """
+        r"""
         Computes probability of a Carnivore killing Herbivore which is
         determined through:
 
-        .. ::math:: 
+        .. ::math::
+            p =
+            \begin{cases}
+            0 & \text{if }\Phi_{carn}\le \Phi_{herb}\\
+            \frac{\Phi_{carn} - \Phi_{herb}}{\Delta\Phi_{max}} &
+            \text{if } 0 \le \Phi_{carn} - \Phi_{herb} \le \Delta\Phi_{max}\\
+            1 & \text{otherwise}
+            \end{cases}
+
+
 
         Parameters
         ----------
@@ -508,8 +519,8 @@ class Carnivore(Animal):
 
         Returns
         -------
-        probability: float or int
-            Returns 0,
+        float or int
+            The probability of the carnivore killing the herbivore
 
         """
         if fit_carn <= fit_herb:
@@ -520,6 +531,27 @@ class Carnivore(Animal):
             return 1
 
     def determine_kill(self, min_fit_herb):
+        """
+
+        Determine kill function which uses '_compute_kill_prob' to
+        calculate the probability and then uses Numpy's random choice with
+        fixed probability to determine if the carnivore is to kill
+        the chosen herbivore.
+
+        Parameters
+        ----------
+        min_fit_herb: int or float
+                    Fitness of the herbivore which is to be preyed upon
+                    by the carnivore.
+
+        Returns
+        -------
+        bool
+            Returns true or false determining whether the carnivore is to kill
+            the herbivore or not
+
+        """
+
         delta_phi_max = self.param["DeltaPhiMax"]
         kill_prob = self._compute_kill_prob(
             self.fitness, min_fit_herb, delta_phi_max

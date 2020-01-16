@@ -2,12 +2,15 @@
 
 __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
-from .animals import Herbivore, Carnivore
 from .cell import Ocean, Mountain, Desert, Savannah, Jungle
 import numpy as np
 
 
 class Map:
+    """
+    Map class which will represent a map containing different cells
+    """
+
     dict_cells = {
         "O": Ocean,
         "M": Mountain,
@@ -19,6 +22,14 @@ class Map:
     allowed_cells = ["Jungle", "Savannah", "Desert"]
 
     def __init__(self, map_string):
+        """
+        Initialises the map class instance
+
+        Parameters
+        ----------
+        map_string: string
+                    String representing a map of cells
+        """
 
         self.map = np.array(
             [
@@ -37,20 +48,65 @@ class Map:
 
     @classmethod
     def map_factory(cls, list_to_alter):
+        """
+        A map factory function which transforms a list containing strings into
+        a list containing cell instances.
+
+        Parameters
+        ----------
+        list_to_alter: list
+                    List containing different string letters, which need to be
+                    transformed to class types.
+
+        Returns
+        -------
+        list
+            Contains cell class instances
+
+
+        """
         temp_list = []
         for letter in list_to_alter:
-            if letter not in cls.dict_cells.values():
-                raise ValueError(f"{letter} is not a cell type")
+            # Only cell types which are allowed can be transformed
+            if letter not in cls.dict_cells.keys():
+                raise ValueError(f"{letter} is not an allowed cell type")
             temp_list.append(cls.dict_cells[letter])
 
         return temp_list
 
     def get_neighbour(self, loc):
+        """
+
+        Given a location loc, the get_neighbour function returns the
+        4 neighbours someone or something can move to.
+
+        Parameters
+        ----------
+        loc: tuple
+
+
+        Returns
+        -------
+        list
+            Contains neighbour cells
+
+        """
         x, y = loc
         neighbour_cords = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
         return [self.map[cell] for cell in neighbour_cords]
 
     def add_animals(self, ini_list):
+        """
+        Adds animals to the map using the specified location and specie type
+        from ini_list
+
+        Parameters
+        ----------
+        ini_list: list
+                list which contains location and specie information
+
+
+        """
         for dictionary in ini_list:
             try:
                 loc = dictionary["loc"]
@@ -66,11 +122,23 @@ class Map:
             cell_type.add_animal(pop)
 
     def move_all_animals(self):
+        """
+        Moves all animals in the map, using the migration function from
+        'cell.py'
+
+        """
         for y, list_loc in enumerate(self.map):
             for x, cell in enumerate(self.map):
                 cell.migration(self.get_neighbour((x, y)))
 
     def all_animals_eat(self):
+        """
+
+        Feeds all animals on the map using eat_herbivore and eat_carnivore
+        functions from 'cell.py'
+
+
+        """
         for list_loc in self.map:
             for cell in list_loc:
                 if type(cell).__name__ in self.allowed_cells:
@@ -78,25 +146,59 @@ class Map:
                     cell.eat_carnivore()
 
     def mate_all_animals(self):
+        """
+        Mates all animals on the map using the mating function from 'cell.py'
+
+
+        """
         for list_loc in self.map:
             for cell in list_loc:
                 if type(cell).__name__ in self.allowed_cells:
                     cell.mating()
 
     def age_all_animals(self):
+        """
+
+        Ages all animals with one year, using the aging function from 'cell.py'
+
+        """
         for list_loc in self.map:
             for cell in list_loc:
                 if type(cell).__name__ in self.allowed_cells:
                     cell.aging()
 
-    def annual_weightloss_all_animals(self):
+    def annual_weight_loss_all_animals(self):
+        """
+
+        Makes all animals lose their annual amount of weigh using
+        the annual_weight_loss function from 'cell.py'
+
+        """
+
         for list_loc in self.map:
             for cell in list_loc:
                 if type(cell).__name__ in self.allowed_cells:
-                    cell.annual_weightloss()
+                    cell.annual_weight_loss()
 
     def annual_death_all_animals(self):
+        """
+
+        Checks all animals annual death, by using annual_death from 'cell.py'
+
+        """
         for list_loc in self.map:
             for cell in list_loc:
                 if type(cell).__name__ in self.allowed_cells:
                     cell.annual_death()
+
+    def cycle(self):
+        """
+        Simulates the annual cycle for all animals on the map
+
+        """
+        self.all_animals_eat()
+        self.mate_all_animals()
+        self.move_all_animals()
+        self.age_all_animals()
+        self.annual_weight_loss_all_animals()
+        self.annual_death_all_animals()
