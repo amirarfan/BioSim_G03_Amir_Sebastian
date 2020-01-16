@@ -93,9 +93,7 @@ class BioSim:
         :param params: Dict with valid parameter specification for species
         """
 
-        for cell in self.map:
-            for animal in cell.animal_classes[species]:
-                animal.update_parameters(params)
+        self._map.update_animal_params_all_cells(species, params)
 
     def set_landscape_parameters(self, landscape, params):
         """
@@ -105,8 +103,7 @@ class BioSim:
         :param params: Dict with valid parameter specification for landscape
         """
 
-        for cell in self.map:
-            cell.update_parameters()
+        self._map.update_param_all_cells(landscape, params)
 
     def simulate(self, num_years, vis_years=1, img_years=None):
         """
@@ -129,7 +126,7 @@ class BioSim:
             if self._year % vis_years == 0:
                 self._update_graphics()
 
-            self._system.update()
+            self._map.cycle()
             self._year += 1
 
     def _setup_graphics(self):
@@ -182,7 +179,7 @@ class BioSim:
         :param population: List of dictionaries specifying population
         """
 
-        self.map.add_animals(population)
+        self._map.add_animals(population)
 
     @property
     def year(self):
@@ -192,13 +189,13 @@ class BioSim:
     @property
     def num_animals(self):
         """Total number of animals on island."""
-        self._num_animals = self.map.num_animals_on_map()
+        self._num_animals = self._map.num_animals_on_map()
         return self._num_animals
 
     @property
     def num_animals_per_species(self):
         """Number of animals per species in island, as dictionary."""
-        tot_herbivore, tot_carnivore = self.map.num_species_on_map()
+        tot_herbivore, tot_carnivore = self._map.num_species_on_map()
         self._num_animals_per_species["Herbivores"] = tot_herbivore
         self._num_animals_per_species["Carnivores"] = tot_carnivore
 

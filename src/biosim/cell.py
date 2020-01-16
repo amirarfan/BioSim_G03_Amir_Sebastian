@@ -419,9 +419,42 @@ class Cell:
         return tot_animals
 
     def num_sepcies_per_cell(self):
+        """
+
+        Checks how many of each specie there is in the cell and returns that
+        value.
+
+        Returns
+        -------
+        int
+            The amount of herbivores in cell
+        int
+            The amount of carnivores in cell
+
+
+        """
         tot_herbivores = len(self.animal_classes["Herbivore"])
         tot_carnivores = len(self.animal_classes["Carnivore"])
         return tot_herbivores, tot_carnivores
+
+    def update_animal_parameters_in_cell(self, species, param_dict):
+        """
+
+        Updates the parameters for all instances of specified specie
+
+        Parameters
+        ----------
+        species: str
+                Name of the specie which need sto be updated.
+        param_dict:
+                New parameter dictionary
+
+        Returns
+        -------
+
+        """
+        for animal in self.animal_classes[species]:
+            animal.update_parameters(param_dict)
 
 
 class Ocean(Cell):

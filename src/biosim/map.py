@@ -2,6 +2,7 @@
 
 __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
+
 from .cell import Ocean, Mountain, Desert, Savannah, Jungle
 import numpy as np
 
@@ -209,6 +210,18 @@ class Map:
                 tot_animals += cell.num_animals_per_cell()
 
     def num_species_on_map(self):
+        """
+
+        Calculates and returns the total amount of per specie on the map
+
+        Returns
+        -------
+        int
+            The amount of herbivores on the map
+        int
+            The amount of carnivores on the map
+
+        """
         tot_herbivores = 0
         tot_carnivores = 0
         for cell_list in self.map:
@@ -218,6 +231,47 @@ class Map:
                 tot_carnivores += curr_carnivore
 
         return tot_herbivores, tot_carnivores
+
+    def update_animal_params_all_cells(self, specie, params):
+        """
+
+        Updates parameters for specified specie in all cells.
+
+        Parameters
+        ----------
+        specie: str
+                The name of the specie which needs it's parameters updated
+        params: dict
+                Dictionary containing the updated values of the parameters.
+
+
+        """
+        y_lim, x_lim = np.shape(self.map)
+        for y in range(y_lim):
+            for x in range(x_lim):
+                curr_cell = self.map[(y, x)]
+                curr_cell.update_animal_parameters_in_cell(specie, params)
+
+    def update_param_all_cells(self, landscape, params):
+        """
+
+        Updates parameters for all cells which are specified to be updated.
+
+        Parameters
+        ----------
+        landscape: str
+                 The cell type which needs its parameters updated
+        params: dict
+                Dictionary containing the new parameters
+
+
+        """
+        y_lim, x_lim = np.shape(self.map)
+        for y in range(y_lim):
+            for x in range(x_lim):
+                curr_cell = self.map[(y, x)]
+                if type(curr_cell).__name__ == landscape:
+                    curr_cell.update_parameters(params)
 
     def cycle(self):
         """
