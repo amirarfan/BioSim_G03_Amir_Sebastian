@@ -4,6 +4,8 @@ from biosim.map import Map
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib
+import subprocess
 
 """
 """
@@ -69,11 +71,14 @@ class BioSim:
         self._num_animals_per_species = {}
         self._animal_distribution = None
 
+        self._island_map = None
         self._fig = None
         self._map_ax = None
         self._mean_ax = None
-        self._mean_line = None
-        self.img_axis = None
+        self._herb_line = None
+        self._carn_line = None
+        self._herb_img_axis = None
+        self._carn_img_axis = None
 
         if ymax_animals is None:
             self.ymax_animals = None
