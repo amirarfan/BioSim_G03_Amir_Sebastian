@@ -34,14 +34,14 @@ class BioSim:
     }
 
     def __init__(
-            self,
-            island_map,
-            ini_pop,
-            seed,
-            ymax_animals=None,
-            cmax_animals=None,
-            img_base=None,
-            img_fmt="png",
+        self,
+        island_map,
+        ini_pop,
+        seed,
+        ymax_animals=None,
+        cmax_animals=None,
+        img_base=None,
+        img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -146,18 +146,22 @@ class BioSim:
         self._setup_graphics()
 
         while self._year < self._final_year:
-
+            print('Starting')
             if self.num_animals == 0:
                 break
+            print('Passed')
 
             if self._year % vis_years == 0:
                 self._update_graphics()
-
+            print('Passed 2')
             if self._year % img_years == 0:
                 self._save_graphics()
+            print('Passed 3')
 
             self._map.cycle()
+            print('Passed 4')
             self._year += 1
+            print(self.year)
 
     def _setup_graphics(self):
 
@@ -192,6 +196,7 @@ class BioSim:
 
     def _update_graphics(self):
         pop_dataframe = self.animal_distribution
+        print(pop_dataframe.loc[pop_dataframe["Herbivores"] == 150])
 
         rows, cols = np.shape(self._map.map)
 
@@ -212,9 +217,11 @@ class BioSim:
         if self.img_base is None:
             return
 
-        plt.savefig('{base}_{num:05d}.{type}'.format(base=self.img_base,
-                                                     num=self.img_count,
-                                                     type=self.img_fmt))
+        plt.savefig(
+            "{base}_{num:05d}.{type}".format(
+                base=self.img_base, num=self.img_count, type=self.img_fmt
+            )
+        )
 
         self.img_count += 1
 
@@ -268,7 +275,7 @@ class BioSim:
                 herb_heat, interpolation="nearest", vmin=0, vmax=250
             )
 
-        self.herb_heat.set_title('Herbivore Heat Map')
+        self.herb_heat.set_title("Herbivore Heat Map")
         self.herb_heat.set_xticks(range(len(self.map_rgb[0])))
         self.herb_heat.set_xticklabels(range(1, 1 + len(self.map_rgb[0])))
         self.herb_heat.set_yticks(range(len(self.map_rgb)))
@@ -283,7 +290,7 @@ class BioSim:
                 carn_heat, interpolation="nearest", vmin=0, vmax=250
             )
 
-        self.carn_heat.set_title('Carnivore Heat Map')
+        self.carn_heat.set_title("Carnivore Heat Map")
         self.carn_heat.set_xticks(range(len(self.map_rgb[0])))
         self.carn_heat.set_xticklabels(range(1, 1 + len(self.map_rgb[0])))
         self.carn_heat.set_yticks(range(len(self.map_rgb)))
@@ -334,17 +341,19 @@ class BioSim:
         """Pandas DataFrame with animal count per species for each cell on
         island. """
         list_of_dicts = []
-        for y, cell_list in enumerate(self._map.map):
-            for x, cells in enumerate(cell_list):
+        y_lim , x_lim = np.shape(self._map.map)
+        for y in range(y_lim):
+            for x in range(x_lim):
+                curr_cell = self._map.map[(y,x)]
                 (
                     curr_herbivores,
                     curr_carnivores,
-                ) = cells.num_sepcies_per_cell()
+                ) = curr_cell.num_sepcies_per_cell()
                 curr_dict = {
                     "x": x,
                     "y": y,
-                    "herbivores": curr_herbivores,
-                    "carnivores": curr_carnivores,
+                    "Herbivores": curr_herbivores,
+                    "Carnivores": curr_carnivores,
                 }
                 list_of_dicts.append(curr_dict)
 
@@ -352,6 +361,49 @@ class BioSim:
             list_of_dicts, columns=["x", "y", "Herbivores", "Carnivores"]
         )
 
-    def make_movie(self):
+    def make_movie(self, movie_fmt=_DEFAULT_MOVIE_FORMAT):
         """Create MPEG4 movie from visualization images saved."""
-        pass
+
+        if self.img_base is None:
+            raise RuntimeError("No filename defined.")
+
+        if movie_fmt == "mp4":
+            try:
+                # Parameters chosen according to http://trac.ffmpeg.org/wiki/Encode/H.264,
+                # section "Compatibility"
+                subprocess.check_call(
+                    [
+                        _FFMPEG_BINARY,
+                        "-i",
+                        "{}_%05d.png".format(self.img_base),
+                        "-y",
+                        "-profile:v",
+                        "baseline",
+                        "-level",
+                        "3.0",
+                        "-pix_fmt",
+                        "yuv420p",
+                        "{}.{}".format(self.img_base, movie_fmt),
+                    ]
+                )
+            except subprocess.CalledProcessError as err:
+                raise RuntimeError("ERROR: ffmpeg failed with: {}".format(err))
+        elif movie_fmt == "gif":
+            try:
+                subprocess.check_call(
+                    [
+                        _CONVERT_BINARY,
+                        "-delay",
+                        "1",
+                        "-loop",
+                        "0",
+                        "{}_*.png".format(self.img_base),
+                        "{}.{}".format(self.img_base, movie_fmt),
+                    ]
+                )
+            except subprocess.CalledProcessError as err:
+                raise RuntimeError(
+                    "ERROR: convert failed with: {}".format(err)
+                )
+        else:
+            raise ValueError("Unknown movie format: " + movie_fmt)

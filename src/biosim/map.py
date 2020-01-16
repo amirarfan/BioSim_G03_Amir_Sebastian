@@ -39,8 +39,8 @@ class Map:
             ]
         )
 
-        self.outer_limits = np.concatenate([
-            self.map[0], self.map[:, 0], self.map[:, -1], self.map[-1]]
+        self.outer_limits = np.concatenate(
+            [self.map[0], self.map[:, 0], self.map[:, -1], self.map[-1]]
         )
 
         for cell in self.outer_limits:
@@ -115,12 +115,15 @@ class Map:
                 print(f'{dictionary["loc"]} is not a location on map')
                 break
             pop_list = dictionary["pop"]
+            print(pop_list)
             cell_type = self.map[loc]
+            print(cell_type)
 
             if type(cell_type).__name__ not in self.allowed_cells:
                 raise ValueError(f"This location is inhabitable")
 
-            cell_type.add_animal(list_animal_dicts=pop_list)
+            cell_type.add_animal(pop_list)
+            print(cell_type.num_sepcies_per_cell())
 
     def move_all_animals(self):
         """
@@ -128,6 +131,8 @@ class Map:
         'cell.py'
 
         """
+
+        #feilher
         for y, list_loc in enumerate(self.map):
             for x, cell in enumerate(self.map):
                 cell.migration(self.get_neighbour((x, y)))
