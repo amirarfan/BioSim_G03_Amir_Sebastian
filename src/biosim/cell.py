@@ -414,7 +414,7 @@ class Cell:
         """
         tot_animals = 0
         for list_animals in self.animal_classes.values():
-            tot_animals += sum(list_animals)
+            tot_animals += len(list_animals)
 
         return tot_animals
 

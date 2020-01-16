@@ -108,6 +108,14 @@ def test_herbivore_fitness():
     assert herb._fitness != 0
 
 
+def test_fitness_setter_negval():
+    herb = animal.Herbivore()
+    try:
+        herb.fitness = -1
+    except ValueError as ve:
+        print(ve)
+
+
 def test_non_existing_parameter_herbivore():
     herb = animal.Herbivore()
     try:
@@ -146,9 +154,27 @@ def test_parameters_actually_update():
     herb.update_parameters({"DeltaPhiMax": 5})
     assert prev_param != herb.param
 
-def test_determine_death():
+
+def test_determine_death_zero_fitness():
     herb = animal.Herbivore()
     herb.fitness = 0
+    assert herb.determine_death() is True
+
+
+def test_determine_death_is_bool():
+    herb = animal.Herbivore()
+    assert type(herb.determine_death()) == numpy.bool_
+
+
+def test_determine_birth_no_animals():
+    herb = animal.Herbivore()
+    assert herb.determine_birth(0) is False
+
+
+def test_determine_birth_is_bool():
+    herb = animal.Herbivore()
+    herb.weight = 100
+    assert type(herb.determine_birth(100)) == numpy.bool_
 
 
 def test_move_probability_herb():
@@ -183,10 +209,38 @@ def test_carnivore_actually_ages():
     assert carn.age > prev_age
 
 
+def test_carnivore_birth_decrease_weight():
+    carn = animal.Carnivore()
+    prev_weight = carn.weight
+    carn.decrease_birth_weight(20)
+    assert carn.weight < prev_weight
+
+
+def test_decrease_annual_weight():
+    carn = animal.Carnivore()
+    prev_weight = carn.weight
+    carn.decrease_annual_weight()
+    assert carn.weight < prev_weight
+
+
+def test_kill_probability_gfherb():
+    # Herbivore has greater fitness
+    carn = animal.Carnivore()
+    prob = carn._compute_kill_prob(0.4, 0.9, 10)
+    assert prob == 0
+
+
+def test_kill_probability_gfcarn():
+    # Carnivore has greater fitness
+    carn = animal.Carnivore()
+    prob = carn._compute_kill_prob(10, 0.1, 5)
+    assert prob == 1
+
+
 def test_bool_carnivore_det_kill():
     carn = animal.Carnivore()
     kill_prob = carn.determine_kill(0.20)
-    assert kill_prob == True or kill_prob == False
+    assert type(kill_prob) is numpy.bool_
 
 
 def test_fitness_weight_zero():

@@ -43,6 +43,7 @@ class Animal:
             self._weight = self._normal_weight()
 
         self._fitness = None
+
         if self._fitness is None:
             self.update_fitness()
 
@@ -126,10 +127,10 @@ class Animal:
         return self._fitness
 
     @fitness.setter
-    def fitness_setter(self, val):
-        if val < 0:
+    def fitness(self, value):
+        if value < 0:
             raise ValueError("Custom fitness must be higher than 0")
-        self._fitness = val
+        self._fitness = value
 
     @classmethod
     def _calculate_fitness(cls, weight, age):
@@ -310,7 +311,7 @@ class Animal:
 
         if self._weight < zeta * (w_birth + sigma_birth):
             return False
-        np.random.choice([True, False], p=[prob_birth, 1 - prob_birth])
+        return np.random.choice([True, False], p=[prob_birth, 1 - prob_birth])
 
     @classmethod
     def _normal_weight(cls):
