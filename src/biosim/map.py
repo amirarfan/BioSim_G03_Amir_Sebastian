@@ -190,3 +190,15 @@ class Map:
             for cell in list_loc:
                 if type(cell).__name__ in self.allowed_cells:
                     cell.annual_death()
+
+    def cycle(self):
+        """
+        Simulates the annual cycle for all animals on the map
+
+        """
+        self.all_animals_eat()
+        self.mate_all_animals()
+        self.move_all_animals()
+        self.age_all_animals()
+        self.annual_weight_loss_all_animals()
+        self.annual_death_all_animals()
