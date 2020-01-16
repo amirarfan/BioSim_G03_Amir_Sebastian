@@ -400,6 +400,24 @@ class Cell:
             else:
                 raise ValueError(f"The animal type is not allowed")
 
+    def num_animals_per_cell(self):
+        """
+
+        Calculates the amount of animals per cell and returns that value
+
+        Returns
+        -------
+
+        int
+            The total number of animals per cell
+
+        """
+        tot_animals = 0
+        for list_animals in self.animal_classes.values():
+            tot_animals += sum(list_animals)
+
+        return tot_animals
+
 
 class Ocean(Cell):
     """
