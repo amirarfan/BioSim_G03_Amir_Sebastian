@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+
+__author__ = "Amir Arfan, Sebastian Becker"
+__email__ = "amar@nmbu.no, sebabeck@nmbu.no"
+
+"""
+Must be filled out
+"""
+
+
 from biosim.animals import Herbivore, Carnivore
 from biosim.map import Map
 import numpy as np
@@ -6,12 +15,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
 import subprocess
+import os
 
-"""
-"""
+_FFMPEG_BINARY = 'ffmpeg'
+_CONVERT_BINARY = 'magick'
 
-__author__ = "Amir Arfan, Sebastian Becker"
-__email__ = "amar@nmbu.no, sebabeck@nmbu.no"
+_DEFAULT_GRAPHICS_DIR = os.path.join('..', 'data')
+_DEFAULT_GRAPHICS_NAME = 'dv'
+_DEFAULT_MOVIE_FORMAT = 'mp4'   # alternatives: mp4, gif
 
 
 class BioSim:
@@ -71,6 +82,9 @@ class BioSim:
         self._num_animals_per_species = {}
         self._animal_distribution = None
 
+        self.img_fmt = img_fmt
+        self.img_count = 0
+
         self._island_map = None
         self._fig = None
         self._map_ax = None
@@ -79,6 +93,11 @@ class BioSim:
         self._carn_line = None
         self._herb_img_axis = None
         self._carn_img_axis = None
+
+        if img_base is not None:
+            self.img_base = img_base
+        else:
+            self.img_base = None
 
         if ymax_animals is None:
             self.ymax_animals = None
@@ -128,8 +147,14 @@ class BioSim:
 
         while self._year < self._final_year:
 
+            if self.num_animals == 0:
+                break
+
             if self._year % vis_years == 0:
                 self._update_graphics()
+
+            if self._year %  img_years == 0:
+                self._save_graphics()
 
             self._map.cycle()
             self._year += 1
@@ -139,18 +164,25 @@ class BioSim:
         if self._fig is None:
             self._fig = plt.figure()
 
-        if self._map_ax is None:
-            self._max_ax = self._fig.add_subplot(1, 2, 1)
-            self._img_axis = None
+        if self._island_map is None:
+            self.create_map()
+
+
+        #if self._map_ax is None:
+         #   self._max_ax = self._fig.add_subplot(1, 2, 1)
+         #   self._img_axis = None
 
         if self._mean_ax is None:
-            self._mean_ax = self._fig.add_subplot(1, 2, 2)
+            self._mean_ax = self._fig.add_subplot(2, 2, 2)
             if self.ymax_animals is not None:
                 self._mean_ax.set_ylim(self.ymax_animals)
             else:
                 self._mean_ax.set_ylim(auto=True)
 
         self._mean_ax.set_xlim(0, self._final_year + 1)
+        self.create_herb_line()
+        self.create_carn_line()
+
 
         if self._mean_line is None:
             mean_plot = self._mean_ax.plot(
@@ -173,9 +205,16 @@ class BioSim:
         pass
 
     def _update_mean_graph(self, mean):
+        pass
 
     def _save_graphics(self):
         pass
+
+    def create_herb_line(self):
+        pass
+
+    def create_carn_line(self):
+    pass
 
     def add_population(self, population):
         """
