@@ -42,7 +42,7 @@ class Cell:
                     f"class parameters"
                 )
 
-            if new_par_dict["par"] < 0:
+            if new_par_dict[par] < 0:
                 raise ValueError(
                     f"Invalid input: {par} is of non-positive value"
                 )
