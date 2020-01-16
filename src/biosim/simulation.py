@@ -181,9 +181,7 @@ class BioSim:
     @property
     def num_animals(self):
         """Total number of animals on island."""
-        for cell in self.map:  # skal fikse denne
-            for animal_list in cell.animal_classes.values():
-                self._numanimals += sum(animal_list)
+        self._num_animals = self.map.num_animals_on_map()
         return self._num_animals
 
     @property
