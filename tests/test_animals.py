@@ -3,133 +3,118 @@
 __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
-import biosim.animals as animal
+from biosim.animals import Herbivore, Carnivore
 import numpy
 import pytest
 
-def test_herbivore_age():
+
+@pytest.fixture
+def plain_herbivore():
+    return Herbivore()
+
+
+def test_herbivore_age(plain_herbivore):
     # Test for animal age is equal to 0
-    herb = animal.Herbivore()
-    assert herb.age == 0
+    assert plain_herbivore.age == 0
 
 
-def test_herbivore_custom_neg_age():
+def test_herbivore_custom_neg_age(plain_herbivore):
     try:
-        herb = animal.Herbivore(age=-1)
+        plain_herbivore(age=-1)
     except ValueError as ve:
         print(ve)
 
 
 def test_herbivore_custom_pos_age():
-    herb = animal.Herbivore(age=2)
+    herb = Herbivore(age=2)
     assert herb.age == 2
 
 
-def test_herbivore_setter_method_age():
-    herb = animal.Herbivore()
-    herb.age = 2
-    assert herb.age == 2
+def test_herbivore_setter_method_age(plain_herbivore):
+    plain_herbivore.age = 2
+    assert plain_herbivore.age == 2
 
 
-def test_herbivore_setter_method_neg_age():
-    herb = animal.Herbivore()
+def test_herbivore_setter_method_neg_age(plain_herbivore):
     try:
-        herb.age = -1
+        plain_herbivore.age = -1
     except ValueError as ve:
         print(ve)
 
 
-def test_herbivore_non_int_setter_age():
-    herb = animal.Herbivore()
+def test_herbivore_non_int_setter_age(plain_herbivore):
     try:
-        herb.age = 2.1
+        plain_herbivore.age = 2.1
     except ValueError as ve:
         print(ve)
 
 
-def test_herbivore_actually_ages():
-    herb = animal.Herbivore()
-    first_age = herb.age
-    herb.add_age()
-    second_age = herb.age
+def test_herbivore_actually_ages(plain_herbivore):
+    first_age = plain_herbivore.age
+    plain_herbivore.add_age()
+    second_age = plain_herbivore.age
     assert first_age < second_age
 
 
 def test_herbivore_continual_aging():
-    herb = animal.Herbivore()
+    herb = Herbivore()
     for i in range(10):
         herb.add_age()
         assert i + 1 == herb.age
 
 
-def test_herbivore_weight():
-    herb = animal.Herbivore()
-    assert herb.weight is not None
-    assert herb.weight != 0
+def test_herbivore_weight(plain_herbivore):
+    assert plain_herbivore.weight is not None
+    assert plain_herbivore.weight != 0
 
 
-def test_herbivore_change_weight():
-    herb = animal.Herbivore()
-    herb.weight = 2
-    print(herb._fitness)
-    assert herb.weight == 2
+def test_herbivore_change_weight(plain_herbivore):
+    plain_herbivore.weight = 2
+    assert plain_herbivore.weight == 2
 
 
 def test_herbivore_neg_weight():
-    try:
-        herb = animal.Herbivore(-1)
-    except ValueError as ve:
-        print(ve)
+    # One could also use try except here
+    with pytest.raises(ValueError) as ve:
+        Herbivore(-1)
 
 
 def test_herbivore_custom_pos_weight():
-    herb = animal.Herbivore(weight=20)
+    herb = Herbivore(weight=20)
     assert herb.weight == 20
 
 
-def test_herbivore_custom_weight_setter():
-    herb = animal.Herbivore()
-    try:
-        herb.weight = -20
-    except ValueError as ve:
-        print(ve)
+def test_herbivore_custom_weight_setter(plain_herbivore):
+    with pytest.raises(ValueError) as ve:
+        plain_herbivore.weight = -20
 
 
-def test_herbivore_fitness_changes_with_weight():
-    herb = animal.Herbivore()
-    before_fitness = herb._fitness
-    herb.weight = 30
-    after_fitness = herb._fitness
+def test_herbivore_fitness_changes_with_weight(plain_herbivore):
+    before_fitness = plain_herbivore.fitness
+    plain_herbivore.weight = 30
+    after_fitness = plain_herbivore.fitness
     assert before_fitness != after_fitness
 
 
-def test_herbivore_fitness():
-    herb = animal.Herbivore()
+def test_herbivore_fitness_not_zero():
+    herb = Herbivore()
     assert herb._fitness != 0
 
 
-def test_fitness_setter_negval():
-    herb = animal.Herbivore()
-    try:
-        herb.fitness = -1
-    except ValueError as ve:
-        print(ve)
+def test_fitness_setter_negval(plain_herbivore):
+    with pytest.raises(ValueError) as ve:
+        plain_herbivore.fitness = -1
 
 
-def test_non_existing_parameter_herbivore():
-    herb = animal.Herbivore()
-    try:
-        herb.update_parameters({"non_exist": 20})
-    except ValueError as ve:
-        print(ve)
+def test_non_existing_parameter_herbivore(plain_herbivore):
+    with pytest.raises(ValueError):
+        plain_herbivore.update_parameters({"non_exist": 20})
 
 
-def test_negative_parameter_herbivore():
-    herb = animal.Herbivore()
-    try:
-        herb.update_parameters({"sigma_birth": -20})
-    except ValueError as ve:
-        print(ve)
+def test_negative_parameter_herbivore(plain_herbivore):
+    with pytest.raises(ValueError):
+        plain_herbivore.update_parameters({"sigma_birth: -20"})
+   
 
 
 def test_eta_greater_than_one_herbivore():
