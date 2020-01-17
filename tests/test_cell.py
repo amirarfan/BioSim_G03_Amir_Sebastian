@@ -262,6 +262,7 @@ def test_delete_animal():
         ])
     for animal in savannah_cell.animal_classes["Carnivore"]:
         savannah_cell.delete_animal(animal)
+    assert len(savannah_cell.animal_classes["Carnivore"]) == 0
 
 def test_compute_move_prob():
     savannah_cell = cell.Savannah()
@@ -285,4 +286,14 @@ def test_migration():
     assert len(savannah_cell.animal_classes["Carnivore"]) == 0
 
 def test_mating():
-    
+    savannah_cell = cell.Savannah()
+    savannah_cell.add_animal(
+        [
+            {"species": "Carnivore", "age": 5, "weight": 70},
+            {"species": "Carnivore", "age": 5, "weight": 70},
+        ])
+    for animal in savannah_cell.animal_classes["Carnivore"]:
+        animal.fitness = 1
+        animal.update_parameters({"gamma": 1})
+    savannah_cell.mating()
+    assert (len(savannah_cell.animal_classes["Carnivore"])) > 2
