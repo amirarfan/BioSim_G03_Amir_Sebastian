@@ -262,7 +262,6 @@ def test_delete_animal():
         ])
     for animal in savannah_cell.animal_classes["Carnivore"]:
         savannah_cell.delete_animal(animal)
-    #gjøre ferdig
 
 def test_compute_move_prob():
     savannah_cell = cell.Savannah()
@@ -271,4 +270,19 @@ def test_compute_move_prob():
             {"species": "Carnivore", "age": 5, "weight": 10},
         ])
     for animal in savannah_cell.animal_classes["Carnivore"]:
-        savannah_cell.compute_move_prob(animal,[cell.Ocean(),cell.Ocean(),cell.Ocean(),cell.Ocean()])
+        assert savannah_cell.compute_move_prob(animal,[cell.Ocean(),cell.Ocean(),cell.Ocean(),cell.Ocean()]) == None
+
+def test_migration():
+    savannah_cell = cell.Savannah()
+    savannah_cell.add_animal(
+        [
+            {"species": "Carnivore", "age": 5, "weight": 10},
+        ])
+    for animal in savannah_cell.animal_classes["Carnivore"]:
+        animal.fitness = 1
+        animal.update_parameters({"mu": 1})
+    savannah_cell.migration([cell.Savannah(),cell.Savannah(),cell.Savannah(),cell.Savannah()])
+    assert len(savannah_cell.animal_classes["Carnivore"]) == 0
+
+def test_mating():
+    
