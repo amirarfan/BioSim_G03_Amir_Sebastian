@@ -226,9 +226,49 @@ def test_annual_death():
         assert len(savannah_cell.animal_classes["Carnivore"]) == 0
 def test_insert_animal():
     savannah_cell = cell.Savannah()
+    animal = savannah_cell.allowed_species["Carnivore"]
+    savannah_cell.insert_animal(animal())
+
+def test_update_animal_parameters_in_cell():
+    savannah_cell = cell.Savannah()
+    savannah_cell.add_animal(
+        [
+            {"species": "Carnivore", "age": 5, "weight": 10},
+            {"species": "Herbivore", "age": 5, "weight": 10}
+        ])
+    savannah_cell.update_animal_parameters_in_cell("Carnivore",{"F": 0})
+    assert savannah_cell.allowed_species["Carnivore"].param["F"] == 0
+def test_desert():
+    desert = cell.Desert()
+    assert isinstance(desert, cell.Desert)
+
+def test_delete_animal_not_in_list():
+    savannah_cell = cell.Savannah()
+    savannah_cell.add_animal(
+        [
+            {"species": "Carnivore", "age": 5, "weight": 10},
+            {"species": "Carnivore", "age": 5, "weight": 10}
+        ])
+    animal = savannah_cell.allowed_species["Herbivore"]
+    try:
+        savannah_cell.delete_animal(animal())
+    except ValueError as ve:
+        print(ve)
+def test_delete_animal():
+    savannah_cell = cell.Savannah()
     savannah_cell.add_animal(
         [
             {"species": "Carnivore", "age": 5, "weight": 10},
         ])
     for animal in savannah_cell.animal_classes["Carnivore"]:
-        savannah_cell.insert_animal(animal)
+        savannah_cell.delete_animal(animal)
+    #gjøre ferdig
+
+def test_compute_move_prob():
+    savannah_cell = cell.Savannah()
+    savannah_cell.add_animal(
+        [
+            {"species": "Carnivore", "age": 5, "weight": 10},
+        ])
+    for animal in savannah_cell.animal_classes["Carnivore"]:
+        savannah_cell.compute_move_prob(animal,[cell.Ocean(),cell.Ocean(),cell.Ocean(),cell.Ocean()])
