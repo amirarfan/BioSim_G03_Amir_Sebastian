@@ -34,14 +34,14 @@ class BioSim:
     }
 
     def __init__(
-        self,
-        island_map,
-        ini_pop,
-        seed,
-        ymax_animals=None,
-        cmax_animals=None,
-        img_base=None,
-        img_fmt="png",
+            self,
+            island_map,
+            ini_pop,
+            seed,
+            ymax_animals=None,
+            cmax_animals=None,
+            img_base=None,
+            img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -66,12 +66,15 @@ class BioSim:
         where img_no are consecutive image numbers starting from 0.
         img_base should contain a path and beginning of a file name.
         """
+
+
+        self._map = Map(island_map)
+
         self.map_rgb = [
             [self.rgb_value[column] for column in row]
             for row in island_map.splitlines()
         ]
 
-        self._map = Map(island_map)
         self._map.add_animals(ini_pop)
         np.random.seed(seed)
 
@@ -83,7 +86,7 @@ class BioSim:
 
         self.img_fmt = img_fmt
         self.img_count = 0
-        self.img_base = None
+        self.img_base = img_base
 
         self._island_map = None
         self._fig = None
@@ -149,17 +152,13 @@ class BioSim:
             print('Starting')
             if self.num_animals == 0:
                 break
-            print('Passed')
 
             if self._year % vis_years == 0:
                 self._update_graphics()
-            print('Passed 2')
             if self._year % img_years == 0:
                 self._save_graphics()
-            print('Passed 3')
 
             self._map.cycle()
-            print('Passed 4')
             self._year += 1
             print(self.year)
 
@@ -187,7 +186,7 @@ class BioSim:
         self.create_carn_line()
 
         if self.herb_heat is None:
-            self.herb_heat = self._fig.add_subplot(2, 2, 3)
+            self.herb_heat = self._fig.add_subplot(2, 2, 1)
             self.herb_img_axis = None
 
         if self.carn_heat is None:
@@ -196,14 +195,13 @@ class BioSim:
 
     def _update_graphics(self):
         pop_dataframe = self.animal_distribution
-        print(pop_dataframe.loc[pop_dataframe["Herbivores"] == 150])
 
         rows, cols = np.shape(self._map.map)
 
-        herb_count = pop_dataframe.Herbivores
+        herb_count = pop_dataframe.Herbivore
         herb_array = np.array(herb_count).reshape(rows, cols)
 
-        carn_count = pop_dataframe.Carnivores
+        carn_count = pop_dataframe.Carnivore
         carn_array = np.array(carn_count).reshape(rows, cols)
 
         self._update_specie_lines()
@@ -226,7 +224,7 @@ class BioSim:
         self.img_count += 1
 
     def create_map(self):
-        self._island_map = self._fig.add_subplot(2, 2, 1)
+        self._island_map = self._fig.add_subplot(2, 2, 3)
         self._island_map.imshow(self.map_rgb)
 
         self._island_map.set_xticks(range(len(self.map_rgb[0])))
@@ -272,7 +270,7 @@ class BioSim:
             self.herb_img_axis.set_data(herb_heat)
         else:
             self.herb_img_axis = self.herb_heat.imshow(
-                herb_heat, interpolation="nearest", vmin=0, vmax=250
+                herb_heat, interpolation="nearest", vmin=0, vmax=self.cmax_animals
             )
 
         self.herb_heat.set_title("Herbivore Heat Map")
@@ -287,7 +285,7 @@ class BioSim:
             self.carn_img_axis.set_data(carn_heat)
         else:
             self.carn_img_axis = self.carn_heat.imshow(
-                carn_heat, interpolation="nearest", vmin=0, vmax=250
+                carn_heat, interpolation="nearest", vmin=0, vmax=1
             )
 
         self.carn_heat.set_title("Carnivore Heat Map")
@@ -297,12 +295,12 @@ class BioSim:
         self.carn_heat.set_yticklabels(range(1, 1 + len(self.map_rgb)))
 
     def _update_specie_lines(self):
-        herb_amount = self.num_animals_per_species["Herbivores"]
+        herb_amount = self.num_animals_per_species["Herbivore"]
         ydata_herb = self._herb_line.get_ydata()
         ydata_herb[self.year] = herb_amount
         self._herb_line.set_ydata(ydata_herb)
 
-        carn_amount = self.num_animals_per_species["Carnivores"]
+        carn_amount = self.num_animals_per_species["Carnivore"]
         ydata_carn = self._carn_line.get_ydata()
         ydata_carn[self.year] = carn_amount
         self._carn_line.set_ydata(ydata_carn)
@@ -331,8 +329,8 @@ class BioSim:
     def num_animals_per_species(self):
         """Number of animals per species in island, as dictionary."""
         tot_herbivore, tot_carnivore = self._map.num_species_on_map()
-        self._num_animals_per_species["Herbivores"] = tot_herbivore
-        self._num_animals_per_species["Carnivores"] = tot_carnivore
+        self._num_animals_per_species["Herbivore"] = tot_herbivore
+        self._num_animals_per_species["Carnivore"] = tot_carnivore
 
         return self._num_animals_per_species
 
@@ -341,10 +339,10 @@ class BioSim:
         """Pandas DataFrame with animal count per species for each cell on
         island. """
         list_of_dicts = []
-        y_lim , x_lim = np.shape(self._map.map)
+        y_lim, x_lim = np.shape(self._map.map)
         for y in range(y_lim):
             for x in range(x_lim):
-                curr_cell = self._map.map[(y,x)]
+                curr_cell = self._map.map[(y, x)]
                 (
                     curr_herbivores,
                     curr_carnivores,
@@ -352,13 +350,13 @@ class BioSim:
                 curr_dict = {
                     "x": x,
                     "y": y,
-                    "Herbivores": curr_herbivores,
-                    "Carnivores": curr_carnivores,
+                    "Herbivore": curr_herbivores,
+                    "Carnivore": curr_carnivores,
                 }
                 list_of_dicts.append(curr_dict)
 
         return pd.DataFrame(
-            list_of_dicts, columns=["x", "y", "Herbivores", "Carnivores"]
+            list_of_dicts, columns=["x", "y", "Herbivore", "Carnivore"]
         )
 
     def make_movie(self, movie_fmt=_DEFAULT_MOVIE_FORMAT):

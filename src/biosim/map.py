@@ -88,15 +88,20 @@ class Map:
 
         Returns
         -------
-        list
-            Contains neighbour cells
+        neighbour_cells: list
+                        Contains neighbour cells
 
         """
         x, y = loc
-        x_lim, y_lim = np.shape(self.map)
-        # FEIL HER
         neighbour_cords = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
-        return [self.map[y,x] for x , y in neighbour_cords if (x<x_lim and y<y_lim)]
+        neighbour_cells = []
+        for cords in neighbour_cords:
+            try:
+                neighbour_cells.append(self.map[cords])
+            except IndexError:
+                pass
+
+        return neighbour_cells
 
     def add_animals(self, ini_list):
         """
@@ -122,7 +127,7 @@ class Map:
             print(cell_type)
 
             if type(cell_type).__name__ not in self.allowed_cells:
-                raise ValueError(f"This location is inhabitable")
+                raise ValueError(f"This cell location is inhabitable")
 
             cell_type.add_animal(pop_list)
             print(cell_type.num_sepcies_per_cell())
