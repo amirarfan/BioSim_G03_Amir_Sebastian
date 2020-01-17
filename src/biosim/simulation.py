@@ -270,7 +270,7 @@ class BioSim:
             self.herb_img_axis.set_data(herb_heat)
         else:
             self.herb_img_axis = self.herb_heat.imshow(
-                herb_heat, interpolation="nearest", vmin=0, vmax=self.cmax_animals
+                herb_heat, interpolation="nearest", vmin=0, vmax=self.cmax_animals['Herbivore']
             )
 
         self.herb_heat.set_title("Herbivore Heat Map")
@@ -285,7 +285,7 @@ class BioSim:
             self.carn_img_axis.set_data(carn_heat)
         else:
             self.carn_img_axis = self.carn_heat.imshow(
-                carn_heat, interpolation="nearest", vmin=0, vmax=1
+                carn_heat, interpolation="nearest", vmin=0, vmax=cmax_animal['Carnivore']
             )
 
         self.carn_heat.set_title("Carnivore Heat Map")

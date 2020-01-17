@@ -146,7 +146,7 @@ class Cell:
                 food_des = car.param["F"]
                 current_food = 0
                 for index, herb in enumerate(self.animal_classes["Herbivore"]):
-                    if food_des >= current_food:
+                    if food_des <= current_food:
                         break
                     if car.determine_kill(herb):
                         current_food += herb.weight
