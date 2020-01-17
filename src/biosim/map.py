@@ -2,6 +2,7 @@
 
 __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
+
 from .cell import Ocean, Mountain, Desert, Savannah, Jungle
 import numpy as np
 
@@ -39,7 +40,7 @@ class Map:
         )
 
         self.outer_limits = np.concatenate(
-            self.map[0], self.map[:, 0], self.map[:, -1], self.map[-1]
+            [self.map[0], self.map[:, 0], self.map[:, -1], self.map[-1]]
         )
 
         for cell in self.outer_limits:
@@ -70,7 +71,7 @@ class Map:
             # Only cell types which are allowed can be transformed
             if letter not in cls.dict_cells.keys():
                 raise ValueError(f"{letter} is not an allowed cell type")
-            temp_list.append(cls.dict_cells[letter])
+            temp_list.append(cls.dict_cells[letter]())
 
         return temp_list
 
@@ -87,13 +88,20 @@ class Map:
 
         Returns
         -------
-        list
-            Contains neighbour cells
+        neighbour_cells: list
+                        Contains neighbour cells
 
         """
         x, y = loc
         neighbour_cords = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
-        return [self.map[cell] for cell in neighbour_cords]
+        neighbour_cells = []
+        for cords in neighbour_cords:
+            try:
+                neighbour_cells.append(self.map[cords])
+            except IndexError:
+                pass
+
+        return neighbour_cells
 
     def add_animals(self, ini_list):
         """
@@ -113,13 +121,16 @@ class Map:
             except IndexError:
                 print(f'{dictionary["loc"]} is not a location on map')
                 break
-            pop = dictionary["pop"]
+            pop_list = dictionary["pop"]
+            print(pop_list)
             cell_type = self.map[loc]
+            print(cell_type)
 
             if type(cell_type).__name__ not in self.allowed_cells:
-                raise ValueError(f"This location is inhabitable")
+                raise ValueError(f"This cell location is inhabitable")
 
-            cell_type.add_animal(pop)
+            cell_type.add_animal(pop_list)
+            print(cell_type.num_sepcies_per_cell())
 
     def move_all_animals(self):
         """
@@ -127,9 +138,12 @@ class Map:
         'cell.py'
 
         """
-        for y, list_loc in enumerate(self.map):
-            for x, cell in enumerate(self.map):
-                cell.migration(self.get_neighbour((x, y)))
+
+        y_lim, x_lim = np.shape(self.map)
+        for y in range(y_lim):
+            for x in range(x_lim):
+                loc = y, x
+                self.map[loc].migration(self.get_neighbour((x, y)))
 
     def all_animals_eat(self):
         """
@@ -209,6 +223,18 @@ class Map:
                 tot_animals += cell.num_animals_per_cell()
 
     def num_species_on_map(self):
+        """
+
+        Calculates and returns the total amount of per specie on the map
+
+        Returns
+        -------
+        int
+            The amount of herbivores on the map
+        int
+            The amount of carnivores on the map
+
+        """
         tot_herbivores = 0
         tot_carnivores = 0
         for cell_list in self.map:
@@ -218,6 +244,47 @@ class Map:
                 tot_carnivores += curr_carnivore
 
         return tot_herbivores, tot_carnivores
+
+    def update_animal_params_all_cells(self, specie, params):
+        """
+
+        Updates parameters for specified specie in all cells.
+
+        Parameters
+        ----------
+        specie: str
+                The name of the specie which needs it's parameters updated
+        params: dict
+                Dictionary containing the updated values of the parameters.
+
+
+        """
+        y_lim, x_lim = np.shape(self.map)
+        for y in range(y_lim):
+            for x in range(x_lim):
+                curr_cell = self.map[(y, x)]
+                curr_cell.update_animal_parameters_in_cell(specie, params)
+
+    def update_param_all_cells(self, landscape, params):
+        """
+
+        Updates parameters for all cells which are specified to be updated.
+
+        Parameters
+        ----------
+        landscape: str
+                 The cell type which needs its parameters updated
+        params: dict
+                Dictionary containing the new parameters
+
+
+        """
+        y_lim, x_lim = np.shape(self.map)
+        for y in range(y_lim):
+            for x in range(x_lim):
+                curr_cell = self.map[(y, x)]
+                if type(curr_cell).__name__ == landscape:
+                    curr_cell.update_parameters(params)
 
     def cycle(self):
         """
