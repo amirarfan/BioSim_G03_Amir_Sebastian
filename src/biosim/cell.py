@@ -251,6 +251,7 @@ class Cell:
             except ZeroDivisionError:
                 prob = 0
             computed_propensities.append(prob)
+        return computed_propensities
 
     def compute_relative_abundance(self, animal_class):
         r"""

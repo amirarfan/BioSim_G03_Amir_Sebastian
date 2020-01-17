@@ -34,14 +34,14 @@ class BioSim:
     }
 
     def __init__(
-        self,
-        island_map,
-        ini_pop,
-        seed,
-        ymax_animals=None,
-        cmax_animals=None,
-        img_base=None,
-        img_fmt="png",
+            self,
+            island_map,
+            ini_pop,
+            seed,
+            ymax_animals=None,
+            cmax_animals=None,
+            img_base=None,
+            img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -147,19 +147,19 @@ class BioSim:
         self._final_year = self.year + num_years
         self._setup_graphics()
 
-        while self.year < self._final_year:
+        while self._year < self._final_year:
             print("Starting")
-            if self.num_animals == 0:
-                break
+            print(self._final_year)
 
-            if self.year % vis_years == 0:
+            if self._year % vis_years == 0:
                 self._update_graphics()
-            if self.year % img_years == 0:
+
+            if self._year % img_years == 0:
                 self._save_graphics()
 
             self._map.cycle()
-            self._year = +1
-            print(self.year)
+
+            self._year += 1
 
     def _setup_graphics(self):
 
@@ -217,8 +217,8 @@ class BioSim:
             return
 
         print("Svaing to", "{base}_{num:05d}.{type}".format(
-                base=self.img_base, num=self.img_count, type=self.img_fmt
-            ))
+            base=self.img_base, num=self.img_count, type=self.img_fmt
+        ))
 
         plt.savefig(
             "{base}_{num:05d}.{type}".format(
@@ -308,12 +308,12 @@ class BioSim:
     def _update_specie_lines(self):
         herb_amount = self.num_animals_per_species["Herbivore"]
         ydata_herb = self._herb_line.get_ydata()
-        ydata_herb[self.year] = herb_amount
+        ydata_herb[self._year] = herb_amount
         self._herb_line.set_ydata(ydata_herb)
 
         carn_amount = self.num_animals_per_species["Carnivore"]
         ydata_carn = self._carn_line.get_ydata()
-        ydata_carn[self.year] = carn_amount
+        ydata_carn[self._year] = carn_amount
         self._carn_line.set_ydata(ydata_carn)
 
     def add_population(self, population):
@@ -329,10 +329,6 @@ class BioSim:
     def year(self):
         """Last year simulated."""
         return self._year
-
-    @year.setter
-    def year(self, val):
-        self._year += val
 
     @property
     def num_animals(self):
@@ -371,9 +367,11 @@ class BioSim:
                 }
                 list_of_dicts.append(curr_dict)
 
-        return pd.DataFrame(
+        hore =  pd.DataFrame(
             list_of_dicts, columns=["Row", "Col", "Herbivore", "Carnivore"]
         )
+
+        return hore
 
     def make_movie(self, movie_fmt=_DEFAULT_MOVIE_FORMAT):
         """Create MPEG4 movie from visualization images saved."""
