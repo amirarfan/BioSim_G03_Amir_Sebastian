@@ -101,7 +101,7 @@ class BioSim:
         self.carn_img_axis = None
 
         if ymax_animals is None:
-            self.ymax_animals = None
+            self.ymax_animals = 300
         else:
             self.ymax_animals = ymax_animals
 
@@ -309,7 +309,6 @@ class BioSim:
         self._herb_line.set_ydata(ydata_herb)
 
         carn_amount = self.num_animals_per_species["Carnivore"]
-        print(carn_amount)
         ydata_carn = self._carn_line.get_ydata()
         ydata_carn[self._year] = carn_amount
         self._carn_line.set_ydata(ydata_carn)
