@@ -364,7 +364,7 @@ class BioSim:
                 }
                 list_of_dicts.append(curr_dict)
 
-        df =  pd.DataFrame(
+        df = pd.DataFrame(
             list_of_dicts, columns=["Row", "Col", "Herbivore", "Carnivore"]
         )
 
