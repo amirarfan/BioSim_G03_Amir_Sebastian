@@ -34,14 +34,14 @@ class BioSim:
     }
 
     def __init__(
-            self,
-            island_map,
-            ini_pop,
-            seed,
-            ymax_animals=None,
-            cmax_animals=None,
-            img_base=None,
-            img_fmt="png",
+        self,
+        island_map,
+        ini_pop,
+        seed,
+        ymax_animals=None,
+        cmax_animals=None,
+        img_base=None,
+        img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -66,7 +66,6 @@ class BioSim:
         where img_no are consecutive image numbers starting from 0.
         img_base should contain a path and beginning of a file name.
         """
-
 
         self._map = Map(island_map)
 
@@ -145,21 +144,21 @@ class BioSim:
         if img_years is None:
             img_years = vis_years
 
-        self._final_year = self._year + num_years
+        self._final_year = self.year + num_years
         self._setup_graphics()
 
-        while self._year < self._final_year:
-            print('Starting')
+        while self.year < self._final_year:
+            print("Starting")
             if self.num_animals == 0:
                 break
 
-            if self._year % vis_years == 0:
+            if self.year % vis_years == 0:
                 self._update_graphics()
-            if self._year % img_years == 0:
+            if self.year % img_years == 0:
                 self._save_graphics()
 
             self._map.cycle()
-            self._year += 1
+            self._year = +1
             print(self.year)
 
     def _setup_graphics(self):
@@ -212,8 +211,14 @@ class BioSim:
 
     def _save_graphics(self):
 
+        print("Entering _save_graphics")
+
         if self.img_base is None:
             return
+
+        print("Svaing to", "{base}_{num:05d}.{type}".format(
+                base=self.img_base, num=self.img_count, type=self.img_fmt
+            ))
 
         plt.savefig(
             "{base}_{num:05d}.{type}".format(
@@ -270,7 +275,10 @@ class BioSim:
             self.herb_img_axis.set_data(herb_heat)
         else:
             self.herb_img_axis = self.herb_heat.imshow(
-                herb_heat, interpolation="nearest", vmin=0, vmax=self.cmax_animals['Herbivore']
+                herb_heat,
+                interpolation="nearest",
+                vmin=0,
+                vmax=self.cmax_animals["Herbivore"],
             )
 
         self.herb_heat.set_title("Herbivore Heat Map")
@@ -285,7 +293,10 @@ class BioSim:
             self.carn_img_axis.set_data(carn_heat)
         else:
             self.carn_img_axis = self.carn_heat.imshow(
-                carn_heat, interpolation="nearest", vmin=0, vmax=cmax_animal['Carnivore']
+                carn_heat,
+                interpolation="nearest",
+                vmin=0,
+                vmax=self.cmax_animals["Carnivore"],
             )
 
         self.carn_heat.set_title("Carnivore Heat Map")
@@ -319,10 +330,15 @@ class BioSim:
         """Last year simulated."""
         return self._year
 
+    @year.setter
+    def year(self, val):
+        self._year += val
+
     @property
     def num_animals(self):
         """Total number of animals on island."""
         self._num_animals = self._map.num_animals_on_map()
+        print(self._num_animals)
         return self._num_animals
 
     @property
@@ -348,15 +364,15 @@ class BioSim:
                     curr_carnivores,
                 ) = curr_cell.num_sepcies_per_cell()
                 curr_dict = {
-                    "x": x,
-                    "y": y,
+                    "Row": y,
+                    "Col": x,
                     "Herbivore": curr_herbivores,
                     "Carnivore": curr_carnivores,
                 }
                 list_of_dicts.append(curr_dict)
 
         return pd.DataFrame(
-            list_of_dicts, columns=["x", "y", "Herbivore", "Carnivore"]
+            list_of_dicts, columns=["Row", "Col", "Herbivore", "Carnivore"]
         )
 
     def make_movie(self, movie_fmt=_DEFAULT_MOVIE_FORMAT):
