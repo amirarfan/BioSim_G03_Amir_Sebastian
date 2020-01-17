@@ -175,10 +175,7 @@ class BioSim:
 
         if self._mean_ax is None:
             self._mean_ax = self._fig.add_subplot(2, 2, 2)
-            if self.ymax_animals is not None:
-                self._mean_ax.set_ylim(self.ymax_animals)
-            else:
-                self._mean_ax.set_ylim(auto=True)
+            self._mean_ax.set_ylim(0, 300)
 
         self._mean_ax.set_xlim(0, self._final_year + 1)
         self.create_herb_line()
@@ -312,6 +309,7 @@ class BioSim:
         self._herb_line.set_ydata(ydata_herb)
 
         carn_amount = self.num_animals_per_species["Carnivore"]
+        print(carn_amount)
         ydata_carn = self._carn_line.get_ydata()
         ydata_carn[self._year] = carn_amount
         self._carn_line.set_ydata(ydata_carn)
@@ -367,11 +365,11 @@ class BioSim:
                 }
                 list_of_dicts.append(curr_dict)
 
-        hore =  pd.DataFrame(
+        df =  pd.DataFrame(
             list_of_dicts, columns=["Row", "Col", "Herbivore", "Carnivore"]
         )
 
-        return hore
+        return df
 
     def make_movie(self, movie_fmt=_DEFAULT_MOVIE_FORMAT):
         """Create MPEG4 movie from visualization images saved."""
