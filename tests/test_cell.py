@@ -224,3 +224,11 @@ def test_annual_death():
         animal.fitness = 0
         savannah_cell.annual_death()
         assert len(savannah_cell.animal_classes["Carnivore"]) == 0
+def test_insert_animal():
+    savannah_cell = cell.Savannah()
+    savannah_cell.add_animal(
+        [
+            {"species": "Carnivore", "age": 5, "weight": 10},
+        ])
+    for animal in savannah_cell.animal_classes["Carnivore"]:
+        savannah_cell.insert_animal(animal)
