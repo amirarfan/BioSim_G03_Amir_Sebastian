@@ -113,14 +113,14 @@ def test_initial_population():
         island_map="OOOO\nOJSO\nOOOO",
         ini_pop=[
             {
-                "loc": (2, 2),
+                "loc": (1, 1),
                 "pop": [
                     {"species": "Herbivore", "age": 1, "weight": 10.0},
                     {"species": "Carnivore", "age": 1, "weight": 10.0},
                 ],
             },
             {
-                "loc": (2, 3),
+                "loc": (1, 2),
                 "pop": [
                     {"species": "Herbivore", "age": 1, "weight": 10.0},
                     {"species": "Carnivore", "age": 1, "weight": 10.0},
@@ -143,14 +143,14 @@ def test_add_population(plain_sim):
     plain_sim.add_population(
         [
             {
-                "loc": (2, 2),
+                "loc": (1, 1),
                 "pop": [
                     {"species": "Herbivore", "age": 1, "weight": 10.0},
                     {"species": "Carnivore", "age": 1, "weight": 10.0},
                 ],
             },
             {
-                "loc": (2, 3),
+                "loc": (1, 2),
                 "pop": [
                     {"species": "Herbivore", "age": 1, "weight": 10.0},
                     {"species": "Carnivore", "age": 1, "weight": 10.0},
@@ -203,14 +203,14 @@ def test_get_animal_distribution(plain_sim):
     plain_sim.add_population(
         [
             {
-                "loc": (2, 2),
+                "loc": (1, 1),
                 "pop": [
                     {"species": "Herbivore", "age": 1, "weight": 10.0},
                     {"species": "Carnivore", "age": 1, "weight": 10.0},
                 ],
             },
             {
-                "loc": (2, 3),
+                "loc": (1, 2),
                 "pop": [
                     {"species": "Herbivore", "age": 1, "weight": 10.0},
                     {"species": "Herbivore", "age": 1, "weight": 10.0},
@@ -225,10 +225,10 @@ def test_get_animal_distribution(plain_sim):
     assert set(data.columns) == {"Row", "Col", "Herbivore", "Carnivore"}
 
     data.set_index(["Row", "Col"], inplace=True)
-    assert data.loc[(2, 2)].Herbivore == 1
-    assert data.loc[(2, 2)].Carnivore == 1
-    assert data.loc[(2, 3)].Herbivore == 2
-    assert data.loc[(2, 3)].Carnivore == 0
+    assert data.loc[(1, 1)].Herbivore == 1
+    assert data.loc[(1, 1)].Carnivore == 1
+    assert data.loc[(1, 2)].Herbivore == 2
+    assert data.loc[(1, 2)].Carnivore == 0
 
     assert data.Herbivore.sum() == 3
     assert data.Carnivore.sum() == 1
@@ -249,10 +249,10 @@ def test_set_plot_limits():
 def figfile_root():
     """Provide name for figfile root and delete figfiles after test completes"""
 
-    ffroot = os.path.join(".", "testfigroot")
+    ffroot = "testfigroot"
     yield ffroot
-    for f in glob.glob(ffroot + "_0*.png"):
-        os.remove(f)
+    #for f in glob.glob(ffroot + "_0*.png"):
+     #   os.remove(f)
 
 
 def test_figure_saved(figfile_root):
@@ -266,6 +266,8 @@ def test_figure_saved(figfile_root):
         img_fmt="png",
     )
     sim.simulate(2, vis_years=1, img_years=1)
+    print(os.getcwd())
+    print("FFR",figfile_root)
 
     assert os.path.isfile(figfile_root + "_00000.png")
     assert os.path.isfile(figfile_root + "_00001.png")

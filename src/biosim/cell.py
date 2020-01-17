@@ -244,7 +244,13 @@ class Cell:
             cell_propensity.append(propenisty_cell)
             total_propensity += propenisty_cell
 
-        return [cell_prop / total_propensity for cell_prop in cell_propensity]
+        computed_propensities = []
+        for cell_prop in cell_propensity:
+            try:
+                prob = cell_prop / total_propensity
+            except ZeroDivisionError:
+                prob = 0
+            computed_propensities.append(prob)
 
     def compute_relative_abundance(self, animal_class):
         r"""

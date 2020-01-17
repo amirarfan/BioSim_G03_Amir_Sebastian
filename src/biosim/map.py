@@ -32,6 +32,8 @@ class Map:
                     String representing a map of cells
         """
 
+        self.check_even_string(map_string)
+
         self.map = np.array(
             [
                 self.map_factory(curr_list)
@@ -45,7 +47,18 @@ class Map:
 
         for cell in self.outer_limits:
             if type(cell).__name__ != "Ocean":
-                raise ValueError(f"Outer Cell is not {Ocean}")
+                raise ValueError(f"Outer Cell is not Ocean")
+
+    @staticmethod
+    def check_even_string(map_string):
+        prev_line_length = None
+        for line in map_string.split("\n"):
+            line_length = len(line)
+            if prev_line_length is None:
+                pass
+            elif line_length != prev_line_length:
+                raise ValueError("The lines are not uniform")
+            prev_line_length = line_length
 
     @classmethod
     def map_factory(cls, list_to_alter):
@@ -221,6 +234,8 @@ class Map:
         for cell_list in self.map:
             for cell in cell_list:
                 tot_animals += cell.num_animals_per_cell()
+
+        return tot_animals
 
     def num_species_on_map(self):
         """
