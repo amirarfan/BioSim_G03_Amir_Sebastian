@@ -198,4 +198,29 @@ def test_eat_carnivore():
     for animal in savannah_cell.animal_classes["Carnivore"]:
         animal.fitness = 30
         savannah_cell.eat_carnivore()
-        assert animal.weight == 10
+        assert animal.weight > 10
+
+def test_eat_carnivore_none_fodder():
+    savannah_cell = cell.Savannah()
+    savannah_cell.add_animal(
+        [
+            {"species": "Carnivore", "age": 5, "weight": 10},
+            {"species": "Herbivore", "age": 5, "weight": 10}
+        ])
+    for animal in savannah_cell.animal_classes["Carnivore"]:
+        animal.fitness = 30
+        prev_weight = animal.weight
+        animal.update_parameters({"F": 0})
+        savannah_cell.eat_carnivore()
+        assert prev_weight == animal.weight
+
+def test_annual_death():
+    savannah_cell = cell.Savannah()
+    savannah_cell.add_animal(
+        [
+            {"species": "Carnivore", "age": 5, "weight": 10},
+        ])
+    for animal in savannah_cell.animal_classes["Carnivore"]:
+        animal.fitness = 0
+        savannah_cell.annual_death()
+        assert len(savannah_cell.animal_classes["Carnivore"]) == 0
