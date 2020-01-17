@@ -189,15 +189,17 @@ class Cell:
                         List of class instances containing neighbouring cells
 
         """
-        for animal_list in self.animal_classes.values():
-            for animal in animal_list:
+        for type_of_animal, animal_list in self.animal_classes.items():
+            remove_list = set()
+            for index, animal in enumerate(animal_list):
                 if animal.determine_to_move():
                     move_prob = self.compute_move_prob(animal, neighbour_cells)
                     chosen_cell = np.random.choice(
                         neighbour_cells, p=move_prob
                     )
                     chosen_cell.insert_animal(animal)
-                    self.delete_animal(animal)
+                    remove_list.add(index)
+            self.remove_multiple_animals(type_of_animal, remove_list)
 
     def annual_death(self):
         """
@@ -211,7 +213,7 @@ class Cell:
         for type_of_animal, animal_list in self.animal_classes.items():
             remove_list = set()
             for index, animal in enumerate(animal_list):
-                if animal.determine_death:
+                if animal.determine_death():
                     remove_list.add(index)
             self.remove_multiple_animals(type_of_animal, remove_list)
 
@@ -294,7 +296,11 @@ class Cell:
                 for herbivore in self.animal_classes["Herbivore"]
             ]
             curr_fod = sum(herb_weight_list)
-        return curr_fod / ((amount_same_spec + 1) * food_wanting)
+
+        if curr_fod == 0:
+            return 0
+        else:
+            return curr_fod / ((amount_same_spec + 1) * food_wanting)
 
     def propensity(self, specie):
         r"""

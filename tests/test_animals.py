@@ -5,7 +5,7 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 import biosim.animals as animal
 import numpy
-
+import pytest
 
 def test_herbivore_age():
     # Test for animal age is equal to 0
