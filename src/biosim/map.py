@@ -93,8 +93,10 @@ class Map:
 
         """
         x, y = loc
+        x_lim, y_lim = np.shape(self.map)
+        # FEIL HER
         neighbour_cords = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
-        return [self.map[cell] for cell in neighbour_cords]
+        return [self.map[y,x] for x , y in neighbour_cords if (x<x_lim and y<y_lim)]
 
     def add_animals(self, ini_list):
         """
@@ -132,10 +134,11 @@ class Map:
 
         """
 
-        #feilher
-        for y, list_loc in enumerate(self.map):
-            for x, cell in enumerate(self.map):
-                cell.migration(self.get_neighbour((x, y)))
+        y_lim, x_lim = np.shape(self.map)
+        for y in range(y_lim):
+            for x in range(x_lim):
+                loc = y, x
+                self.map[loc].migration(self.get_neighbour((x, y)))
 
     def all_animals_eat(self):
         """
