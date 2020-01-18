@@ -11,31 +11,77 @@ from scipy.stats import anderson
 
 @pytest.fixture
 def plain_herbivore():
+    """
+
+    Pytest fixture which returns a standard Herbivore class
+
+    """
     return Herbivore()
 
 
 def test_new_herbivore_age():
-    # Test for animal age is equal to 0
+    """
+
+    Tests that when you initalize a new Herbivore class, the age is equal to 0
+
+    """
     herb = Herbivore()
     assert herb.age == 0
 
 
-def test_herbivore_custom_neg_age(plain_herbivore):
+def test_herbivore_custom_neg_age():
+    """
+
+    Tests that setting negative age when initialising a new Herbivore instance
+    ValueError is raised.
+
+
+    """
+    # Try - Except could also be used here
     with pytest.raises(ValueError):
         Herbivore(age=-1)
 
 
 def test_herbivore_custom_pos_age():
+    """
+
+    Tests that initialising a new Herbivore class instance with a specific
+    age works.
+
+    """
     herb = Herbivore(age=2)
     assert herb.age == 2
 
 
 def test_herbivore_setter_method_age(plain_herbivore):
+    """
+
+    Tests setting Herbivore age works
+
+    Parameters
+    ----------
+    plain_herbivore: class instance
+                    Herbivore class instance from fixture
+
+
+    """
     plain_herbivore.age = 2
     assert plain_herbivore.age == 2
 
 
 def test_herbivore_setter_method_neg_age(plain_herbivore):
+    """
+
+    Checks if 'ValueError' is raised when assigning a negative age to an already
+    existing instance of Herbivore.
+
+    Parameters
+    ----------
+    plain_herbivore: class instance
+                    Herbivore class instance from fixture
+
+
+    """
     try:
         plain_herbivore.age = -1
     except ValueError as ve:
@@ -43,13 +89,32 @@ def test_herbivore_setter_method_neg_age(plain_herbivore):
 
 
 def test_herbivore_non_int_setter_age(plain_herbivore):
-    try:
+    """
+
+    Tests that non-int value of age raises 'ValueError'
+
+    Parameters
+    ----------
+    plain_herbivore: class instance
+                    Herbivore class instance from fixture
+
+    """
+    with pytest.raises(ValueError):
         plain_herbivore.age = 2.1
-    except ValueError as ve:
-        print(ve)
 
 
 def test_herbivore_actually_ages(plain_herbivore):
+    """
+
+    Tests the add age function from Animal class from 'animals.py'.
+
+    Parameters
+    ----------
+    plain_herbivore: class instance
+                    Herbivore class instance from fixture
+
+
+    """
     first_age = plain_herbivore.age
     plain_herbivore.add_age()
     second_age = plain_herbivore.age
@@ -57,6 +122,11 @@ def test_herbivore_actually_ages(plain_herbivore):
 
 
 def test_herbivore_continual_aging():
+    """
+    Tests that add_age function from Animal class from 'animals.py' works
+    when called several times.
+
+    """
     herb = Herbivore()
     for i in range(10):
         herb.add_age()
