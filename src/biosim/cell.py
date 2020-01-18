@@ -197,7 +197,7 @@ class Cell:
                     chosen_cell = np.random.choice(
                         neighbour_cells, p=move_prob
                     )
-                    chosen_cell.insert_animal(animal)
+                    chosen_cell.insert_animal([animal])
                     remove_list.add(index)
             self.remove_multiple_animals(type_of_animal, remove_list)
 
@@ -369,19 +369,22 @@ class Cell:
 
         animal_classes_list.remove(animal)
 
-    def insert_animal(self, animal):
+    def insert_animal(self, animal_list):
         """
 
         Inserts animal class instance to a cell
 
         Parameters
         ----------
-        animal: class instance
+        animal_list: list
+                List of animal classes to append to a cell
 
 
         """
-        animal_name = type(animal).__name__
-        self.animal_classes[animal_name].append(animal)
+
+        for animal_class in animal_list:
+            animal_name = type(animal_class).__name__
+            self.animal_classes[animal_name].append(animal_class)
 
     def add_animal(self, list_animal_dicts):
         """

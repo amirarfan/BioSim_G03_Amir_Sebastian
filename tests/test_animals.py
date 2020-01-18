@@ -308,7 +308,7 @@ def test_bool_carnivore_det_kill(plain_carnivore):
 
 
 def test_det_kill_false(plain_carnivore, mocker):
-    mocker.patch('numpy.random.choice', return_value=False)
+    mocker.patch("numpy.random.choice", return_value=False)
     assert not plain_carnivore.determine_kill(0.01)
 
 
@@ -361,7 +361,7 @@ def test_gauss_distribution_shapiro():
 
      We define a significance level (alpha) which can be seen as threshold.
      If the p-value is lower than alpha, one can say that the null hypothesis
-     is more insignificant.  
+     is more insignificant.
 
     """
     herbivores = [Herbivore() for _ in range(10000)]

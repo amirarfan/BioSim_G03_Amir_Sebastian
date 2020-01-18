@@ -3,80 +3,128 @@
 __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
-import biosim.cell as cell
+from biosim.cell import Mountain, Ocean, Savannah, Jungle, Desert
+from biosim.animals import Herbivore, Carnivore
 import pytest
 
 
-def test_fodder_Mountain():
-    mountain_cell = cell.Mountain()
-    assert mountain_cell.current_fodder == 0
+@pytest.fixture
+def plain_mountain():
+    return Mountain()
 
 
-def test_fodder_Ocean():
-    ocean_cell = cell.Ocean()
-    assert ocean_cell.current_fodder == 0
+@pytest.fixture
+def plain_ocean():
+    return Ocean()
 
 
-def test_fodder_savannah():
-    savannah_cell = cell.Savannah()
-    assert savannah_cell.current_fodder == 300
+@pytest.fixture
+def plain_savannah():
+    return Savannah()
 
 
-def test_gen_fodder_savannah():
-    savannah_cell = cell.Savannah()
-    savannah_cell.update_parameters({"f_max": 300, "alpha": 0})
-    savannah_cell.gen_fodder_sav()
-    assert savannah_cell.current_fodder == 300
+@pytest.fixture
+def plain_jungle():
+    return Jungle()
 
 
-def test_gen_fodder_jung():
-    jun_cell = cell.Jungle()
-    jun_cell.current_fodder = 700
-    jun_cell.gen_fodder_jung()
-    assert jun_cell.current_fodder == jun_cell.param["f_max"]
+@pytest.fixture
+def plain_desert():
+    return Desert()
 
 
-def test_aging():
-    jungle_cell = cell.Jungle()
-    jungle_cell.add_animal(
+@pytest.fixture
+def populated_jungle():
+    jun_cell = Jungle()
+    jun_cell.add_animal(
         [
             {"species": "Carnivore", "age": 10, "weight": 20},
             {"species": "Carnivore", "age": 10, "weight": 20},
             {"species": "Herbivore", "age": 10, "weight": 20},
         ]
     )
-    jungle_cell.aging()
-    for class_name in jungle_cell.animal_classes.values():
-        for animal in class_name:
-            assert animal.age == 11
+    return jun_cell
 
 
-def test_annual_weightloss():
-    jungle_cell = cell.Jungle()
-    jungle_cell.add_animal(
-        [
-            {"species": "Carnivore", "age": 5, "weight": 20},
-            {"species": "Carnivore", "age": 5, "weight": 20},
-        ]
-    )
-    jungle_cell.annual_weight_loss()
-    for class_name in jungle_cell.animal_classes.values():
-        for animal in class_name:
-            assert animal.weight != 20
+@pytest.fixture
+def populated_ocean():
+    ocean_cell = Ocean()
+    herbivores = [Herbivore() for _ in range(100)]
+    carnivores = [Carnivore() for _ in range(100)]
+    ocean_cell.insert_animal(herbivores)
+    ocean_cell.insert_animal(carnivores)
+    return ocean_cell
+
+@pytest.fixture
+def populated_
 
 
-def test_propensity_ocean_cell():
-    ocean_cell = cell.Ocean()
-    ocean_cell.add_animal(
-        [
-            {"species": "Carnivore", "age": 5, "weight": 20},
-            {"species": "Carnivore", "age": 5, "weight": 20},
-            {"species": "Herbivore", "age": 5, "weight": 20},
-        ]
-    )
-    for class_list in ocean_cell.animal_classes.values():
+def test_fodder_mountain(plain_mountain):
+    assert plain_mountain.current_fodder == 0
+
+
+def test_fodder_ocean(plain_ocean):
+    assert plain_ocean.current_fodder == 0
+
+
+def test_fodder_savannah(plain_savannah):
+    assert plain_savannah.current_fodder == 300
+
+
+def test_gen_fodder_update_par_savannah(plain_savannah):
+    plain_savannah.update_parameters({"f_max": 300, "alpha": 0})
+    plain_savannah.gen_fodder_sav()
+    assert plain_savannah.current_fodder == 300
+
+
+def test_gen_fodder_jung(plain_jungle):
+    plain_jungle.current_fodder = 700
+    plain_jungle.gen_fodder_jung()
+    assert plain_jungle.current_fodder == plain_jungle.param["f_max"]
+
+
+def test_aging_cell(populated_jungle):
+    prev_ages = [
+        animal.age
+        for class_type in populated_jungle.animal_classes.values()
+        for animal in class_type
+    ]
+    populated_jungle.aging()
+
+    new_ages = [
+        animal.age
+        for class_type in populated_jungle.animal_classes.values()
+        for animal in class_type
+    ]
+
+    for old_age in prev_ages:
+        for new_age in new_ages:
+            assert new_age > old_age
+
+
+def test_annual_weightloss(populated_jungle):
+    old_weights = [
+        animal.weight
+        for class_type in populated_jungle.animal_classes.values()
+        for animal in class_type
+    ]
+    populated_jungle.annual_weight_loss()
+
+    new_weights = [
+        animal.weight
+        for class_type in populated_jungle.animal_classes.values()
+        for animal in class_type
+    ]
+
+    for old_weight in old_weights:
+        for new_weight in new_weights:
+            assert new_weight < old_weight
+
+
+def test_propensity_ocean_cell(populated_ocean):
+    for class_list in populated_ocean.animal_classes.values():
         for animal in class_list:
-            assert ocean_cell.propensity(specie=animal) == 0
+            assert populated_ocean.propensity(specie=animal) == 0
 
 
 def test_propensity():
@@ -95,8 +143,8 @@ def test_update_parameters():
     savannah_cell = cell.Savannah()
     savannah_cell.update_parameters({"f_max": 200, "alpha": 0.4})
     assert (
-        savannah_cell.param["f_max"] == 200
-        and savannah_cell.param["alpha"] == 0.4
+            savannah_cell.param["f_max"] == 200
+            and savannah_cell.param["alpha"] == 0.4
     )
 
 
