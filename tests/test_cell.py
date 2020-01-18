@@ -10,6 +10,49 @@ import numpy
 import os
 
 
+@pytest.fixture(autouse=True)
+def reset_parameters():
+    standard_parameters_herb =  {
+        "w_birth": 8.0,
+        "sigma_birth": 1.5,
+        "beta": 0.9,
+        "eta": 0.05,
+        "a_half": 40.0,
+        "phi_age": 0.2,
+        "w_half": 10.0,
+        "phi_weight": 0.1,
+        "mu": 0.25,
+        "lambda": 1.0,
+        "gamma": 0.2,
+        "zeta": 3.5,
+        "xi": 1.2,
+        "omega": 0.4,
+        "F": 10.0,
+        "DeltaPhiMax": 0,
+    }
+    standard_parameters_carn = {
+        "w_birth": 6.0,
+        "sigma_birth": 1.0,
+        "beta": 0.75,
+        "eta": 0.125,
+        "a_half": 60.0,
+        "phi_age": 0.4,
+        "w_half": 4.0,
+        "phi_weight": 0.4,
+        "mu": 0.4,
+        "lambda": 1.0,
+        "gamma": 0.8,
+        "zeta": 3.5,
+        "xi": 1.1,
+        "omega": 0.9,
+        "F": 50.0,
+        "DeltaPhiMax": 10.0,
+    }
+
+    Herbivore().update_parameters(standard_parameters_herb)
+    Carnivore().update_parameters(standard_parameters_carn)
+
+
 @pytest.fixture
 def plain_mountain():
     return Mountain()
@@ -38,13 +81,10 @@ def plain_desert():
 @pytest.fixture
 def populated_jungle():
     jun_cell = Jungle()
-    jun_cell.add_animal(
-        [
-            {"species": "Carnivore", "age": 10, "weight": 20},
-            {"species": "Carnivore", "age": 10, "weight": 20},
-            {"species": "Herbivore", "age": 10, "weight": 20},
-        ]
-    )
+    herbivores = [Herbivore() for _ in range(100)]
+    carnivores = [Carnivore() for _ in range(100)]
+    jun_cell.insert_animal(herbivores)
+    jun_cell.insert_animal(carnivores)
     return jun_cell
 
 
@@ -110,22 +150,24 @@ def test_aging_cell(populated_jungle):
 
 
 def test_annual_weightloss(populated_jungle):
-    old_weights = [
-        animal.weight
-        for class_type in populated_jungle.animal_classes.values()
-        for animal in class_type
-    ]
+    sum_old_weights = sum(
+        [
+            animal.weight
+            for class_type in populated_jungle.animal_classes.values()
+            for animal in class_type
+        ]
+    )
     populated_jungle.annual_weight_loss()
 
-    new_weights = [
-        animal.weight
-        for class_type in populated_jungle.animal_classes.values()
-        for animal in class_type
-    ]
+    sum_new_weights = sum(
+        [
+            animal.weight
+            for class_type in populated_jungle.animal_classes.values()
+            for animal in class_type
+        ]
+    )
 
-    for old_weight in old_weights:
-        for new_weight in new_weights:
-            assert new_weight < old_weight
+    assert sum_new_weights < sum_old_weights
 
 
 def test_propensity_ocean_cell(plain_ocean):
@@ -194,12 +236,12 @@ def test_compute_relative_abundance_herbivore_zero_fodder(plain_savannah):
             assert plain_savannah.compute_relative_abundance(animal_class) == 0
 
 
-def test_compute_relative_abundance(populated_jungle):
-    for class_list in populated_jungle.animal_classes.values():
+def test_compute_relative_abundance():
+    cell_jungle = Jungle()
+    cell_jungle.insert_animal([Herbivore(), Carnivore()])
+    for class_list in cell_jungle.animal_classes.values():
         for animal_class in class_list:
-            assert (
-                populated_jungle.compute_relative_abundance(animal_class) != 0.01
-            )
+            assert cell_jungle.compute_relative_abundance(animal_class) != 0
 
 
 def test_compute_relative_abundance_carnivore(plain_savannah):
@@ -268,12 +310,12 @@ def test_eat_carnivore(mocker):
 
 
 def test_eat_carnivore_manipulated_fitness(populated_desert):
-    carn_len_be = len(populated_desert.animal_classes["Herbivore"])
+    herb_len_be = len(populated_desert.animal_classes["Herbivore"])
     for carn in populated_desert.animal_classes["Carnivore"]:
         carn.fitness = 30
     populated_desert.eat_carnivore()
     new_len = len(populated_desert.animal_classes["Herbivore"])
-    assert carn_len_be > new_len
+    assert herb_len_be > new_len
 
 
 def test_eat_carnivore_none_appetite(populated_savannah):
@@ -283,9 +325,9 @@ def test_eat_carnivore_none_appetite(populated_savannah):
             for carn in populated_savannah.animal_classes["Carnivore"]
         ]
     )
-    for animal in populated_savannah.animal_classes["Carnivore"]:
-        animal.fitness = 30
-        animal.update_parameters({"F": 0})
+    for carn in populated_savannah.animal_classes["Carnivore"]:
+        carn.fitness = 30
+        carn.update_parameters({"F": 0})
 
     new_weight_sum = sum(
         [

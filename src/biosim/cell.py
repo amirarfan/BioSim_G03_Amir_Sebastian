@@ -432,13 +432,13 @@ class Cell:
                 raise ValueError(f"The animal type is not allowed")
 
             if animal_name == "Herbivore" and (
-                    cell_name == "Ocean" or cell_name == "Mountain"
+                cell_name == "Ocean" or cell_name == "Mountain"
             ):
                 raise ValueError(
                     f"This cell is inhabitable for specie: {animal_name}"
                 )
             elif animal_name == "Carnivore" and (
-                    cell_name == "Ocean" or cell_name == "Mountain"
+                cell_name == "Ocean" or cell_name == "Mountain"
             ):
                 raise ValueError(
                     f"This cell is inhabitable for specie: {animal_name}"
@@ -446,9 +446,6 @@ class Cell:
 
             current_class = self.allowed_species[animal_name](weight, age)
             self.animal_classes[animal_name].append(current_class)
-
-
-
 
     def num_animals_per_cell(self):
         """

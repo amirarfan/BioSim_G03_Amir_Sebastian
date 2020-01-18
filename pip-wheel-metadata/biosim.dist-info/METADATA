@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: biosim
+Version: 0.0.0
+Summary: A population dynamics simulation written in Python
+Home-page: UNKNOWN
+Author: Amir Arfan & Sebastian Becker
+Author-email: amar@nmbu.no & sebabeck@nmbu.no
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: pytest-mock
+Requires-Dist: scipy
+
+UNKNOWN
+
+

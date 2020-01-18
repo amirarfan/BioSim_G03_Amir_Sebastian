@@ -192,9 +192,9 @@ def test_eta_greater_than_one_herbivore(plain_herbivore):
         plain_herbivore.update_parameters({"eta": 2})
 
 
-def test_deltaphimax_negative(plain_herbivore):
+def test_deltaphimax_negative(plain_carnivore):
     with pytest.raises(ValueError):
-        plain_herbivore.update_parameters({"DeltaPhiMax": -1})
+        plain_carnivore.update_parameters({"DeltaPhiMax": -1})
 
 
 def test_parameters_actually_update(plain_herbivore):

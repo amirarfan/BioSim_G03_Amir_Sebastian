@@ -198,7 +198,11 @@ class Animal:
                     f"Invalid input: {par} is not a key in "
                     f"class parameters"
                 )
-            if new_par_dict[par] <= 0 and par == "DeltaPhiMax":
+            if (
+                new_par_dict[par] <= 0
+                and par == "DeltaPhiMax"
+                and cls.__name__ == "Carnivore"
+            ):
                 raise ValueError(f"{par} must be strictly positive")
             elif new_par_dict[par] < 0 and par != "DeltaPhiMax":
                 raise ValueError(f"{par} must be positive")
