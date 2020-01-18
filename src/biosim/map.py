@@ -105,15 +105,18 @@ class Map:
                         Contains neighbour cells
 
         """
-        x, y = loc
-        neighbour_cords = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
+        y_lim, x_lim = np.shape(self.map)
+        y, x = loc
+        neighbour_cords = [(y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1)]
         neighbour_cells = []
         for cords in neighbour_cords:
-            try:
-                neighbour_cells.append(self.map[cords])
-            except IndexError:
+            curr_y, curr_x = cords
+            if curr_y < 0 or curr_y > y_lim:
                 pass
-
+            elif curr_x < 0 or curr_x > x_lim:
+                pass
+            else:
+                neighbour_cells.append(self.map[cords])
         return neighbour_cells
 
     def add_animals(self, ini_list):
@@ -131,19 +134,17 @@ class Map:
         for dictionary in ini_list:
             try:
                 loc = dictionary["loc"]
-            except IndexError:
-                print(f'{dictionary["loc"]} is not a location on map')
+            except KeyError:
+                print("No location specified")
                 break
             pop_list = dictionary["pop"]
-            print(pop_list)
+
             cell_type = self.map[loc]
-            print(cell_type)
 
             if type(cell_type).__name__ not in self.allowed_cells:
                 raise ValueError(f"This cell location is inhabitable")
 
             cell_type.add_animal(pop_list)
-            print(cell_type.num_species_per_cell())
 
     def move_all_animals(self):
         """
