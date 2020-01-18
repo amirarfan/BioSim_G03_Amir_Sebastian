@@ -465,7 +465,7 @@ class Cell:
 
         return tot_animals
 
-    def num_sepcies_per_cell(self):
+    def num_species_per_cell(self):
         """
 
         Checks how many of each specie there is in the cell and returns that

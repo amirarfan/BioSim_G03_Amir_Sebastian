@@ -358,7 +358,7 @@ class BioSim:
                 (
                     curr_herbivores,
                     curr_carnivores,
-                ) = curr_cell.num_sepcies_per_cell()
+                ) = curr_cell.num_species_per_cell()
                 curr_dict = {
                     "Row": y,
                     "Col": x,

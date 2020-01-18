@@ -143,7 +143,7 @@ class Map:
                 raise ValueError(f"This cell location is inhabitable")
 
             cell_type.add_animal(pop_list)
-            print(cell_type.num_sepcies_per_cell())
+            print(cell_type.num_species_per_cell())
 
     def move_all_animals(self):
         """
@@ -254,7 +254,7 @@ class Map:
         tot_carnivores = 0
         for cell_list in self.map:
             for cells in cell_list:
-                curr_herbivore, curr_carnivore = cells.num_sepcies_per_cell()
+                curr_herbivore, curr_carnivore = cells.num_species_per_cell()
                 tot_herbivores += curr_herbivore
                 tot_carnivores += curr_carnivore
 
