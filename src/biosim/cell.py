@@ -194,11 +194,14 @@ class Cell:
             for index, animal in enumerate(animal_list):
                 if animal.determine_to_move():
                     move_prob = self.compute_move_prob(animal, neighbour_cells)
-                    chosen_cell = np.random.choice(
-                        neighbour_cells, p=move_prob
-                    )
-                    chosen_cell.insert_animal([animal])
-                    remove_list.add(index)
+                    if all(prob == 0 for prob in move_prob):
+                        break
+                    else:
+                        chosen_cell = np.random.choice(
+                            neighbour_cells, p=move_prob
+                        )
+                        chosen_cell.insert_animal([animal])
+                        remove_list.add(index)
             self.remove_multiple_animals(type_of_animal, remove_list)
 
     def annual_death(self):
@@ -383,9 +386,21 @@ class Cell:
 
 
         """
-
+        cell_name = type(self).__name__
         for animal_class in animal_list:
             animal_name = type(animal_class).__name__
+            if animal_name == "Herbivore" and (
+                cell_name == "Ocean" or cell_name == "Mountain"
+            ):
+                raise ValueError(
+                    f"This cell is inhabitable for specie: {animal_name}"
+                )
+            elif animal_name == "Carnivore" and (
+                cell_name == "Ocean" or cell_name == "Mountain"
+            ):
+                raise ValueError(
+                    f"This cell is inhabitable for specie: {animal_name}"
+                )
             self.animal_classes[animal_name].append(animal_class)
 
     def add_animal(self, list_animal_dicts):
@@ -399,6 +414,7 @@ class Cell:
                         List of dictionary containing animal specifications
 
         """
+        cell_name = type(self).__name__
         for dicts in list_animal_dicts:
             animal_name = dicts["species"]
 
@@ -412,11 +428,27 @@ class Cell:
             except KeyError:
                 weight = None
 
-            if animal_name in self.allowed_species.keys():
-                current_class = self.allowed_species[animal_name](weight, age)
-                self.animal_classes[animal_name].append(current_class)
-            else:
+            if animal_name not in self.allowed_species.keys():
                 raise ValueError(f"The animal type is not allowed")
+
+            if animal_name == "Herbivore" and (
+                    cell_name == "Ocean" or cell_name == "Mountain"
+            ):
+                raise ValueError(
+                    f"This cell is inhabitable for specie: {animal_name}"
+                )
+            elif animal_name == "Carnivore" and (
+                    cell_name == "Ocean" or cell_name == "Mountain"
+            ):
+                raise ValueError(
+                    f"This cell is inhabitable for specie: {animal_name}"
+                )
+
+            current_class = self.allowed_species[animal_name](weight, age)
+            self.animal_classes[animal_name].append(current_class)
+
+
+
 
     def num_animals_per_cell(self):
         """
