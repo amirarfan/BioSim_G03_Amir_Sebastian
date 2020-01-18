@@ -7,6 +7,7 @@ from biosim.animals import Herbivore, Carnivore
 import numpy
 import pytest
 from scipy.stats import anderson
+from scipy.stats import shapiro
 
 
 @pytest.fixture
@@ -320,9 +321,9 @@ def test_fitness_weight_zero():
     assert herb._calculate_fitness(0, 1) == 0
 
 
-def test_gauss_distribution():
+def test_gauss_distribution_anderson():
     """
-    Testes the gauss distribution used for starting weights for animal classes
+    Tests the gauss distribution used for starting weights for animal classes
 
     Uses the Anderson-Darling test which is set to test for normal distribution
     by standard.
@@ -347,3 +348,33 @@ def test_gauss_distribution():
         assert result_carn.statistic < result_carn.critical_values[i]
 
 
+def test_gauss_distribution_shapiro():
+    """
+    Tests the gauss distribution  used for starting weights for animal classes
+
+    Uses the Shapiro Wilk tests to test the normal distribution
+
+    The Shapiro Wilk outputs the statistic and the probability (p-value)
+     of obtaining the observed results of a test. The lower the probability
+     the more the null hypothesis seems significant. Null hypothesis being in
+     this test that the test data is normally distributed.
+
+     We define a significance level (alpha) which can be seen as threshold.
+     If the p-value is lower than alpha, one can say that the null hypothesis
+     is more insignificant.  
+
+    """
+    herbivores = [Herbivore() for _ in range(10000)]
+    carnivores = [Carnivore() for _ in range(10000)]
+    herb_weights = [herb.weight for herb in herbivores]
+    carn_weights = [carn.weight for carn in carnivores]
+    alpha = 0.05  # Sets the probability of rejecting the null hypothesis
+
+    herb_stat, herb_p = shapiro(herb_weights)
+    carn_stat, carn_p = shapiro(carn_weights)
+
+    print(herb_p)
+    assert herb_p > alpha
+
+    print(carn_p)
+    assert carn_p > alpha
