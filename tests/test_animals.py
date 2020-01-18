@@ -6,6 +6,7 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 from biosim.animals import Herbivore, Carnivore
 import numpy
 import pytest
+from scipy.stats import anderson
 
 
 @pytest.fixture
@@ -13,16 +14,15 @@ def plain_herbivore():
     return Herbivore()
 
 
-def test_herbivore_age(plain_herbivore):
+def test_new_herbivore_age():
     # Test for animal age is equal to 0
-    assert plain_herbivore.age == 0
+    herb = Herbivore()
+    assert herb.age == 0
 
 
 def test_herbivore_custom_neg_age(plain_herbivore):
-    try:
-        plain_herbivore(age=-1)
-    except ValueError as ve:
-        print(ve)
+    with pytest.raises(ValueError):
+        Herbivore(age=-1)
 
 
 def test_herbivore_custom_pos_age():
@@ -113,121 +113,167 @@ def test_non_existing_parameter_herbivore(plain_herbivore):
 
 def test_negative_parameter_herbivore(plain_herbivore):
     with pytest.raises(ValueError):
-        plain_herbivore.update_parameters({"sigma_birth: -20"})
-   
+        plain_herbivore.update_parameters({"sigma_birth": -20})
 
 
-def test_eta_greater_than_one_herbivore():
-    herb = animal.Herbivore()
-    try:
-        herb.update_parameters({"eta": 2})
-    except ValueError:
-        print("Successfully returned ValueError for eta > 1")
+def test_eta_greater_than_one_herbivore(plain_herbivore):
+    with pytest.raises(ValueError):
+        plain_herbivore.update_parameters({"eta": 2})
 
 
-def test_deltaphimax_negative():
-    herb = animal.Herbivore()
-    try:
-        herb.update_parameters({"DeltaPhiMax": -1})
-    except ValueError as ve:
-        print(ve)
+def test_deltaphimax_negative(plain_herbivore):
+    with pytest.raises(ValueError):
+        plain_herbivore.update_parameters({"DeltaPhiMax": -1})
 
 
-def test_parameters_actually_update():
-    herb = animal.Herbivore()
-    prev_param = herb.param.copy()
-    herb.update_parameters({"DeltaPhiMax": 5})
-    assert prev_param != herb.param
+def test_parameters_actually_update(plain_herbivore):
+    prev_param = plain_herbivore.param.copy()
+    plain_herbivore.update_parameters({"DeltaPhiMax": 5})
+    assert prev_param != plain_herbivore.param
 
 
 def test_determine_death_zero_fitness():
-    herb = animal.Herbivore()
+    herb = Herbivore()
     herb.fitness = 0
     assert herb.determine_death() is True
 
 
 def test_determine_death_is_bool():
-    herb = animal.Herbivore()
+    herb = Herbivore()
     assert type(herb.determine_death()) == numpy.bool_
 
 
+def test_determine_death_mocker(mocker):
+    mocker.patch("numpy.random.choice", return_value=True)
+    herb = Herbivore()
+    assert herb.determine_death()
+
+
 def test_determine_birth_no_animals():
-    herb = animal.Herbivore()
+    herb = Herbivore()
     assert herb.determine_birth(0) is False
 
 
 def test_determine_birth_is_bool():
-    herb = animal.Herbivore()
+    herb = Herbivore()
     herb.weight = 100
     assert type(herb.determine_birth(100)) == numpy.bool_
 
 
 def test_move_probability_herb():
-    herb = animal.Herbivore()
+    herb = Herbivore()
     bool_val = herb.determine_to_move()
     assert type(bool_val) == numpy.bool_
 
 
-def test_carnivore_age():
-    carn = animal.Carnivore()
+def test_move_prob_herb_true(mocker):
+    mocker.patch("numpy.random.choice", return_value=True)
+    herb = Herbivore()
+    assert herb.determine_to_move()
+
+
+@pytest.fixture
+def plain_carnivore():
+    return Carnivore()
+
+
+def test_new_carnivore_age():
+    carn = Carnivore()
     assert carn.age == 0
 
 
-def test_carnivore_fitness_change_when_eat():
-    carn = animal.Carnivore()
-    prev_fitness = carn.fitness
-    carn.increase_eat_weight(20)
-    assert carn.fitness != prev_fitness
+def test_carnivore_fitness_change_when_eat(plain_carnivore):
+    prev_fitness = plain_carnivore.fitness
+    plain_carnivore.increase_eat_weight(20)
+    assert plain_carnivore.fitness != prev_fitness
 
 
-def test_carnivore_weight_change_when_eat():
-    carn = animal.Carnivore()
-    prev_weight = carn.weight
-    carn.increase_eat_weight(10)
-    assert prev_weight < carn.weight
+def test_carnivore_weight_change_when_eat(plain_carnivore):
+    prev_weight = plain_carnivore.weight
+    plain_carnivore.increase_eat_weight(10)
+    assert prev_weight < plain_carnivore.weight
 
 
-def test_carnivore_actually_ages():
-    carn = animal.Carnivore()
-    prev_age = carn.age
-    carn.add_age()
-    assert carn.age > prev_age
+def test_carnivore_actually_ages(plain_carnivore):
+    prev_age = plain_carnivore.age
+    plain_carnivore.add_age()
+    assert plain_carnivore.age > prev_age
 
 
-def test_carnivore_birth_decrease_weight():
-    carn = animal.Carnivore()
-    prev_weight = carn.weight
-    carn.decrease_birth_weight(20)
-    assert carn.weight < prev_weight
+def test_carnivore_birth_decrease_weight(plain_carnivore):
+    prev_weight = plain_carnivore.weight
+    plain_carnivore.decrease_birth_weight(20)
+    assert plain_carnivore.weight < prev_weight
 
 
-def test_decrease_annual_weight():
-    carn = animal.Carnivore()
-    prev_weight = carn.weight
-    carn.decrease_annual_weight()
-    assert carn.weight < prev_weight
+def test_decrease_annual_weight(plain_carnivore, plain_herbivore):
+    prev_weight_carn, prev_weight_herb = (
+        plain_carnivore.weight,
+        plain_herbivore.weight,
+    )
+    plain_carnivore.decrease_annual_weight()
+    plain_herbivore.decrease_annual_weight()
+    assert plain_carnivore.weight < prev_weight_carn
+    assert plain_herbivore.weight < prev_weight_herb
 
 
-def test_kill_probability_gfherb():
+def test_kill_probability_gf_herb():
     # Herbivore has greater fitness
-    carn = animal.Carnivore()
+    carn = Carnivore()
     prob = carn._compute_kill_prob(0.4, 0.9, 10)
     assert prob == 0
 
 
-def test_kill_probability_gfcarn():
+def test_kill_probability_gf_carn():
     # Carnivore has greater fitness
-    carn = animal.Carnivore()
+    carn = Carnivore()
     prob = carn._compute_kill_prob(10, 0.1, 5)
     assert prob == 1
 
 
-def test_bool_carnivore_det_kill():
-    carn = animal.Carnivore()
-    kill_prob = carn.determine_kill(0.20)
+def test_bool_carnivore_det_kill(plain_carnivore):
+    kill_prob = plain_carnivore.determine_kill(0.20)
     assert type(kill_prob) is numpy.bool_
 
 
+def test_det_kill_false(plain_carnivore, mocker):
+    mocker.patch('numpy.random.choice', return_value=False)
+    assert not plain_carnivore.determine_kill(0.01)
+
+
 def test_fitness_weight_zero():
-    herb = animal.Herbivore()
+    """
+    Test that fitness is zero if weight is zero
+
+    """
+    herb = Herbivore()
     assert herb._calculate_fitness(0, 1) == 0
+
+
+def test_gauss_distribution():
+    """
+    Testes the gauss distribution used for starting weights for animal classes
+
+    Uses the Anderson-Darling test which is set to test for normal distribution
+    by standard.
+
+    The Anderson-Darling test outputs statistics and critical values, and if
+    the statistics are lower than the critical values the test in question
+    follows a specific distribution.
+
+    """
+    herbivores = [Herbivore() for _ in range(10000)]
+    carnivores = [Carnivore() for _ in range(10000)]
+    herb_weights = [herb.weight for herb in herbivores]
+    carn_weights = [carn.weight for carn in carnivores]
+
+    result_herb = anderson(herb_weights)
+    result_carn = anderson(carn_weights)
+
+    for i in range(len(result_herb.critical_values)):
+        assert result_herb.statistic < result_herb.critical_values[i]
+
+    for i in range(len(result_carn.critical_values)):
+        assert result_carn.statistic < result_carn.critical_values[i]
+
+

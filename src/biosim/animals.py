@@ -250,8 +250,11 @@ class Animal:
             return True
         elif self._fitness > 0.01:
             death_prob = self.param["omega"] * (1 - self._fitness)
-            print("""
-            death PROB""", death_prob)
+            print(
+                """
+            death PROB""",
+                death_prob,
+            )
 
         return np.random.choice([True, False], p=[death_prob, 1 - death_prob])
 

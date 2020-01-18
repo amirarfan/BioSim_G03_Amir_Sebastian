@@ -83,7 +83,8 @@ def test_propensity():
     savannah_cell = cell.Savannah()
     savannah_cell.current_fodder = 0
     savannah_cell.add_animal(
-        [{"species": "Herbivore", "age": 5, "weight": 20}])
+        [{"species": "Herbivore", "age": 5, "weight": 20}]
+    )
     for class_list in savannah_cell.animal_classes.values():
         for animal_class in class_list:
             savannah_cell.compute_relative_abundance(animal_class)
@@ -93,8 +94,10 @@ def test_propensity():
 def test_update_parameters():
     savannah_cell = cell.Savannah()
     savannah_cell.update_parameters({"f_max": 200, "alpha": 0.4})
-    assert savannah_cell.param["f_max"] == 200 and savannah_cell.param[
-        "alpha"] == 0.4
+    assert (
+        savannah_cell.param["f_max"] == 200
+        and savannah_cell.param["alpha"] == 0.4
+    )
 
 
 def test_update_parameters_try_except():
@@ -117,7 +120,8 @@ def test_add_animal_none_species():
     savannah_cell = cell.Savannah()
     try:
         savannah_cell.add_animal(
-            [{"species": "Amir", "age": 10, "weight": 20}])
+            [{"species": "Amir", "age": 10, "weight": 20}]
+        )
     except ValueError as ve:
         print(ve)
 
@@ -158,7 +162,8 @@ def test_compute_relative_abundance_Herbivore():
     savannah_cell = cell.Savannah()
     savannah_cell.current_fodder = 0
     savannah_cell.add_animal(
-        [{"species": "Herbivore", "age": 5, "weight": 20}])
+        [{"species": "Herbivore", "age": 5, "weight": 20}]
+    )
     for class_list in savannah_cell.animal_classes.values():
         for animal_class in class_list:
             assert savannah_cell.compute_relative_abundance(animal_class) == 0
@@ -168,9 +173,8 @@ def test_compute_relative_abundance_Carnivore():
     savannah_cell = cell.Savannah()
     savannah_cell.current_fodder = 0
     savannah_cell.add_animal(
-        [
-            {"species": "Carnivore", "age": 5, "weight": 10},
-        ])
+        [{"species": "Carnivore", "age": 5, "weight": 10}]
+    )
     for class_list in savannah_cell.animal_classes.values():
         for animal_class in class_list:
             assert savannah_cell.compute_relative_abundance(animal_class) == 0
@@ -180,9 +184,8 @@ def test_eat_herbivore_none_fodder():
     savannah_cell = cell.Savannah()
     savannah_cell.current_fodder = 0
     savannah_cell.add_animal(
-        [
-            {"species": "Herbivore", "age": 5, "weight": 10},
-        ])
+        [{"species": "Herbivore", "age": 5, "weight": 10}]
+    )
     savannah_cell.eat_herbivore()
     assert savannah_cell.current_fodder == 0
 
@@ -191,9 +194,8 @@ def test_eat_herbivore():
     savannah_cell = cell.Savannah()
     savannah_cell.current_fodder = 11
     savannah_cell.add_animal(
-        [
-            {"species": "Herbivore", "age": 5, "weight": 10},
-        ])
+        [{"species": "Herbivore", "age": 5, "weight": 10}]
+    )
     savannah_cell.eat_herbivore()
     assert savannah_cell.current_fodder == 1
 
@@ -202,9 +204,8 @@ def test_eat_herbivore_all():
     savannah_cell = cell.Savannah()
     savannah_cell.current_fodder = 9
     savannah_cell.add_animal(
-        [
-            {"species": "Herbivore", "age": 5, "weight": 10},
-        ])
+        [{"species": "Herbivore", "age": 5, "weight": 10}]
+    )
     savannah_cell.eat_herbivore()
     assert savannah_cell.current_fodder == 0
 
@@ -214,8 +215,9 @@ def test_eat_carnivore():
     savannah_cell.add_animal(
         [
             {"species": "Carnivore", "age": 5, "weight": 10},
-            {"species": "Herbivore", "age": 5, "weight": 10}
-        ])
+            {"species": "Herbivore", "age": 5, "weight": 10},
+        ]
+    )
     for animal in savannah_cell.animal_classes["Carnivore"]:
         animal.fitness = 30
         savannah_cell.eat_carnivore()
@@ -227,8 +229,9 @@ def test_eat_carnivore_none_fodder():
     savannah_cell.add_animal(
         [
             {"species": "Carnivore", "age": 5, "weight": 10},
-            {"species": "Herbivore", "age": 5, "weight": 10}
-        ])
+            {"species": "Herbivore", "age": 5, "weight": 10},
+        ]
+    )
     for animal in savannah_cell.animal_classes["Carnivore"]:
         animal.fitness = 30
         prev_weight = animal.weight
@@ -240,9 +243,8 @@ def test_eat_carnivore_none_fodder():
 def test_annual_death():
     savannah_cell = cell.Savannah()
     savannah_cell.add_animal(
-        [
-            {"species": "Carnivore", "age": 5, "weight": 10},
-        ])
+        [{"species": "Carnivore", "age": 5, "weight": 10}]
+    )
     for animal in savannah_cell.animal_classes["Carnivore"]:
         animal.fitness = 0
         savannah_cell.annual_death()
@@ -260,8 +262,9 @@ def test_update_animal_parameters_in_cell():
     savannah_cell.add_animal(
         [
             {"species": "Carnivore", "age": 5, "weight": 10},
-            {"species": "Herbivore", "age": 5, "weight": 10}
-        ])
+            {"species": "Herbivore", "age": 5, "weight": 10},
+        ]
+    )
     savannah_cell.update_animal_parameters_in_cell("Carnivore", {"F": 0})
     assert savannah_cell.allowed_species["Carnivore"].param["F"] == 0
 
@@ -276,8 +279,9 @@ def test_delete_animal_not_in_list():
     savannah_cell.add_animal(
         [
             {"species": "Carnivore", "age": 5, "weight": 10},
-            {"species": "Carnivore", "age": 5, "weight": 10}
-        ])
+            {"species": "Carnivore", "age": 5, "weight": 10},
+        ]
+    )
     animal = savannah_cell.allowed_species["Herbivore"]
     try:
         savannah_cell.delete_animal(animal())
@@ -288,9 +292,8 @@ def test_delete_animal_not_in_list():
 def test_delete_animal():
     savannah_cell = cell.Savannah()
     savannah_cell.add_animal(
-        [
-            {"species": "Carnivore", "age": 5, "weight": 10},
-        ])
+        [{"species": "Carnivore", "age": 5, "weight": 10}]
+    )
     for animal in savannah_cell.animal_classes["Carnivore"]:
         savannah_cell.delete_animal(animal)
     assert len(savannah_cell.animal_classes["Carnivore"]) == 0
@@ -299,27 +302,25 @@ def test_delete_animal():
 def test_compute_move_prob():
     savannah_cell = cell.Savannah()
     savannah_cell.add_animal(
-        [
-            {"species": "Carnivore", "age": 5, "weight": 10},
-        ])
+        [{"species": "Carnivore", "age": 5, "weight": 10}]
+    )
     for animal in savannah_cell.animal_classes["Carnivore"]:
-        assert savannah_cell.compute_move_prob(animal,
-                                               [cell.Ocean(), cell.Ocean(),
-                                                cell.Ocean(),
-                                                cell.Ocean()]) == [0, 0, 0, 0]
+        assert savannah_cell.compute_move_prob(
+            animal, [cell.Ocean(), cell.Ocean(), cell.Ocean(), cell.Ocean()]
+        ) == [0, 0, 0, 0]
 
 
 def test_migration():
     savannah_cell = cell.Savannah()
     savannah_cell.add_animal(
-        [
-            {"species": "Carnivore", "age": 5, "weight": 10},
-        ])
+        [{"species": "Carnivore", "age": 5, "weight": 10}]
+    )
     for animal in savannah_cell.animal_classes["Carnivore"]:
         animal.fitness = 1
         animal.update_parameters({"mu": 1})
     savannah_cell.migration(
-        [cell.Savannah(), cell.Savannah(), cell.Savannah(), cell.Savannah()])
+        [cell.Savannah(), cell.Savannah(), cell.Savannah(), cell.Savannah()]
+    )
     assert len(savannah_cell.animal_classes["Carnivore"]) == 0
 
 
@@ -329,7 +330,8 @@ def test_mating():
         [
             {"species": "Carnivore", "age": 5, "weight": 70},
             {"species": "Carnivore", "age": 5, "weight": 70},
-        ])
+        ]
+    )
     for animal in savannah_cell.animal_classes["Carnivore"]:
         animal.fitness = 1
         animal.update_parameters({"gamma": 1})

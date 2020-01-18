@@ -34,14 +34,14 @@ class BioSim:
     }
 
     def __init__(
-            self,
-            island_map,
-            ini_pop,
-            seed,
-            ymax_animals=None,
-            cmax_animals=None,
-            img_base=None,
-            img_fmt="png",
+        self,
+        island_map,
+        ini_pop,
+        seed,
+        ymax_animals=None,
+        cmax_animals=None,
+        img_base=None,
+        img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -213,9 +213,12 @@ class BioSim:
         if self.img_base is None:
             return
 
-        print("Svaing to", "{base}_{num:05d}.{type}".format(
-            base=self.img_base, num=self.img_count, type=self.img_fmt
-        ))
+        print(
+            "Svaing to",
+            "{base}_{num:05d}.{type}".format(
+                base=self.img_base, num=self.img_count, type=self.img_fmt
+            ),
+        )
 
         plt.savefig(
             "{base}_{num:05d}.{type}".format(
