@@ -351,10 +351,12 @@ class Cell:
             for animal in all_animals:
                 animal.add_age()
 
-    def delete_animal(self, animal):
+    def delete_single_animal(self, animal):
         """
 
-        Deletes class instance from cell
+        Deletes single class instance from cell. Not to be used in a for loop
+        because it would become a confused for loop. This method should only
+        be used to delete a single instance of animal.
 
         Parameters
         ----------
