@@ -6,7 +6,7 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 from biosim.animals import Herbivore, Carnivore
 import numpy
 import pytest
-from scipy.stats import anderson
+from scipy.stats import normaltest
 from scipy.stats import shapiro
 
 
@@ -73,8 +73,8 @@ def test_herbivore_setter_method_age(plain_herbivore):
 def test_herbivore_setter_method_neg_age(plain_herbivore):
     """
 
-    Checks if 'ValueError' is raised when assigning a negative age to an already
-    existing instance of Herbivore.
+    Checks if 'ValueError' is raised when assigning a negative age to an
+    already existing instance of Herbivore.
 
     Parameters
     ----------
@@ -156,7 +156,7 @@ def test_herbivore_custom_pos_weight():
 
 
 def test_herbivore_custom_weight_setter(plain_herbivore):
-    with pytest.raises(ValueError) as ve:
+    with pytest.raises(ValueError):
         plain_herbivore.weight = -20
 
 
@@ -321,31 +321,30 @@ def test_fitness_weight_zero():
     assert herb._calculate_fitness(0, 1) == 0
 
 
-def test_gauss_distribution_anderson():
+def test_gauss_distribution_pearson():
     """
     Tests the gauss distribution used for starting weights for animal classes
 
-    Uses the Anderson-Darling test which is set to test for normal distribution
-    by standard.
+    Uses Scipys normal test to test for normal distribution.
 
-    The Anderson-Darling test outputs statistics and critical values, and if
-    the statistics are lower than the critical values the test in question
-    follows a specific distribution.
+    Alpha value is set to 0.05 to test for significance levels.
+
+    The test out puts the statistics and the probability, if the probability
+    is lower than the alpha value, one can say that the null hypothesis is
+    confirmed and the normal distribution holds.
 
     """
-    herbivores = [Herbivore() for _ in range(10000)]
-    carnivores = [Carnivore() for _ in range(10000)]
+    herbivores = [Herbivore() for _ in range(5000)]
+    carnivores = [Carnivore() for _ in range(5000)]
     herb_weights = [herb.weight for herb in herbivores]
     carn_weights = [carn.weight for carn in carnivores]
+    alpha = 0.05
+    herb_stat, herb_p = normaltest(herb_weights)
+    carn_stat, carn_p = normaltest(carn_weights)
 
-    result_herb = anderson(herb_weights)
-    result_carn = anderson(carn_weights)
+    assert herb_p > alpha
 
-    for i in range(len(result_herb.critical_values)):
-        assert result_herb.statistic < result_herb.critical_values[i]
-
-    for i in range(len(result_carn.critical_values)):
-        assert result_carn.statistic < result_carn.critical_values[i]
+    assert carn_p > alpha
 
 
 def test_gauss_distribution_shapiro():
@@ -373,8 +372,6 @@ def test_gauss_distribution_shapiro():
     herb_stat, herb_p = shapiro(herb_weights)
     carn_stat, carn_p = shapiro(carn_weights)
 
-    print(herb_p)
     assert herb_p > alpha
 
-    print(carn_p)
     assert carn_p > alpha

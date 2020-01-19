@@ -12,7 +12,7 @@ from biosim.map import Map
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib
+import matplotlib.patches as mpatches
 import subprocess
 import os
 
@@ -34,14 +34,14 @@ class BioSim:
     }
 
     def __init__(
-        self,
-        island_map,
-        ini_pop,
-        seed,
-        ymax_animals=None,
-        cmax_animals=None,
-        img_base=None,
-        img_fmt="png",
+            self,
+            island_map,
+            ini_pop,
+            seed,
+            ymax_animals=None,
+            cmax_animals=None,
+            img_base=None,
+            img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -101,7 +101,7 @@ class BioSim:
         self.carn_img_axis = None
 
         if ymax_animals is None:
-            self.ymax_animals = 300
+            self.ymax_animals = 20000
         else:
             self.ymax_animals = ymax_animals
 
@@ -171,7 +171,8 @@ class BioSim:
 
         if self._mean_ax is None:
             self._mean_ax = self._fig.add_subplot(2, 2, 2)
-            self._mean_ax.set_ylim(0, 300)
+            self._mean_ax.set_title("Herbivore and Carnivore Population")
+            self._mean_ax.set_ylim(0, self.ymax_animals)
 
         self._mean_ax.set_xlim(0, self._final_year + 1)
         self.create_herb_line()
@@ -179,21 +180,26 @@ class BioSim:
 
         if self.herb_heat is None:
             self.herb_heat = self._fig.add_subplot(2, 2, 1)
+            self.herb_heat.set_title("Herbivore heat map")
             self.herb_img_axis = None
 
         if self.carn_heat is None:
-            self.carn_heat = self._fig.add_subplot(2, 2, 4)
+            self.carn_heat = self._fig.add_subplot(2, 2, 3)
+            self.carn_heat.set_title("Carnivore Heat Map")
             self.carn_img_axis = None
 
+        self._fig.tight_layout()
+
+
     def _update_graphics(self):
-        pop_dataframe = self.animal_distribution
+        pop_df = self.animal_distribution
 
         rows, cols = np.shape(self._map.map)
 
-        herb_count = pop_dataframe.Herbivore
+        herb_count = pop_df.Herbivore
         herb_array = np.array(herb_count).reshape(rows, cols)
 
-        carn_count = pop_dataframe.Carnivore
+        carn_count = pop_df.Carnivore
         carn_array = np.array(carn_count).reshape(rows, cols)
 
         self._update_specie_lines()
@@ -225,8 +231,13 @@ class BioSim:
         self.img_count += 1
 
     def create_map(self):
-        self._island_map = self._fig.add_subplot(2, 2, 3)
+        self._island_map = self._fig.add_subplot(2, 2, 4)
+        self._island_map.set_title("Island Map")
         self._island_map.imshow(self.map_rgb)
+        labels = ["Ocean", "Mountain", "Jungle", "Savannah", "Desert"]
+        patches = [mpatches.Patch(color=self.rgb_value[i], label=labels[n]) for
+                   n, i in enumerate(self.rgb_value.keys())]
+        self._island_map.legend(handles=patches, prop={'size': 5}, loc=4)
 
         self._island_map.set_xticks(range(len(self.map_rgb[0])))
         self._island_map.set_xticklabels(range(1, 1 + len(self.map_rgb[0])))
@@ -277,7 +288,6 @@ class BioSim:
                 vmax=self.cmax_animals["Herbivore"],
             )
 
-        self.herb_heat.set_title("Herbivore Heat Map")
         self.herb_heat.set_xticks(range(len(self.map_rgb[0])))
         self.herb_heat.set_xticklabels(range(1, 1 + len(self.map_rgb[0])))
         self.herb_heat.set_yticks(range(len(self.map_rgb)))
@@ -295,7 +305,6 @@ class BioSim:
                 vmax=self.cmax_animals["Carnivore"],
             )
 
-        self.carn_heat.set_title("Carnivore Heat Map")
         self.carn_heat.set_xticks(range(len(self.map_rgb[0])))
         self.carn_heat.set_xticklabels(range(1, 1 + len(self.map_rgb[0])))
         self.carn_heat.set_yticks(range(len(self.map_rgb)))
@@ -311,6 +320,8 @@ class BioSim:
         ydata_carn = self._carn_line.get_ydata()
         ydata_carn[self._year] = carn_amount
         self._carn_line.set_ydata(ydata_carn)
+
+        self._mean_ax.legend(['Herbivore', 'Carnivore'], prop={'size': 6})
 
     def add_population(self, population):
         """

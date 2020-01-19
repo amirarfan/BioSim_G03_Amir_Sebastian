@@ -61,12 +61,13 @@ class Cell:
 
         """
         for animal_list in self.animal_classes.values():
+            children_born = []
             for animal_class in animal_list:
                 if animal_class.determine_birth(len(animal_list)):
-                    new_child = animal_class.__class__()
-                    new_child_specie = type(new_child).__name__
-                    self.animal_classes[new_child_specie].append(new_child)
+                    new_child = type(animal_class)()
+                    children_born.append(new_child)
                     animal_class.decrease_birth_weight(new_child.weight)
+            animal_list.extend(children_born)
 
     def annual_weight_loss(self):
         """
@@ -194,7 +195,7 @@ class Cell:
             for index, animal in enumerate(animal_list):
                 if animal.determine_to_move():
                     move_prob = self.compute_move_prob(animal, neighbour_cells)
-                    if all(prob == 0 for prob in move_prob):
+                    if sum(move_prob) == 0:
                         break
                     else:
                         chosen_cell = np.random.choice(
@@ -484,6 +485,14 @@ class Cell:
         tot_carnivores = len(self.animal_classes["Carnivore"])
         return tot_herbivores, tot_carnivores
 
+    def gen_fodder(self):
+        """
+
+        Regenerates fodder for the cell classes
+
+        """
+        pass
+
     @staticmethod
     def update_animal_parameters_in_cell(species, param_dict):
         """
@@ -555,7 +564,7 @@ class Savannah(Cell):
         super().__init__()
         self.current_fodder = self.param["f_max"]
 
-    def gen_fodder_sav(self):
+    def gen_fodder(self):
         r"""
 
         Updates current fodder by this equation:
@@ -592,7 +601,7 @@ class Jungle(Cell):
         super().__init__()
         self.current_fodder = self.param["f_max"]
 
-    def gen_fodder_jung(self):
+    def gen_fodder(self):
         """
 
         Updates current fodder to be the maximum amount of fodder.

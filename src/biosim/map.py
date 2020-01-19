@@ -173,6 +173,7 @@ class Map:
         for list_loc in self.map:
             for cell in list_loc:
                 if type(cell).__name__ in self.allowed_cells:
+                    cell.gen_fodder()
                     cell.eat_herbivore()
                     cell.eat_carnivore()
 

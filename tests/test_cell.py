@@ -232,7 +232,7 @@ def test_gen_fodder_savannah(populated_savannah):
     """
     populated_savannah.eat_herbivore()
     prev_fodder = populated_savannah.current_fodder
-    populated_savannah.gen_fodder_sav()
+    populated_savannah.gen_fodder()
     new_fodder = populated_savannah.current_fodder
     assert new_fodder > prev_fodder
 
@@ -250,7 +250,7 @@ def test_gen_fodder_jung(plain_jungle):
 
     """
     plain_jungle.current_fodder = 200
-    plain_jungle.gen_fodder_jung()
+    plain_jungle.gen_fodder()
     assert plain_jungle.current_fodder == plain_jungle.param["f_max"]
 
 
@@ -415,6 +415,12 @@ def test_add_animal_non_existing_species(plain_savannah):
             [{"species": "Amir", "age": 10, "weight": 20}]
         )
 
+def test_add_animal_ocean(plain_ocean):
+    with pytest.raises(ValueError):
+        plain_ocean.add_animal([{"species": "Herbivore"}])
+
+    with pytest.raises(ValueError):
+        plain_ocean.add_animal([{"species": "Carnivore"}])
 
 def test_add_animal_none_age_and_weight(plain_savannah):
     """
