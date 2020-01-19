@@ -169,10 +169,6 @@ class BioSim:
         if self._island_map is None:
             self.create_map()
 
-        # if self._map_ax is None:
-        #   self._max_ax = self._fig.add_subplot(1, 2, 1)
-        #   self._img_axis = None
-
         if self._mean_ax is None:
             self._mean_ax = self._fig.add_subplot(2, 2, 2)
             self._mean_ax.set_ylim(0, 300)

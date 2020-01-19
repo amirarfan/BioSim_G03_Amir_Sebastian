@@ -41,6 +41,33 @@ def standard_map():
     return sgeogr
 
 
+@pytest.fixture
+def populated_island(standard_map):
+    ini_herbs = [
+        {
+            "loc": (5, 5),
+            "pop": [
+                {"species": "Herbivore", "age": 5, "weight": 20}
+                for _ in range(150)
+            ],
+        }
+    ]
+    ini_carns = [
+        {
+            "loc": (5, 5),
+            "pop": [
+                {"species": "Carnivore", "age": 5, "weight": 20}
+                for _ in range(150)
+            ],
+        }
+    ]
+    island_map = Map(standard_map)
+    island_map.add_animals(ini_herbs)
+    island_map.add_animals(ini_carns)
+
+    return island_map
+
+
 def test_constructor_map(standard_map):
     """
     Tests the constructor in Map
@@ -85,6 +112,10 @@ def test_get_neighbours(standard_map):
     # Testing non existing indexes
     non_exist_neighbours = island.get_neighbour((30, 30))
     assert len(list(non_exist_neighbours)) == 0
+
+    # Testing negative indexes
+    negative_neighbours = island.get_neighbour((2, -10))
+    assert len(list(negative_neighbours)) == 0
 
 
 def test_add_animals_map(standard_map):
@@ -134,10 +165,11 @@ def test_add_animals_on_ocean_loc(standard_map):
 
 def test_add_animals_on_no_loc(standard_map):
     ini_herbs = [
-        {"pop": [
-            {"species": "Herbivore", "age": 10, "weight": 20}
-            for _ in range(10)
-        ],
+        {
+            "pop": [
+                {"species": "Herbivore", "age": 10, "weight": 20}
+                for _ in range(10)
+            ]
         }
     ]
 
@@ -157,3 +189,63 @@ def test_add_animals_on_no_loc(standard_map):
 
     with pytest.raises(ValueError):
         island.add_animals(ini_carns)
+
+
+def test_move_all_animals(populated_island):
+    island = populated_island
+    curr_cell = island.map[(5, 5)]
+    prev_val = curr_cell.num_animals_per_cell()
+    island.move_all_animals()
+    new_val = curr_cell.num_animals_per_cell()
+    assert prev_val > new_val
+
+
+def test_all_animals_eat(populated_island):
+    island = populated_island
+    curr_cell = island.map[(5, 5)]
+    prev_amount_herbs, prev_amount_carns = curr_cell.num_species_per_cell()
+    island.all_animals_eat()
+    # If the carnivores eat, there should be a reduction in herbivore pop.
+    new_amount_herbs, new_amount_carns = curr_cell.num_species_per_cell()
+    assert new_amount_herbs < prev_amount_herbs
+
+
+def test_mate_all_animals(standard_map, mocker):
+    mocker.patch("numpy.random.choice", return_value=True)
+    ini_carns = [
+        {
+            "loc": (5, 5),
+            "pop": [
+                {"species": "Carnivore", "age": 5, "weight": 50}
+                for _ in range(150)
+            ],
+        }
+    ]
+
+    island = Map(standard_map)
+    island.add_animals(ini_carns)
+    prev_val = island.num_animals_on_map()
+    island.mate_all_animals()
+    new_val = island.num_animals_on_map()
+    assert prev_val < new_val
+
+
+def test_age_all_animal(populated_island):
+    island = populated_island
+    curr_cell = island.map[(5, 5)]
+    prev_age_sum = sum(
+        [
+            anim.age
+            for anim_list in curr_cell.animal_classes.values()
+            for anim in anim_list
+        ]
+    )
+    island.age_all_animals()
+    new_age_sum = sum(
+        [
+            anim.age
+            for anim_list in curr_cell.animal_classes.values()
+            for anim in anim_list
+        ]
+    )
+    assert prev_age_sum < new_age_sum

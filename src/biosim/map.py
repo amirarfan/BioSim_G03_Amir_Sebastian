@@ -111,15 +111,13 @@ class Map:
         neighbour_cells = []
         for cords in neighbour_cords:
             curr_y, curr_x = cords
-            if curr_y < 0 or curr_y > y_lim:
+            if curr_y < 0 or curr_y >= y_lim:
                 pass
-            elif curr_x < 0 or curr_x > x_lim:
+            elif curr_x < 0 or curr_x >= x_lim:
                 pass
             else:
-                try:
-                    neighbour_cells.append(self.map[cords])
-                except IndexError:
-                    pass
+                neighbour_cells.append(self.map[cords])
+
         return neighbour_cells
 
     def add_animals(self, ini_list):
@@ -160,7 +158,7 @@ class Map:
         for y in range(y_lim):
             for x in range(x_lim):
                 loc = y, x
-                self.map[loc].migration(self.get_neighbour((x, y)))
+                self.map[loc].migration(self.get_neighbour((y, x)))
 
     def all_animals_eat(self):
         """
