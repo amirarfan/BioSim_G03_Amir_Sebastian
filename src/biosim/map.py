@@ -116,7 +116,10 @@ class Map:
             elif curr_x < 0 or curr_x > x_lim:
                 pass
             else:
-                neighbour_cells.append(self.map[cords])
+                try:
+                    neighbour_cells.append(self.map[cords])
+                except IndexError:
+                    pass
         return neighbour_cells
 
     def add_animals(self, ini_list):
