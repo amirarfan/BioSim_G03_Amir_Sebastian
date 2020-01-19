@@ -484,7 +484,8 @@ class Cell:
         tot_carnivores = len(self.animal_classes["Carnivore"])
         return tot_herbivores, tot_carnivores
 
-    def update_animal_parameters_in_cell(self, species, param_dict):
+    @staticmethod
+    def update_animal_parameters_in_cell(species, param_dict):
         """
 
         Updates the parameters for all instances of specified specie
@@ -500,8 +501,7 @@ class Cell:
         -------
 
         """
-        for animal in self.animal_classes[species]:
-            animal.update_parameters(param_dict)
+        eval(species).update_parameters(param_dict)
 
 
 class Ocean(Cell):

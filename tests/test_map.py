@@ -249,3 +249,62 @@ def test_age_all_animal(populated_island):
         ]
     )
     assert prev_age_sum < new_age_sum
+
+
+def test_annual_weight_loss(populated_island):
+    island = populated_island
+    curr_cell = island.map[(5, 5)]
+    prev_weight_sum = sum(
+        [
+            anim.weight
+            for anim_list in curr_cell.animal_classes.values()
+            for anim in anim_list
+        ]
+    )
+    island.annual_weight_loss_all_animals()
+    new_weight_sum = sum(
+        [
+            anim.weight
+            for anim_list in curr_cell.animal_classes.values()
+            for anim in anim_list
+        ]
+    )
+
+    assert new_weight_sum < prev_weight_sum
+
+
+def test_annual_weight(populated_island, mocker):
+    mocker.patch("numpy.random.choice", return_value=True)
+    island = populated_island
+    prev_val = island.num_animals_on_map()
+    island.annual_death_all_animals()
+    new_val = island.num_animals_on_map()
+
+    assert prev_val > new_val
+
+
+def test_num_animals_per_species(populated_island):
+    island = populated_island
+    tot_herbs, tot_carns = island.num_species_on_map()
+    assert tot_herbs == 150
+    assert tot_carns == 150
+
+
+def test_update_params_animals(populated_island):
+    island = populated_island
+    island.update_animal_params_all_cells("Herbivore", {"F": 15})
+    assert Herbivore.param["F"] == 15
+
+    island.update_animal_params_all_cells("Carnivore", {"DeltaPhiMax": 5})
+    assert Carnivore.param["DeltaPhiMax"] == 5
+
+
+def test_update_params_cell(populated_island):
+    island = populated_island
+    island.update_param_all_cells("J", {"f_max": 500})
+    assert Jungle.param["f_max"] == 500
+
+
+def test_cycle_runs(populated_island):
+    island = populated_island
+    island.cycle()

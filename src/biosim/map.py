@@ -4,6 +4,8 @@ __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 from .cell import Ocean, Mountain, Desert, Savannah, Jungle
+# noinspection PyUnresolvedReferences
+from .animals import Herbivore, Carnivore
 import numpy as np
 
 
@@ -262,7 +264,8 @@ class Map:
 
         return tot_herbivores, tot_carnivores
 
-    def update_animal_params_all_cells(self, specie, params):
+    @staticmethod
+    def update_animal_params_all_cells(specie, params):
         """
 
         Updates parameters for specified specie in all cells.
@@ -276,11 +279,8 @@ class Map:
 
 
         """
-        y_lim, x_lim = np.shape(self.map)
-        for y in range(y_lim):
-            for x in range(x_lim):
-                curr_cell = self.map[(y, x)]
-                curr_cell.update_animal_parameters_in_cell(specie, params)
+
+        eval(specie).update_parameters(params)
 
     def update_param_all_cells(self, landscape, params):
         """
@@ -296,12 +296,8 @@ class Map:
 
 
         """
-        y_lim, x_lim = np.shape(self.map)
-        for y in range(y_lim):
-            for x in range(x_lim):
-                curr_cell = self.map[(y, x)]
-                if type(curr_cell).__name__ == landscape:
-                    curr_cell.update_parameters(params)
+        cell_type = self.dict_cells[landscape]
+        cell_type.update_parameters(params)
 
     def cycle(self):
         """

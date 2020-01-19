@@ -655,9 +655,7 @@ def test_eat_carnivore_none_appetite(populated_savannah):
             for carn in populated_savannah.animal_classes["Carnivore"]
         ]
     )
-    for carn in populated_savannah.animal_classes["Carnivore"]:
-        carn.fitness = 30
-        carn.update_parameters({"F": 0})
+    populated_savannah.update_animal_parameters_in_cell("Carnivore", {"F": 0})
 
     new_weight_sum = sum(
         [
@@ -826,10 +824,9 @@ def test_migration(plain_savannah):
             {"species": "Carnivore", "age": 5, "weight": 70},
         ]
     )
-
+    plain_savannah.update_animal_parameters_in_cell("Carnivore", {"mu": 1})
     for animal in plain_savannah.animal_classes["Carnivore"]:
         animal.fitness = 1
-        animal.update_parameters({"mu": 1})
 
     plain_savannah.migration([Savannah(), Savannah(), Savannah(), Jungle()])
     assert len(plain_savannah.animal_classes["Carnivore"]) == 0
