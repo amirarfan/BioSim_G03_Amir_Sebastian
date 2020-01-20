@@ -38,14 +38,14 @@ class BioSim:
     }
 
     def __init__(
-        self,
-        island_map,
-        ini_pop,
-        seed,
-        ymax_animals=None,
-        cmax_animals=None,
-        img_base=None,
-        img_fmt="png",
+            self,
+            island_map,
+            ini_pop,
+            seed,
+            ymax_animals=None,
+            cmax_animals=None,
+            img_base=None,
+            img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -173,7 +173,7 @@ class BioSim:
         """
 
         if self._fig is None:
-            self._fig = plt.figure()
+            self._fig = plt.figure(figsize=(16, 9))
 
         if self._island_map is None:
             self._create_map()

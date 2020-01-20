@@ -8,7 +8,7 @@ Welcome to BioSim's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: BioSim Simulation :
+   :caption: BioSim Simulation Functions :
 
    simulation
 
