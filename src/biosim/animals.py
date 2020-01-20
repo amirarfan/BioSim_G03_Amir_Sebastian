@@ -44,6 +44,8 @@ class Animal:
 
         self._fitness = None
 
+        self.is_sick = False
+
         if self._fitness is None:
             self.update_fitness()
 
@@ -199,9 +201,9 @@ class Animal:
                     f"class parameters"
                 )
             if (
-                new_par_dict[par] <= 0
-                and par == "DeltaPhiMax"
-                and cls.__name__ == "Carnivore"
+                    new_par_dict[par] <= 0
+                    and par == "DeltaPhiMax"
+                    and cls.__name__ == "Carnivore"
             ):
                 raise ValueError(f"{par} must be strictly positive")
             elif new_par_dict[par] < 0 and par != "DeltaPhiMax":
@@ -255,11 +257,6 @@ class Animal:
             return True
         elif self._fitness > 0.01:
             death_prob = self.param["omega"] * (1 - self._fitness)
-            print(
-                """
-            death PROB""",
-                death_prob,
-            )
 
         return np.random.choice([True, False], p=[death_prob, 1 - death_prob])
 
@@ -367,6 +364,22 @@ class Animal:
         self._weight -= xi * child_weight
         self.update_fitness()
 
+    @classmethod
+    def _determine_sick(cls):
+        """
+
+        Determines if the animal is to become sick, using the 'p_sick'
+        parameter and Numpy's random.choice method.
+
+        Returns
+        -------
+        bool
+            True or False
+
+        """
+        p_sick = cls.param['p_sick']
+        return np.random.choice([True, False], p=[p_sick, 1-p_sick])
+
     def increase_eat_weight(self, fodder):
         """
         Increases the animal class instance's weight by :math:`\beta` times
@@ -379,7 +392,14 @@ class Animal:
             Amount of food the animal instance is to eat.
 
         """
+
+        self.is_sick = self._determine_sick()
         beta = self.param["beta"]
+        loss_rate = self.param["loss_rate"]
+
+        if self.is_sick:
+            self._weight += beta*fodder*loss_rate
+
         self._weight += beta * fodder
         self.update_fitness()
 
@@ -447,6 +467,8 @@ class Herbivore(Animal):
         "omega": 0.4,
         "F": 10.0,
         "DeltaPhiMax": 0,
+        "p_sick": 0,
+        "loss_rate": 0.8,
     }
 
     def __init__(self, weight=None, age=None):
@@ -487,6 +509,8 @@ class Carnivore(Animal):
         "omega": 0.9,
         "F": 50.0,
         "DeltaPhiMax": 10.0,
+        "p_sick": 0,
+        "loss_rate": 0.8,
     }
 
     def __init__(self, weight=None, age=None):

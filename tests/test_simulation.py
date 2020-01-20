@@ -48,6 +48,7 @@ def standard_sim():
     return BioSim(geogr, ini_herbs, seed=123, img_base=".dv")
 
 
-def test_standard_biosim(standard_sim):
+"""def test_standard_biosim(standard_sim):
     standard_sim.simulate(10)
     standard_sim.make_movie()
+"""
