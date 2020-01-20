@@ -415,12 +415,14 @@ def test_add_animal_non_existing_species(plain_savannah):
             [{"species": "Amir", "age": 10, "weight": 20}]
         )
 
+
 def test_add_animal_ocean(plain_ocean):
     with pytest.raises(ValueError):
         plain_ocean.add_animal([{"species": "Herbivore"}])
 
     with pytest.raises(ValueError):
         plain_ocean.add_animal([{"species": "Carnivore"}])
+
 
 def test_add_animal_none_age_and_weight(plain_savannah):
     """

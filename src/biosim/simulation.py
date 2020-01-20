@@ -34,14 +34,14 @@ class BioSim:
     }
 
     def __init__(
-            self,
-            island_map,
-            ini_pop,
-            seed,
-            ymax_animals=None,
-            cmax_animals=None,
-            img_base=None,
-            img_fmt="png",
+        self,
+        island_map,
+        ini_pop,
+        seed,
+        ymax_animals=None,
+        cmax_animals=None,
+        img_base=None,
+        img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -171,10 +171,11 @@ class BioSim:
 
         if self._mean_ax is None:
             self._mean_ax = self._fig.add_subplot(2, 2, 2)
-            self._mean_ax.set_title("Herbivore and Carnivore Population")
-            self._mean_ax.set_ylim(0, self.ymax_animals)
 
+        self._mean_ax.set_title("Herbivore and Carnivore Population")
+        self._mean_ax.set_ylim(0, self.ymax_animals)
         self._mean_ax.set_xlim(0, self._final_year + 1)
+
         self.create_herb_line()
         self.create_carn_line()
 
@@ -189,7 +190,6 @@ class BioSim:
             self.carn_img_axis = None
 
         self._fig.tight_layout()
-
 
     def _update_graphics(self):
         pop_df = self.animal_distribution
@@ -235,14 +235,21 @@ class BioSim:
         self._island_map.set_title("Island Map")
         self._island_map.imshow(self.map_rgb)
         labels = ["Ocean", "Mountain", "Jungle", "Savannah", "Desert"]
-        patches = [mpatches.Patch(color=self.rgb_value[i], label=labels[n]) for
-                   n, i in enumerate(self.rgb_value.keys())]
-        self._island_map.legend(handles=patches, prop={'size': 5}, loc=4)
+        patches = [
+            mpatches.Patch(color=self.rgb_value[i], label=labels[n])
+            for n, i in enumerate(self.rgb_value.keys())
+        ]
+        self._island_map.legend(handles=patches, prop={"size": 5}, loc=4)
 
         self._island_map.set_xticks(range(len(self.map_rgb[0])))
-        self._island_map.set_xticklabels(range(1, 1 + len(self.map_rgb[0])))
+        self._island_map.set_xticklabels(
+            labels=(range(1, 1 + len(self.map_rgb[0]))),
+            fontdict={"fontsize": 6},
+        )
         self._island_map.set_yticks(range(len(self.map_rgb)))
-        self._island_map.set_yticklabels(range(1, 1 + len(self.map_rgb)))
+        self._island_map.set_yticklabels(
+            labels=range(1, 1 + len(self.map_rgb)), fontdict={"fontsize": 6}
+        )
 
     def create_herb_line(self):
         if self._herb_line is None:
@@ -289,9 +296,14 @@ class BioSim:
             )
 
         self.herb_heat.set_xticks(range(len(self.map_rgb[0])))
-        self.herb_heat.set_xticklabels(range(1, 1 + len(self.map_rgb[0])))
+        self.herb_heat.set_xticklabels(
+            labels=(range(1, 1 + len(self.map_rgb[0]))),
+            fontdict={"fontsize": 6},
+        )
         self.herb_heat.set_yticks(range(len(self.map_rgb)))
-        self.herb_heat.set_yticklabels(range(1, 1 + len(self.map_rgb)))
+        self.herb_heat.set_yticklabels(
+            labels=range(1, 1 + len(self.map_rgb)), fontdict={"fontsize": 6}
+        )
 
     def _update_carn_heatmap(self, carn_heat):
 
@@ -306,9 +318,14 @@ class BioSim:
             )
 
         self.carn_heat.set_xticks(range(len(self.map_rgb[0])))
-        self.carn_heat.set_xticklabels(range(1, 1 + len(self.map_rgb[0])))
+        self.carn_heat.set_xticklabels(
+            labels=(range(1, 1 + len(self.map_rgb[0]))),
+            fontdict={"fontsize": 6},
+        )
         self.carn_heat.set_yticks(range(len(self.map_rgb)))
-        self.carn_heat.set_yticklabels(range(1, 1 + len(self.map_rgb)))
+        self.carn_heat.set_yticklabels(
+            labels=(range(1, 1 + len(self.map_rgb))), fontdict={"fontsize": 6}
+        )
 
     def _update_specie_lines(self):
         herb_amount = self.num_animals_per_species["Herbivore"]
@@ -321,7 +338,7 @@ class BioSim:
         ydata_carn[self._year] = carn_amount
         self._carn_line.set_ydata(ydata_carn)
 
-        self._mean_ax.legend(['Herbivore', 'Carnivore'], prop={'size': 6})
+        self._mean_ax.legend(["Herbivore", "Carnivore"], prop={"size": 6})
 
     def add_population(self, population):
         """

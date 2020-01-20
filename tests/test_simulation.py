@@ -50,7 +50,3 @@ def standard_sim():
 
 def test_standard_biosim(standard_sim):
     standard_sim.simulate(100)
-
-
-
-
