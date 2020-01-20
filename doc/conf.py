@@ -14,6 +14,8 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath(".."))
+sys.path.insert(0, os.path.abspath("..src/"))
+
 autoclass_content = "both"
 
 
@@ -37,6 +39,7 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
+    "numpydoc",
 ]
 
 
