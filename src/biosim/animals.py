@@ -208,7 +208,7 @@ class Animal:
                 raise ValueError(f"{par} must be strictly positive")
             elif new_par_dict[par] < 0 and par != "DeltaPhiMax":
                 raise ValueError(f"{par} must be positive")
-            elif new_par_dict[par] > 1 and par == "eta":
+            elif new_par_dict[par] > 1 and (par == "eta" or par == "p_sick"):
                 raise ValueError(f"{par} must be less or equal to 1")
 
         cls.param.update(new_par_dict)
@@ -399,8 +399,8 @@ class Animal:
 
         if self.is_sick:
             self._weight += beta*fodder*loss_rate
-
-        self._weight += beta * fodder
+        else:
+            self._weight += beta * fodder
         self.update_fitness()
 
     def decrease_annual_weight(self):

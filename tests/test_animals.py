@@ -375,3 +375,19 @@ def test_gauss_distribution_shapiro():
     assert herb_p > alpha
 
     assert carn_p > alpha
+
+
+def test_sick_herbivores_eat(mocker):
+    """
+    Simple test to check if a sick animal loses more weight than a healthy
+    animal.
+
+    """
+    healthy_herb = Herbivore(weight=10)
+    sick_herb = Herbivore(weight=10)
+    healthy_herb.increase_eat_weight(10)
+
+    mocker.patch("numpy.random.choice", return_value=True)
+    sick_herb.increase_eat_weight(10)
+
+    assert healthy_herb.weight > sick_herb.weight
