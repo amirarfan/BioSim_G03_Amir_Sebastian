@@ -1,3 +1,4 @@
+PySimpleGUI
 pandas
 numpy
 pytest
