@@ -1,0 +1,954 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cell &mdash; BioSim 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BioSim
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">BioSim Simulation :</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="simulation.html">Island Simulation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="map.html">Map</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Cell</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="animals.html">Animals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html">GUI</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Test Functions :</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="simulation_tests.html">Simulation Tests</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BioSim</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="simulation.html">Island Simulation</a> &raquo;</li>
+        
+      <li>Cell</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/cell.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-biosim.cell">
+<span id="cell"></span><h1>Cell<a class="headerlink" href="#module-biosim.cell" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="biosim.cell.Cell">
+<em class="property">class </em><code class="sig-prename descclassname">biosim.cell.</code><code class="sig-name descname">Cell</code><a class="headerlink" href="#biosim.cell.Cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cell base class, which refers to a area or a square in a map. From this
+base class all cell types will be based upon, they will in other words
+be subclasses of Cell.</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.cell.Cell.add_animal" title="biosim.cell.Cell.add_animal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_animal</span></code></a>(self, list_animal_dicts)</p></td>
+<td><p>Adds a new animal from a dictionary into a cell</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#biosim.cell.Cell.aging" title="biosim.cell.Cell.aging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aging</span></code></a>(self)</p></td>
+<td><p>Loops through all animals in the cell and uses add age function from ‘animals.py’ to add one age.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.cell.Cell.annual_death" title="biosim.cell.Cell.annual_death"><code class="xref py py-obj docutils literal notranslate"><span class="pre">annual_death</span></code></a>(self)</p></td>
+<td><p>Loops through all animals in a cell and checks whether the animal is to die by using the animal instance function ‘determine_death’.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#biosim.cell.Cell.annual_weight_loss" title="biosim.cell.Cell.annual_weight_loss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">annual_weight_loss</span></code></a>(self)</p></td>
+<td><p>Makes all animals in the current cell lose their annual weight.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.cell.Cell.compute_move_prob" title="biosim.cell.Cell.compute_move_prob"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_move_prob</span></code></a>(animal_type, neighbour_cells)</p></td>
+<td><p>Computes the probability to move to each neighbouring cell</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#biosim.cell.Cell.compute_relative_abundance" title="biosim.cell.Cell.compute_relative_abundance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_relative_abundance</span></code></a>(self, animal_class)</p></td>
+<td><p>Computes the relative abundance for either herbivore or carnivore, depending on the specie type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.cell.Cell.delete_single_animal" title="biosim.cell.Cell.delete_single_animal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_single_animal</span></code></a>(self, animal)</p></td>
+<td><p>Deletes single class instance from cell.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#biosim.cell.Cell.eat_carnivore" title="biosim.cell.Cell.eat_carnivore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eat_carnivore</span></code></a>(self)</p></td>
+<td><p>Feeds the carnivores in the current cell and updates their weight by doing so.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.cell.Cell.eat_herbivore" title="biosim.cell.Cell.eat_herbivore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eat_herbivore</span></code></a>(self)</p></td>
+<td><p>Makes all herbivores in the current cell eat and updates their weight by doing so.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#biosim.cell.Cell.gen_fodder" title="biosim.cell.Cell.gen_fodder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gen_fodder</span></code></a>(self)</p></td>
+<td><p>Regenerates fodder for the cell classes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.cell.Cell.insert_animal" title="biosim.cell.Cell.insert_animal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_animal</span></code></a>(self, animal_list)</p></td>
+<td><p>Inserts animal class instance to a cell</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#biosim.cell.Cell.mating" title="biosim.cell.Cell.mating"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mating</span></code></a>(self)</p></td>
+<td><p>Mating function which makes all the animals in current cell have intercourse if ‘determine_birth’ is True and there are more than one animal of the same specie in the cell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.cell.Cell.migration" title="biosim.cell.Cell.migration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">migration</span></code></a>(self, neighbour_cells)</p></td>
+<td><p>Moves animals from one cell to another cell, whether the animal is to move is determined by the animal instance with the function ‘determine_to_move’.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#biosim.cell.Cell.num_animals_per_cell" title="biosim.cell.Cell.num_animals_per_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_animals_per_cell</span></code></a>(self)</p></td>
+<td><p>Calculates the amount of animals per cell and returns that value</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.cell.Cell.num_species_per_cell" title="biosim.cell.Cell.num_species_per_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_species_per_cell</span></code></a>(self)</p></td>
+<td><p>Checks how many of each specie there is in the cell and returns that value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#biosim.cell.Cell.propensity" title="biosim.cell.Cell.propensity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propensity</span></code></a>(self, specie)</p></td>
+<td><p>Computes and returns the propensity to move, the relative abundance is calculated through the ‘compute_relative_abundance’ function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.cell.Cell.remove_multiple_animals" title="biosim.cell.Cell.remove_multiple_animals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_multiple_animals</span></code></a>(self, specie, …)</p></td>
+<td><p>Deletes multiple animals from the cell instance, given the specie and the indexes of the animals to remove.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#biosim.cell.Cell.update_animal_parameters_in_cell" title="biosim.cell.Cell.update_animal_parameters_in_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_animal_parameters_in_cell</span></code></a>(species, …)</p></td>
+<td><p>Updates the parameters for all instances of specified specie</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.cell.Cell.update_parameters" title="biosim.cell.Cell.update_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_parameters</span></code></a>(new_par_dict)</p></td>
+<td><p>Uses the new dictionary to update the current parameters set.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="biosim.cell.Cell.add_animal">
+<code class="sig-name descname">add_animal</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">list_animal_dicts</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.add_animal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new animal from a dictionary into a cell</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>list_animal_dicts: list</strong></dt><dd><p>List of dictionary containing animal specifications</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.aging">
+<code class="sig-name descname">aging</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.aging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loops through all animals in the cell and uses add age function from
+‘animals.py’ to add one age.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.annual_death">
+<code class="sig-name descname">annual_death</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.annual_death" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loops through all animals in a cell and checks whether the animal is
+to die by using the animal instance function ‘determine_death’.
+Proceeds to delete the animals which are to die, using the
+‘remove_multiple_animals’ function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.annual_weight_loss">
+<code class="sig-name descname">annual_weight_loss</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.annual_weight_loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes all animals in the current cell lose their annual weight.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.compute_move_prob">
+<em class="property">static </em><code class="sig-name descname">compute_move_prob</code><span class="sig-paren">(</span><em class="sig-param">animal_type</em>, <em class="sig-param">neighbour_cells</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.compute_move_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the probability to move to each neighbouring cell</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>animal_type: class instance</strong></dt><dd><p>Takes in a specific class instance</p>
+</dd>
+<dt><strong>neighbour_cells:</strong></dt><dd><p>Takes in the neighbouring cells of the cell the animal
+class instance is located at</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list</dt><dd><p>List containing probability to move to each cell</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.compute_relative_abundance">
+<code class="sig-name descname">compute_relative_abundance</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">animal_class</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.compute_relative_abundance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the relative abundance for either herbivore or carnivore,
+depending on the specie type.</p>
+<p>The relative abundance is computed through this formula:</p>
+<p>Where <span class="math notranslate nohighlight">\(\epsilon_{k}\)</span> is the relative abundance. <span class="math notranslate nohighlight">\(f_{k}\)</span> is
+the current fodder for cell k, which is different for carnivores
+and herbivores. <span class="math notranslate nohighlight">\(n_{k}\)</span> is the amount of same species in cell
+k, and <span class="math notranslate nohighlight">\(F^{\text{'}}\)</span> is how much food the animal wants to eat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>animal_class: class instance</strong></dt><dd><p>The class instance one needs to calculate relative
+abundance for</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>The relative abundance of the current cell</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.delete_single_animal">
+<code class="sig-name descname">delete_single_animal</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">animal</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.delete_single_animal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes single class instance from cell. Not to be used in a for loop
+because it would become a confused for loop. This method should only
+be used to delete a single instance of animal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>animal: class instance</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.eat_carnivore">
+<code class="sig-name descname">eat_carnivore</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.eat_carnivore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Feeds the carnivores in the current cell and updates their weight by
+doing so. The prey which is eaten by the predator (carnivore) is
+deleted from the cell.</p>
+<p>The carnivore eats till it has eaten an amnount <span class="math notranslate nohighlight">\(F\)</span>, which means
+that it has eaten himself full of herbivores, i.e.
+<span class="math notranslate nohighlight">\(\sum w_{herb-eaten} \geq F\)</span></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.eat_herbivore">
+<code class="sig-name descname">eat_herbivore</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.eat_herbivore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes all herbivores in the current cell eat and updates their weight
+by doing so.</p>
+<p>The eating method is determined by this:</p>
+<p><span class="math notranslate nohighlight">\(F\)</span> is the animals appetite, and <span class="math notranslate nohighlight">\(f_{ij}\)</span> is the current
+fodder in the cell.</p>
+<dl class="simple">
+<dt>if <span class="math notranslate nohighlight">\(F\le f_{ij}\)</span></dt><dd><p>There is enough fodder in the cell, because F is the apetite, and
+the herbivore eats till it’s full.</p>
+</dd>
+<dt>if <span class="math notranslate nohighlight">\(0 &lt; f_{ij} &lt; F\)</span></dt><dd><p>the animal eats is what is left of fodder, remaining fodder in the
+cell will be then set to 0.</p>
+</dd>
+<dt>if <span class="math notranslate nohighlight">\(f_{ij} = 0\)</span></dt><dd><p>the animal receives no food at all, because the current fodder
+in the cell is equal to 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.gen_fodder">
+<code class="sig-name descname">gen_fodder</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.gen_fodder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Regenerates fodder for the cell classes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.insert_animal">
+<code class="sig-name descname">insert_animal</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">animal_list</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.insert_animal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts animal class instance to a cell</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>animal_list: list</strong></dt><dd><p>List of animal classes to append to a cell</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.mating">
+<code class="sig-name descname">mating</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.mating" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mating function which makes all the animals in current cell have
+intercourse if ‘determine_birth’ is True and there are more than one
+animal of the same specie in the cell. Adds a new animal class to cell
+if the current animal is to give birth, and also updates the weight
+of the birth-giving animal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.migration">
+<code class="sig-name descname">migration</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">neighbour_cells</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves animals from one cell to another cell, whether the animal is to
+move is determined by the animal instance with the function
+‘determine_to_move’. Which cell it will move to is determined
+by computing the move probability for each cell, and is chosen by using
+Numpy’s random choice method with fixed probabilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>neighbour_cells: list</strong></dt><dd><p>List of class instances containing neighbouring cells</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.num_animals_per_cell">
+<code class="sig-name descname">num_animals_per_cell</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.num_animals_per_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the amount of animals per cell and returns that value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int</dt><dd><p>The total number of animals per cell</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.num_species_per_cell">
+<code class="sig-name descname">num_species_per_cell</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.num_species_per_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks how many of each specie there is in the cell and returns that
+value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int</dt><dd><p>The amount of herbivores in cell</p>
+</dd>
+<dt>int</dt><dd><p>The amount of carnivores in cell</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="biosim.cell.Cell.param">
+<code class="sig-name descname">param</code><em class="property"> = {}</em><a class="headerlink" href="#biosim.cell.Cell.param" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.propensity">
+<code class="sig-name descname">propensity</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">specie</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.propensity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes and returns the propensity to move, the relative abundance is
+calculated through the ‘compute_relative_abundance’ function.
+The formula for propensity is given by:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>specie: class instance</strong></dt><dd><p>The class instance of animal to be used in the function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>The propensity to move</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.remove_multiple_animals">
+<code class="sig-name descname">remove_multiple_animals</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">specie</em>, <em class="sig-param">animals_to_remove</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.remove_multiple_animals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes multiple animals from the cell instance, given the specie
+and the indexes of the animals to remove.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>specie: string</strong></dt><dd><p>The specie type which is to be deleted from a cell instance</p>
+</dd>
+<dt><strong>animals_to_remove: list</strong></dt><dd></dd>
+<dt><strong>The list of indexes of the animals which are to be deleted from</strong></dt><dd></dd>
+<dt><strong>the cell list containing the animals.</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.update_animal_parameters_in_cell">
+<em class="property">static </em><code class="sig-name descname">update_animal_parameters_in_cell</code><span class="sig-paren">(</span><em class="sig-param">species</em>, <em class="sig-param">param_dict</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.update_animal_parameters_in_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the parameters for all instances of specified specie</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>species: str</strong></dt><dd><p>Name of the specie which need sto be updated.</p>
+</dd>
+<dt><strong>param_dict:</strong></dt><dd><p>New parameter dictionary</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.cell.Cell.update_parameters">
+<em class="property">classmethod </em><code class="sig-name descname">update_parameters</code><span class="sig-paren">(</span><em class="sig-param">new_par_dict</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Cell.update_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the new dictionary to update the current parameters set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>new_par_dict: dict</strong></dt><dd><p>Dictionary containing new parameter values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="biosim.cell.Desert">
+<em class="property">class </em><code class="sig-prename descclassname">biosim.cell.</code><code class="sig-name descname">Desert</code><a class="headerlink" href="#biosim.cell.Desert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Desert subclass which inherits from the Cell superclass</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_animal</span></code>(self, list_animal_dicts)</p></td>
+<td><p>Adds a new animal from a dictionary into a cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">aging</span></code>(self)</p></td>
+<td><p>Loops through all animals in the cell and uses add age function from ‘animals.py’ to add one age.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">annual_death</span></code>(self)</p></td>
+<td><p>Loops through all animals in a cell and checks whether the animal is to die by using the animal instance function ‘determine_death’.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">annual_weight_loss</span></code>(self)</p></td>
+<td><p>Makes all animals in the current cell lose their annual weight.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_move_prob</span></code>(animal_type, neighbour_cells)</p></td>
+<td><p>Computes the probability to move to each neighbouring cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_relative_abundance</span></code>(self, animal_class)</p></td>
+<td><p>Computes the relative abundance for either herbivore or carnivore, depending on the specie type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_single_animal</span></code>(self, animal)</p></td>
+<td><p>Deletes single class instance from cell.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">eat_carnivore</span></code>(self)</p></td>
+<td><p>Feeds the carnivores in the current cell and updates their weight by doing so.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">eat_herbivore</span></code>(self)</p></td>
+<td><p>Makes all herbivores in the current cell eat and updates their weight by doing so.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gen_fodder</span></code>(self)</p></td>
+<td><p>Regenerates fodder for the cell classes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_animal</span></code>(self, animal_list)</p></td>
+<td><p>Inserts animal class instance to a cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mating</span></code>(self)</p></td>
+<td><p>Mating function which makes all the animals in current cell have intercourse if ‘determine_birth’ is True and there are more than one animal of the same specie in the cell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">migration</span></code>(self, neighbour_cells)</p></td>
+<td><p>Moves animals from one cell to another cell, whether the animal is to move is determined by the animal instance with the function ‘determine_to_move’.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_animals_per_cell</span></code>(self)</p></td>
+<td><p>Calculates the amount of animals per cell and returns that value</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_species_per_cell</span></code>(self)</p></td>
+<td><p>Checks how many of each specie there is in the cell and returns that value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">propensity</span></code>(self, specie)</p></td>
+<td><p>Computes and returns the propensity to move, the relative abundance is calculated through the ‘compute_relative_abundance’ function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_multiple_animals</span></code>(self, specie, …)</p></td>
+<td><p>Deletes multiple animals from the cell instance, given the specie and the indexes of the animals to remove.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_animal_parameters_in_cell</span></code>(species, …)</p></td>
+<td><p>Updates the parameters for all instances of specified specie</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_parameters</span></code>(new_par_dict)</p></td>
+<td><p>Uses the new dictionary to update the current parameters set.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="biosim.cell.Jungle">
+<em class="property">class </em><code class="sig-prename descclassname">biosim.cell.</code><code class="sig-name descname">Jungle</code><a class="headerlink" href="#biosim.cell.Jungle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Jungle subclass, which inherits from the Cell superclass</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_animal</span></code>(self, list_animal_dicts)</p></td>
+<td><p>Adds a new animal from a dictionary into a cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">aging</span></code>(self)</p></td>
+<td><p>Loops through all animals in the cell and uses add age function from ‘animals.py’ to add one age.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">annual_death</span></code>(self)</p></td>
+<td><p>Loops through all animals in a cell and checks whether the animal is to die by using the animal instance function ‘determine_death’.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">annual_weight_loss</span></code>(self)</p></td>
+<td><p>Makes all animals in the current cell lose their annual weight.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_move_prob</span></code>(animal_type, neighbour_cells)</p></td>
+<td><p>Computes the probability to move to each neighbouring cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_relative_abundance</span></code>(self, animal_class)</p></td>
+<td><p>Computes the relative abundance for either herbivore or carnivore, depending on the specie type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_single_animal</span></code>(self, animal)</p></td>
+<td><p>Deletes single class instance from cell.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">eat_carnivore</span></code>(self)</p></td>
+<td><p>Feeds the carnivores in the current cell and updates their weight by doing so.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">eat_herbivore</span></code>(self)</p></td>
+<td><p>Makes all herbivores in the current cell eat and updates their weight by doing so.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#biosim.cell.Jungle.gen_fodder" title="biosim.cell.Jungle.gen_fodder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gen_fodder</span></code></a>(self)</p></td>
+<td><p>Updates current fodder to be the maximum amount of fodder.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_animal</span></code>(self, animal_list)</p></td>
+<td><p>Inserts animal class instance to a cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mating</span></code>(self)</p></td>
+<td><p>Mating function which makes all the animals in current cell have intercourse if ‘determine_birth’ is True and there are more than one animal of the same specie in the cell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">migration</span></code>(self, neighbour_cells)</p></td>
+<td><p>Moves animals from one cell to another cell, whether the animal is to move is determined by the animal instance with the function ‘determine_to_move’.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_animals_per_cell</span></code>(self)</p></td>
+<td><p>Calculates the amount of animals per cell and returns that value</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_species_per_cell</span></code>(self)</p></td>
+<td><p>Checks how many of each specie there is in the cell and returns that value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">propensity</span></code>(self, specie)</p></td>
+<td><p>Computes and returns the propensity to move, the relative abundance is calculated through the ‘compute_relative_abundance’ function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_multiple_animals</span></code>(self, specie, …)</p></td>
+<td><p>Deletes multiple animals from the cell instance, given the specie and the indexes of the animals to remove.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_animal_parameters_in_cell</span></code>(species, …)</p></td>
+<td><p>Updates the parameters for all instances of specified specie</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_parameters</span></code>(new_par_dict)</p></td>
+<td><p>Uses the new dictionary to update the current parameters set.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="biosim.cell.Jungle.gen_fodder">
+<code class="sig-name descname">gen_fodder</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Jungle.gen_fodder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates current fodder to be the maximum amount of fodder.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="biosim.cell.Jungle.param">
+<code class="sig-name descname">param</code><em class="property"> = {'alpha': 0, 'f_max': 800}</em><a class="headerlink" href="#biosim.cell.Jungle.param" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="biosim.cell.Mountain">
+<em class="property">class </em><code class="sig-prename descclassname">biosim.cell.</code><code class="sig-name descname">Mountain</code><a class="headerlink" href="#biosim.cell.Mountain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mountain subclass, which inherits from the Cell superclass</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_animal</span></code>(self, list_animal_dicts)</p></td>
+<td><p>Adds a new animal from a dictionary into a cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">aging</span></code>(self)</p></td>
+<td><p>Loops through all animals in the cell and uses add age function from ‘animals.py’ to add one age.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">annual_death</span></code>(self)</p></td>
+<td><p>Loops through all animals in a cell and checks whether the animal is to die by using the animal instance function ‘determine_death’.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">annual_weight_loss</span></code>(self)</p></td>
+<td><p>Makes all animals in the current cell lose their annual weight.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_move_prob</span></code>(animal_type, neighbour_cells)</p></td>
+<td><p>Computes the probability to move to each neighbouring cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_relative_abundance</span></code>(self, animal_class)</p></td>
+<td><p>Computes the relative abundance for either herbivore or carnivore, depending on the specie type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_single_animal</span></code>(self, animal)</p></td>
+<td><p>Deletes single class instance from cell.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">eat_carnivore</span></code>(self)</p></td>
+<td><p>Feeds the carnivores in the current cell and updates their weight by doing so.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">eat_herbivore</span></code>(self)</p></td>
+<td><p>Makes all herbivores in the current cell eat and updates their weight by doing so.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gen_fodder</span></code>(self)</p></td>
+<td><p>Regenerates fodder for the cell classes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_animal</span></code>(self, animal_list)</p></td>
+<td><p>Inserts animal class instance to a cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mating</span></code>(self)</p></td>
+<td><p>Mating function which makes all the animals in current cell have intercourse if ‘determine_birth’ is True and there are more than one animal of the same specie in the cell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">migration</span></code>(self, neighbour_cells)</p></td>
+<td><p>Moves animals from one cell to another cell, whether the animal is to move is determined by the animal instance with the function ‘determine_to_move’.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_animals_per_cell</span></code>(self)</p></td>
+<td><p>Calculates the amount of animals per cell and returns that value</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_species_per_cell</span></code>(self)</p></td>
+<td><p>Checks how many of each specie there is in the cell and returns that value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">propensity</span></code>(self, specie)</p></td>
+<td><p>Computes and returns the propensity to move, the relative abundance is calculated through the ‘compute_relative_abundance’ function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_multiple_animals</span></code>(self, specie, …)</p></td>
+<td><p>Deletes multiple animals from the cell instance, given the specie and the indexes of the animals to remove.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_animal_parameters_in_cell</span></code>(species, …)</p></td>
+<td><p>Updates the parameters for all instances of specified specie</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_parameters</span></code>(new_par_dict)</p></td>
+<td><p>Uses the new dictionary to update the current parameters set.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="biosim.cell.Ocean">
+<em class="property">class </em><code class="sig-prename descclassname">biosim.cell.</code><code class="sig-name descname">Ocean</code><a class="headerlink" href="#biosim.cell.Ocean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ocean subclass, which inherits from the Cell superclass</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_animal</span></code>(self, list_animal_dicts)</p></td>
+<td><p>Adds a new animal from a dictionary into a cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">aging</span></code>(self)</p></td>
+<td><p>Loops through all animals in the cell and uses add age function from ‘animals.py’ to add one age.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">annual_death</span></code>(self)</p></td>
+<td><p>Loops through all animals in a cell and checks whether the animal is to die by using the animal instance function ‘determine_death’.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">annual_weight_loss</span></code>(self)</p></td>
+<td><p>Makes all animals in the current cell lose their annual weight.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_move_prob</span></code>(animal_type, neighbour_cells)</p></td>
+<td><p>Computes the probability to move to each neighbouring cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_relative_abundance</span></code>(self, animal_class)</p></td>
+<td><p>Computes the relative abundance for either herbivore or carnivore, depending on the specie type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_single_animal</span></code>(self, animal)</p></td>
+<td><p>Deletes single class instance from cell.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">eat_carnivore</span></code>(self)</p></td>
+<td><p>Feeds the carnivores in the current cell and updates their weight by doing so.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">eat_herbivore</span></code>(self)</p></td>
+<td><p>Makes all herbivores in the current cell eat and updates their weight by doing so.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gen_fodder</span></code>(self)</p></td>
+<td><p>Regenerates fodder for the cell classes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_animal</span></code>(self, animal_list)</p></td>
+<td><p>Inserts animal class instance to a cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mating</span></code>(self)</p></td>
+<td><p>Mating function which makes all the animals in current cell have intercourse if ‘determine_birth’ is True and there are more than one animal of the same specie in the cell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">migration</span></code>(self, neighbour_cells)</p></td>
+<td><p>Moves animals from one cell to another cell, whether the animal is to move is determined by the animal instance with the function ‘determine_to_move’.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_animals_per_cell</span></code>(self)</p></td>
+<td><p>Calculates the amount of animals per cell and returns that value</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_species_per_cell</span></code>(self)</p></td>
+<td><p>Checks how many of each specie there is in the cell and returns that value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">propensity</span></code>(self, specie)</p></td>
+<td><p>Computes and returns the propensity to move, the relative abundance is calculated through the ‘compute_relative_abundance’ function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_multiple_animals</span></code>(self, specie, …)</p></td>
+<td><p>Deletes multiple animals from the cell instance, given the specie and the indexes of the animals to remove.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_animal_parameters_in_cell</span></code>(species, …)</p></td>
+<td><p>Updates the parameters for all instances of specified specie</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_parameters</span></code>(new_par_dict)</p></td>
+<td><p>Uses the new dictionary to update the current parameters set.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="biosim.cell.Savannah">
+<em class="property">class </em><code class="sig-prename descclassname">biosim.cell.</code><code class="sig-name descname">Savannah</code><a class="headerlink" href="#biosim.cell.Savannah" title="Permalink to this definition">¶</a></dt>
+<dd><p>Savannah subclass, which inherits from the Cell superclass</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_animal</span></code>(self, list_animal_dicts)</p></td>
+<td><p>Adds a new animal from a dictionary into a cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">aging</span></code>(self)</p></td>
+<td><p>Loops through all animals in the cell and uses add age function from ‘animals.py’ to add one age.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">annual_death</span></code>(self)</p></td>
+<td><p>Loops through all animals in a cell and checks whether the animal is to die by using the animal instance function ‘determine_death’.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">annual_weight_loss</span></code>(self)</p></td>
+<td><p>Makes all animals in the current cell lose their annual weight.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_move_prob</span></code>(animal_type, neighbour_cells)</p></td>
+<td><p>Computes the probability to move to each neighbouring cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_relative_abundance</span></code>(self, animal_class)</p></td>
+<td><p>Computes the relative abundance for either herbivore or carnivore, depending on the specie type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_single_animal</span></code>(self, animal)</p></td>
+<td><p>Deletes single class instance from cell.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">eat_carnivore</span></code>(self)</p></td>
+<td><p>Feeds the carnivores in the current cell and updates their weight by doing so.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">eat_herbivore</span></code>(self)</p></td>
+<td><p>Makes all herbivores in the current cell eat and updates their weight by doing so.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#biosim.cell.Savannah.gen_fodder" title="biosim.cell.Savannah.gen_fodder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gen_fodder</span></code></a>(self)</p></td>
+<td><p>Updates current fodder by this equation:</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_animal</span></code>(self, animal_list)</p></td>
+<td><p>Inserts animal class instance to a cell</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mating</span></code>(self)</p></td>
+<td><p>Mating function which makes all the animals in current cell have intercourse if ‘determine_birth’ is True and there are more than one animal of the same specie in the cell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">migration</span></code>(self, neighbour_cells)</p></td>
+<td><p>Moves animals from one cell to another cell, whether the animal is to move is determined by the animal instance with the function ‘determine_to_move’.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_animals_per_cell</span></code>(self)</p></td>
+<td><p>Calculates the amount of animals per cell and returns that value</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_species_per_cell</span></code>(self)</p></td>
+<td><p>Checks how many of each specie there is in the cell and returns that value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">propensity</span></code>(self, specie)</p></td>
+<td><p>Computes and returns the propensity to move, the relative abundance is calculated through the ‘compute_relative_abundance’ function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_multiple_animals</span></code>(self, specie, …)</p></td>
+<td><p>Deletes multiple animals from the cell instance, given the specie and the indexes of the animals to remove.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_animal_parameters_in_cell</span></code>(species, …)</p></td>
+<td><p>Updates the parameters for all instances of specified specie</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_parameters</span></code>(new_par_dict)</p></td>
+<td><p>Uses the new dictionary to update the current parameters set.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="biosim.cell.Savannah.gen_fodder">
+<code class="sig-name descname">gen_fodder</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Savannah.gen_fodder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates current fodder by this equation:</p>
+<p>Where <span class="math notranslate nohighlight">\(f_{ij}\)</span> is the current amount of fodder in the cell,
+<span class="math notranslate nohighlight">\(\alpha\)</span> is the growth parameter for Savannah subclass, and
+<span class="math notranslate nohighlight">\(\f_{\text{Sav-max}}\)</span> is the maximum amount of fodder for
+the Savannah cell.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="biosim.cell.Savannah.param">
+<code class="sig-name descname">param</code><em class="property"> = {'alpha': 0.3, 'f_max': 300}</em><a class="headerlink" href="#biosim.cell.Savannah.param" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Amir Arfan, Sebastian Becker
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

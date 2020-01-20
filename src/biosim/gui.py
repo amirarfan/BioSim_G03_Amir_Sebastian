@@ -39,5 +39,6 @@ layout = [
 window = sg.Window("BioSim", layout, font=("Helvetica", 12))
 
 event, values = window.read()
-for i in values.values():
-    print(i)
+print(values)
+num_herbs = values[0]
+num_carns = values[1]

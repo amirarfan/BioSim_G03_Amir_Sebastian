@@ -25,6 +25,9 @@ _DEFAULT_MOVIE_FORMAT = "mp4"  # alternatives: mp4, gif
 
 
 class BioSim:
+    """
+    Simulation of biosim
+    """
     rgb_value = {
         "O": (0.0, 0.0, 1.0),
         "M": (0.5, 0.5, 0.5),

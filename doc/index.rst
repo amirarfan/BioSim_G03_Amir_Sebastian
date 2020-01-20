@@ -1,19 +1,23 @@
+.. BioSim documentation master file, created by
+   sphinx-quickstart on Mon Jan 20 11:57:17 2020.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
 Welcome to BioSim's documentation!
 ==================================
 
-.. automodule:: simulation
-    :members:
-    :private-members:
+.. toctree::
+   :maxdepth: 2
+   :caption: BioSim Simulation :
 
+   simulation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Test Functions :
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   simulation_tests
+   interface_tests
+   map_tests
+   cell_tests
+   animal_tests

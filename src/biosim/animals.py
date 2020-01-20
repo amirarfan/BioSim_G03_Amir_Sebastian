@@ -238,7 +238,8 @@ class Animal:
         )
 
     def determine_death(self):
-        """"
+        """
+
         Calculates the probability of death for the animal instance, uses that
         probability and Numpy's random.choice function to return a bool value.
 
