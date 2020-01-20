@@ -147,7 +147,7 @@ class Animal:
             0 & \text{for }w\le0\\
             q^{+}(a, a_{\frac{1}{2}},\phi_{age}) \times
             q^{-}(w, w_{\frac{1}{2}},\phi_{weight}) & \text{else}
-            \end{case}
+            \end{cases}
 
         Parameters
         ----------
@@ -160,7 +160,7 @@ class Animal:
         -------
         float
             The new value of fitness using the _q_sigmoid function with
-            different sign values :math: `+`, and  :math: `-`
+            different sign values :math:`+`, and  :math:`-`
 
         """
         a_half = cls.param["a_half"]
@@ -201,9 +201,9 @@ class Animal:
                     f"class parameters"
                 )
             if (
-                    new_par_dict[par] <= 0
-                    and par == "DeltaPhiMax"
-                    and cls.__name__ == "Carnivore"
+                new_par_dict[par] <= 0
+                and par == "DeltaPhiMax"
+                and cls.__name__ == "Carnivore"
             ):
                 raise ValueError(f"{par} must be strictly positive")
             elif new_par_dict[par] < 0 and par != "DeltaPhiMax":
@@ -266,7 +266,7 @@ class Animal:
 
         Computes the probability of birth for the animal, using the equation
 
-        .. :math::
+        .. math::
             \text{min}(1, \gamma \times \Phi \times (N-1))
 
         Parameters
@@ -327,11 +327,11 @@ class Animal:
         distribution, where it gets the mean and standard deviation from the
         class parameters.
 
-        .. :math::
+        .. math::
             \text{w} \sim \cal{N}(\text{w}_{\text{birth}},\sigma_{
             \text{birth}})
 
-        Where :math::`w_{birth}` is the mean, and :math::`sigma_{birth}` is
+        Where :math:`w_{birth}` is the mean, and :math:`sigma_{birth}` is
         the standard deviation.
 
         Returns
@@ -377,8 +377,8 @@ class Animal:
             True or False
 
         """
-        p_sick = cls.param['p_sick']
-        return np.random.choice([True, False], p=[p_sick, 1-p_sick])
+        p_sick = cls.param["p_sick"]
+        return np.random.choice([True, False], p=[p_sick, 1 - p_sick])
 
     def increase_eat_weight(self, fodder):
         """
@@ -398,7 +398,7 @@ class Animal:
         loss_rate = self.param["loss_rate"]
 
         if self.is_sick:
-            self._weight += beta*fodder*loss_rate
+            self._weight += beta * fodder * loss_rate
         else:
             self._weight += beta * fodder
         self.update_fitness()
@@ -422,11 +422,11 @@ class Animal:
 
         It is given by:
 
-        .. :math::
-            q^{\pm}(x, x_{\frac{1}{2}},\phi) =
-             \frac{1}{1 + e^{\pm \phi (x - x_{\frac{1}{2})}}}
+        .. math::
+                q^{\pm}(x, x_{\frac{1}{2}},\phi) =
+                \frac{1}{1 + e^{\pm \phi (x - x_{\frac{1}{2})}}}
 
-            
+
 
         Parameters
         ----------
@@ -532,7 +532,7 @@ class Carnivore(Animal):
         Computes probability of a Carnivore killing Herbivore which is
         determined through:
 
-        .. ::math::
+        .. math::
             p =
             \begin{cases}
             0 & \text{if }\Phi_{carn}\le \Phi_{herb}\\

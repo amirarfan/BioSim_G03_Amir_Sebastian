@@ -35,7 +35,9 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GUI" href="gui.html" />
+    <link rel="prev" title="Cell" href="cell.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,9 +86,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="simulation.html">Island Simulation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="map.html">Map</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cell.html">Cell</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Animals</a><ul class="simple">
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Animals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gui.html">GUI</a></li>
 </ul>
 </li>
@@ -228,7 +228,7 @@ parameters from the class.</p>
 0 &amp; \text{for }w\le0\\
 q^{+}(a, a_{\frac{1}{2}},\phi_{age}) \times
 q^{-}(w, w_{\frac{1}{2}},\phi_{weight}) &amp; \text{else}
-\end{case}\end{split}\]</div>
+\end{cases}\end{split}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -241,7 +241,22 @@ q^{-}(w, w_{\frac{1}{2}},\phi_{weight}) &amp; \text{else}
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>float</dt><dd><p>The new value of fitness using the _q_sigmoid function with
-different sign values :math: <cite>+</cite>, and  :math: <cite>-</cite></p>
+different sign values <span class="math notranslate nohighlight">\(+\)</span>, and  <span class="math notranslate nohighlight">\(-\)</span></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="biosim.animals.Animal._determine_sick">
+<em class="property">classmethod </em><code class="sig-name descname">_determine_sick</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#biosim.animals.Animal._determine_sick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if the animal is to become sick, using the ‘p_sick’
+parameter and Numpy’s random.choice method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>bool</dt><dd><p>True or False</p>
 </dd>
 </dl>
 </dd>
@@ -254,7 +269,10 @@ different sign values :math: <cite>+</cite>, and  :math: <cite>-</cite></p>
 <dd><p>Class method which returns the birth weight using a Gaussian
 distribution, where it gets the mean and standard deviation from the
 class parameters.</p>
-<p>Where :math::<cite>w_{birth}</cite> is the mean, and :math::<cite>sigma_{birth}</cite> is
+<div class="math notranslate nohighlight">
+\[\text{w} \sim \cal{N}(\text{w}_{\text{birth}},\sigma_{
+\text{birth}})\]</div>
+<p>Where <span class="math notranslate nohighlight">\(w_{birth}\)</span> is the mean, and <span class="math notranslate nohighlight">\(sigma_{birth}\)</span> is
 the standard deviation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -272,6 +290,9 @@ the standard deviation.</p>
 <dd><p>This is the standard sigmoid function besides that the sign can be
 specified.</p>
 <p>It is given by:</p>
+<div class="math notranslate nohighlight">
+\[q^{\pm}(x, x_{\frac{1}{2}},\phi) =
+\frac{1}{1 + e^{\pm \phi (x - x_{\frac{1}{2})}}}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -315,6 +336,8 @@ the fitness when age is updated.</p>
 <dt id="biosim.animals.Animal.compute_prob_birth">
 <em class="property">static </em><code class="sig-name descname">compute_prob_birth</code><span class="sig-paren">(</span><em class="sig-param">gamma</em>, <em class="sig-param">fitness</em>, <em class="sig-param">nearby_animals</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.animals.Animal.compute_prob_birth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the probability of birth for the animal, using the equation</p>
+<div class="math notranslate nohighlight">
+\[\text{min}(1, \gamma \times \Phi \times (N-1))\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -555,6 +578,14 @@ and specified attributes from Animal class.</p>
 <em class="property">static </em><code class="sig-name descname">_compute_kill_prob</code><span class="sig-paren">(</span><em class="sig-param">fit_carn</em>, <em class="sig-param">fit_herb</em>, <em class="sig-param">delta_phi_max</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.animals.Carnivore._compute_kill_prob" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes probability of a Carnivore killing Herbivore which is
 determined through:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}p =
+\begin{cases}
+0 &amp; \text{if }\Phi_{carn}\le \Phi_{herb}\\
+\frac{\Phi_{carn} - \Phi_{herb}}{\Delta\Phi_{max}} &amp;
+\text{if } 0 \le \Phi_{carn} - \Phi_{herb} \le \Delta\Phi_{max}\\
+1 &amp; \text{otherwise}
+\end{cases}\end{split}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -602,7 +633,7 @@ the herbivore or not</p>
 
 <dl class="attribute">
 <dt id="biosim.animals.Carnivore.param">
-<code class="sig-name descname">param</code><em class="property"> = {'DeltaPhiMax': 10.0, 'F': 50.0, 'a_half': 60.0, 'beta': 0.75, 'eta': 0.125, 'gamma': 0.8, 'lambda': 1.0, 'mu': 0.4, 'omega': 0.9, 'phi_age': 0.4, 'phi_weight': 0.4, 'sigma_birth': 1.0, 'w_birth': 6.0, 'w_half': 4.0, 'xi': 1.1, 'zeta': 3.5}</em><a class="headerlink" href="#biosim.animals.Carnivore.param" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">param</code><em class="property"> = {'DeltaPhiMax': 10.0, 'F': 50.0, 'a_half': 60.0, 'beta': 0.75, 'eta': 0.125, 'gamma': 0.8, 'lambda': 1.0, 'loss_rate': 0.8, 'mu': 0.4, 'omega': 0.9, 'p_sick': 0, 'phi_age': 0.4, 'phi_weight': 0.4, 'sigma_birth': 1.0, 'w_birth': 6.0, 'w_half': 4.0, 'xi': 1.1, 'zeta': 3.5}</em><a class="headerlink" href="#biosim.animals.Carnivore.param" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -665,7 +696,7 @@ the attributes and methods from animal class.</p>
 </table>
 <dl class="attribute">
 <dt id="biosim.animals.Herbivore.param">
-<code class="sig-name descname">param</code><em class="property"> = {'DeltaPhiMax': 0, 'F': 10.0, 'a_half': 40.0, 'beta': 0.9, 'eta': 0.05, 'gamma': 0.2, 'lambda': 1.0, 'mu': 0.25, 'omega': 0.4, 'phi_age': 0.2, 'phi_weight': 0.1, 'sigma_birth': 1.5, 'w_birth': 8.0, 'w_half': 10.0, 'xi': 1.2, 'zeta': 3.5}</em><a class="headerlink" href="#biosim.animals.Herbivore.param" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">param</code><em class="property"> = {'DeltaPhiMax': 0, 'F': 10.0, 'a_half': 40.0, 'beta': 0.9, 'eta': 0.05, 'gamma': 0.2, 'lambda': 1.0, 'loss_rate': 0.8, 'mu': 0.25, 'omega': 0.4, 'p_sick': 0, 'phi_age': 0.2, 'phi_weight': 0.1, 'sigma_birth': 1.5, 'w_birth': 8.0, 'w_half': 10.0, 'xi': 1.2, 'zeta': 3.5}</em><a class="headerlink" href="#biosim.animals.Herbivore.param" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -677,6 +708,15 @@ the attributes and methods from animal class.</p>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gui.html" class="btn btn-neutral float-right" title="GUI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cell.html" class="btn btn-neutral float-left" title="Cell" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

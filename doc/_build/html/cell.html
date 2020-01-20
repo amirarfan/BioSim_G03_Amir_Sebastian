@@ -35,7 +35,9 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Animals" href="animals.html" />
+    <link rel="prev" title="Map" href="map.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -83,9 +85,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="simulation.html">Island Simulation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="map.html">Map</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Cell</a><ul class="simple">
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Cell</a></li>
 <li class="toctree-l2"><a class="reference internal" href="animals.html">Animals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gui.html">GUI</a></li>
 </ul>
@@ -299,6 +299,8 @@ class instance is located at</p>
 <dd><p>Computes the relative abundance for either herbivore or carnivore,
 depending on the specie type.</p>
 <p>The relative abundance is computed through this formula:</p>
+<div class="math notranslate nohighlight">
+\[\epsilon_{k} = \frac{f_{k}}{(n_{k}+1)F^{\text{'}}}\]</div>
 <p>Where <span class="math notranslate nohighlight">\(\epsilon_{k}\)</span> is the relative abundance. <span class="math notranslate nohighlight">\(f_{k}\)</span> is
 the current fodder for cell k, which is different for carnivores
 and herbivores. <span class="math notranslate nohighlight">\(n_{k}\)</span> is the amount of same species in cell
@@ -457,6 +459,12 @@ value.</p>
 <dd><p>Computes and returns the propensity to move, the relative abundance is
 calculated through the ‘compute_relative_abundance’ function.
 The formula for propensity is given by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\pi_{i\rightarrow j} =
+\begin{cases}
+0 &amp; \text{if } j \text{is Mountain or Ocean}\\
+e^{\lambda \epsilon_{j}} &amp; \text{otherwise}
+\end{cases}\end{split}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -896,6 +904,9 @@ and the indexes of the animals to remove.</p>
 <dt id="biosim.cell.Savannah.gen_fodder">
 <code class="sig-name descname">gen_fodder</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.cell.Savannah.gen_fodder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates current fodder by this equation:</p>
+<div class="math notranslate nohighlight">
+\[f_{ij} \leftarrow f_{ij} + \alpha \times (f_{\text{Sav-max}} -
+f_{ij})\]</div>
 <p>Where <span class="math notranslate nohighlight">\(f_{ij}\)</span> is the current amount of fodder in the cell,
 <span class="math notranslate nohighlight">\(\alpha\)</span> is the growth parameter for Savannah subclass, and
 <span class="math notranslate nohighlight">\(\f_{\text{Sav-max}}\)</span> is the maximum amount of fodder for
@@ -916,6 +927,15 @@ the Savannah cell.</p>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="animals.html" class="btn btn-neutral float-right" title="Animals" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="map.html" class="btn btn-neutral float-left" title="Map" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

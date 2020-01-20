@@ -35,7 +35,7 @@ class Map:
                     String representing a map of cells
         """
 
-        self.check_even_string(map_string)
+        self._check_even_string(map_string)
 
         self.map = np.array(
             [
@@ -53,7 +53,12 @@ class Map:
                 raise ValueError(f"Outer Cell is not Ocean")
 
     @staticmethod
-    def check_even_string(map_string):
+    def _check_even_string(map_string):
+        """
+
+        Checks if string is even for all lines
+
+        """
         prev_line_length = None
         for line in map_string.split("\n"):
             line_length = len(line)

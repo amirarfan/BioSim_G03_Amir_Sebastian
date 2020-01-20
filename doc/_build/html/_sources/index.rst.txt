@@ -21,11 +21,3 @@ Welcome to BioSim's documentation!
    map_tests
    cell_tests
    animal_tests
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

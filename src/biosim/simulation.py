@@ -28,6 +28,7 @@ class BioSim:
     """
     Simulation of biosim
     """
+
     rgb_value = {
         "O": (0.0, 0.0, 1.0),
         "M": (0.5, 0.5, 0.5),
@@ -165,12 +166,17 @@ class BioSim:
             self._year += 1
 
     def _setup_graphics(self):
+        """
+
+        Sets up plots and axes for the Simulation to be visualized
+
+        """
 
         if self._fig is None:
             self._fig = plt.figure()
 
         if self._island_map is None:
-            self.create_map()
+            self._create_map()
 
         if self._mean_ax is None:
             self._mean_ax = self._fig.add_subplot(2, 2, 2)
@@ -179,8 +185,8 @@ class BioSim:
         self._mean_ax.set_ylim(0, self.ymax_animals)
         self._mean_ax.set_xlim(0, self._final_year + 1)
 
-        self.create_herb_line()
-        self.create_carn_line()
+        self._create_herb_line()
+        self._create_carn_line()
 
         if self.herb_heat is None:
             self.herb_heat = self._fig.add_subplot(2, 2, 1)
@@ -195,6 +201,11 @@ class BioSim:
         self._fig.tight_layout()
 
     def _update_graphics(self):
+        """
+
+        Updates the plots with new data
+
+        """
         pop_df = self.animal_distribution
 
         rows, cols = np.shape(self._map.map)
@@ -212,6 +223,11 @@ class BioSim:
         plt.pause(1e-6)
 
     def _save_graphics(self):
+        """
+
+        Saves the plots as a specified file type.
+
+        """
 
         print("Entering _save_graphics")
 
@@ -233,7 +249,13 @@ class BioSim:
 
         self.img_count += 1
 
-    def create_map(self):
+    def _create_map(self):
+        """
+
+        Creates map plot out of RGB colors and map string.
+
+        """
+
         self._island_map = self._fig.add_subplot(2, 2, 4)
         self._island_map.set_title("Island Map")
         self._island_map.imshow(self.map_rgb)
@@ -254,7 +276,12 @@ class BioSim:
             labels=range(1, 1 + len(self.map_rgb)), fontdict={"fontsize": 6}
         )
 
-    def create_herb_line(self):
+    def _create_herb_line(self):
+        """
+
+        Creates population graph for Herbivores
+
+        """
         if self._herb_line is None:
             herb_plot = self._mean_ax.plot(
                 np.arange(0, self._final_year),
@@ -270,7 +297,12 @@ class BioSim:
                     np.hstack((xdata, xnew)), np.hstack((ydata, ynew))
                 )
 
-    def create_carn_line(self):
+    def _create_carn_line(self):
+        """
+
+        Creates population graph for Carnivores
+
+        """
         if self._carn_line is None:
             carn_plot = self._mean_ax.plot(
                 np.arange(0, self._final_year),
@@ -287,6 +319,11 @@ class BioSim:
                 )
 
     def _update_herb_heatmap(self, herb_heat):
+        """
+
+        Updates the heatmap for Herbivores
+
+        """
 
         if self.herb_img_axis is not None:
             self.herb_img_axis.set_data(herb_heat)
@@ -309,6 +346,12 @@ class BioSim:
         )
 
     def _update_carn_heatmap(self, carn_heat):
+        """
+
+        Updates the heaptmap for Carnivores
+
+
+        """
 
         if self.carn_img_axis is not None:
             self.carn_img_axis.set_data(carn_heat)
@@ -331,6 +374,11 @@ class BioSim:
         )
 
     def _update_specie_lines(self):
+        """
+
+        Updates the population lines for Herbivore and Carnivore
+
+        """
         herb_amount = self.num_animals_per_species["Herbivore"]
         ydata_herb = self._herb_line.get_ydata()
         ydata_herb[self._year] = herb_amount
@@ -408,8 +456,9 @@ class BioSim:
 
         if movie_fmt == "mp4":
             try:
-                # Parameters chosen according to http://trac.ffmpeg.org/wiki/Encode/H.264,
-                # section "Compatibility"
+                # Parameters chosen according to
+                # http://trac.ffmpeg.org/wiki/Encode/H.264, section
+                # "Compatibility"
                 subprocess.check_call(
                     [
                         _FFMPEG_BINARY,

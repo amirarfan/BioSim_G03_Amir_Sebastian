@@ -267,7 +267,7 @@ class Cell:
 
         The relative abundance is computed through this formula:
 
-        .. ::math:
+        .. math::
             \epsilon_{k} = \frac{f_{k}}{(n_{k}+1)F^{\text{'}}}
 
         Where :math:`\epsilon_{k}` is the relative abundance. :math:`f_{k}` is
@@ -313,7 +313,7 @@ class Cell:
         calculated through the 'compute_relative_abundance' function.
         The formula for propensity is given by:
 
-        .. ::math:
+        .. math::
             \pi_{i\rightarrow j} =
             \begin{cases}
             0 & \text{if } j \text{is Mountain or Ocean}\\
@@ -569,7 +569,7 @@ class Savannah(Cell):
 
         Updates current fodder by this equation:
 
-        .. ::math:
+        .. math::
             f_{ij} \leftarrow f_{ij} + \alpha \times (f_{\text{Sav-max}} -
             f_{ij})
 

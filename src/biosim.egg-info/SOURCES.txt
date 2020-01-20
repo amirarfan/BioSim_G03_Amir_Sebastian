@@ -4,6 +4,7 @@ setup.py
 src/biosim/__init__.py
 src/biosim/animals.py
 src/biosim/cell.py
+src/biosim/gui.py
 src/biosim/map.py
 src/biosim/simulation.py
 src/biosim.egg-info/PKG-INFO
