@@ -181,7 +181,7 @@ class BioSim:
 
         if self.herb_heat is None:
             self.herb_heat = self._fig.add_subplot(2, 2, 1)
-            self.herb_heat.set_title("Herbivore heat map")
+            self.herb_heat.set_title("Herbivore Heat Map")
             self.herb_img_axis = None
 
         if self.carn_heat is None:
