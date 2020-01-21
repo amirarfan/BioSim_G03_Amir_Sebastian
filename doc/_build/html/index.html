@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to BioSim’s documentation! &mdash; BioSim 0.0.1 documentation</title>
+  <title>BioSim - Modelling the Ecosystem of Rossumøya &mdash; BioSim 0.0.1 documentation</title>
   
 
   
@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Island Simulation" href="simulation.html" /> 
+    <link rel="next" title="Simulation" href="simulation.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -80,13 +80,10 @@
               
             
             
-              <p class="caption"><span class="caption-text">BioSim Simulation :</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="simulation.html">Island Simulation</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Test Functions :</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="simulation_tests.html">Simulation Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation.html">Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">About us</a></li>
 </ul>
 
             
@@ -132,7 +129,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>Welcome to BioSim’s documentation!</li>
+      <li>BioSim - Modelling the Ecosystem of Rossumøya</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -151,25 +148,55 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-biosim-s-documentation">
-<h1>Welcome to BioSim’s documentation!<a class="headerlink" href="#welcome-to-biosim-s-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="biosim-modelling-the-ecosystem-of-rossumoya">
+<h1>BioSim - Modelling the Ecosystem of Rossumøya<a class="headerlink" href="#biosim-modelling-the-ecosystem-of-rossumoya" title="Permalink to this headline">¶</a></h1>
+<p>The documentation for the BioSim project is presented on this website.</p>
+<div class="section" id="the-project">
+<h2>The project<a class="headerlink" href="#the-project" title="Permalink to this headline">¶</a></h2>
+<p>The task was to create a simulation of Rossumøya consisting of Herbivores
+and Carnivores. The goal was to create a proper simulation including
+annual cycles which included, feeding, procreation, migration, aging and
+loss of weight. The task required us to create herbivores, carnivores, each
+landscape type, and the map which both the herbivores and carnivores were to
+be placed upon. This simulation represented a predator and prey behaviour,
+where the carnivores are the predators, and the herbivores the prey.</p>
+<p>For more information regarding the project you can download the project
+assignment from here:
+<a class="reference download internal" download="" href="_downloads/14c963b8e0cb0ae271454f39d76a58ef/mypdf.pdf"><code class="xref download docutils literal notranslate"><span class="pre">BioSim</span> <span class="pre">Project</span> <span class="pre">Task</span></code></a></p>
+</div>
+<div class="section" id="development-process">
+<h2>Development Process<a class="headerlink" href="#development-process" title="Permalink to this headline">¶</a></h2>
+<p>The development process started with drafting a plan for the project, and
+created a map for the file structure. We wrote down the classes, subclasses,
+methods and tests we needed. Then we created a hierarchical map for our code.
+The code was written in test-driven development. We thought about what kind of
+tests we needed and created them before creating a method. This kind of
+development was very valuable and rewarding at the end.</p>
+<p>By following the plan we managed to have a decent progress each day, however
+we had to make some alterations to the hierarchical structure in the early days
+to avoid coupling. Luckily for us this dawned upon us very early in the
+process. Our idea was that each animal should be able to exist without a
+landscape type, and each landscape type should be able to exist without a map.</p>
+<p>The visualization process took part at the end where we visualized the
+island map, heatmap showing the distribution of the animals, and a graph
+showing the populations for both herbivores and carnivores.</p>
+<p>The profiling process was perhaps the most interesting, our assumptions of
+what took the most time was proven to be wrong. We tried optimising the code
+with <code class="docutils literal notranslate"><span class="pre">jit</span></code> from <code class="docutils literal notranslate"><span class="pre">Numba</span></code> this produced good results, however we wanted to
+try <code class="docutils literal notranslate"><span class="pre">Cython</span></code>, and this optimized the code as well.</p>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">BioSim Simulation :</span></p>
+<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="simulation.html">Island Simulation</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="simulation.html">Simulation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="map.html">Map</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cell.html">Cell</a></li>
 <li class="toctree-l2"><a class="reference internal" href="animals.html">Animals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gui.html">GUI</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">About us</a></li>
 </ul>
 </div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Test Functions :</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="simulation_tests.html">Simulation Tests</a></li>
-</ul>
 </div>
 </div>
 
@@ -181,7 +208,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="simulation.html" class="btn btn-neutral float-right" title="Island Simulation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="simulation.html" class="btn btn-neutral float-right" title="Simulation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

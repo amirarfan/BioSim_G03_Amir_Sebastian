@@ -34,6 +34,8 @@ def reset_parameters():
         "omega": 0.4,
         "F": 10.0,
         "DeltaPhiMax": 0,
+        "p_sick": 0,
+        "loss_rate": 0.8,
     }
     standard_parameters_carn = {
         "w_birth": 6.0,
@@ -52,6 +54,8 @@ def reset_parameters():
         "omega": 0.9,
         "F": 50.0,
         "DeltaPhiMax": 10.0,
+        "p_sick": 0,
+        "loss_rate": 0.8,
     }
 
     Herbivore().update_parameters(standard_parameters_herb)
@@ -688,7 +692,7 @@ def test_annual_death(populated_savannah, mocker):
 
 
     """
-    mocker.patch("numpy.random.choice", return_value=True)
+    mocker.patch("random.choices", return_value=[True])
     populated_savannah.annual_death()
     for animal_lists in populated_savannah.animal_classes.values():
         assert len(animal_lists) == 0

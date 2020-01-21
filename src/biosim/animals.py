@@ -4,7 +4,7 @@ __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 import numpy as np
-from random import choices
+import random
 from .compute_fit import calculate_fitness
 
 
@@ -237,7 +237,7 @@ class Animal:
 
         """
         probability_move = self._fitness * self.param["mu"]
-        return choices(
+        return random.choices(
             [True, False], weights=[probability_move, 1 - probability_move]
         )[0]
 
@@ -260,7 +260,9 @@ class Animal:
         elif self._fitness > 0.01:
             death_prob = self.param["omega"] * (1 - self._fitness)
 
-        return choices([True, False], weights=[death_prob, 1 - death_prob])[0]
+        return random.choices(
+            [True, False], weights=[death_prob, 1 - death_prob]
+        )[0]
 
     @staticmethod
     def compute_prob_birth(gamma, fitness, nearby_animals):
@@ -320,7 +322,9 @@ class Animal:
 
         if self._weight < zeta * (w_birth + sigma_birth):
             return False
-        return choices([True, False], weights=[prob_birth, 1 - prob_birth])[0]
+        return random.choices(
+            [True, False], weights=[prob_birth, 1 - prob_birth]
+        )[0]
 
     @classmethod
     def _normal_weight(cls):
@@ -380,7 +384,7 @@ class Animal:
 
         """
         p_sick = cls.param["p_sick"]
-        return choices([True, False], weights=[p_sick, 1 - p_sick])[0]
+        return random.choices([True, False], weights=[p_sick, 1 - p_sick])[0]
 
     def increase_eat_weight(self, fodder):
         """
@@ -565,4 +569,6 @@ class Carnivore(Animal):
         kill_prob = self._compute_kill_prob(
             self.fitness, min_fit_herb, delta_phi_max
         )
-        return choices([True, False], weights=[kill_prob, 1 - kill_prob])[0]
+        return random.choices(
+            [True, False], weights=[kill_prob, 1 - kill_prob]
+        )[0]

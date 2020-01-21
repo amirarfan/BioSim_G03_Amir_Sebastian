@@ -5,7 +5,7 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 from .animals import Herbivore, Carnivore
 import math
-from random import choices
+import random
 
 
 class Cell:
@@ -199,7 +199,7 @@ class Cell:
                     if sum(move_prob) == 0:
                         break
                     else:
-                        chosen_cell = choices(
+                        chosen_cell = random.choices(
                             neighbour_cells, weights=move_prob
                         )[0]
                         chosen_cell.insert_animal([animal])

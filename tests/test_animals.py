@@ -4,7 +4,6 @@ __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 from biosim.animals import Herbivore, Carnivore
-import numpy
 import pytest
 from scipy.stats import normaltest
 from scipy.stats import shapiro
@@ -211,11 +210,11 @@ def test_determine_death_zero_fitness():
 
 def test_determine_death_is_bool():
     herb = Herbivore()
-    assert type(herb.determine_death()) == numpy.bool_
+    assert type(herb.determine_death()) == bool
 
 
 def test_determine_death_mocker(mocker):
-    mocker.patch("numpy.random.choice", return_value=True)
+    mocker.patch("random.choices", return_value=[True])
     herb = Herbivore()
     assert herb.determine_death()
 
@@ -228,17 +227,17 @@ def test_determine_birth_no_animals():
 def test_determine_birth_is_bool():
     herb = Herbivore()
     herb.weight = 100
-    assert type(herb.determine_birth(100)) == numpy.bool_
+    assert type(herb.determine_birth(100)) == bool
 
 
 def test_move_probability_herb():
     herb = Herbivore()
     bool_val = herb.determine_to_move()
-    assert type(bool_val) == numpy.bool_
+    assert type(bool_val) == bool
 
 
 def test_move_prob_herb_true(mocker):
-    mocker.patch("numpy.random.choice", return_value=True)
+    mocker.patch("random.choices", return_value=[True])
     herb = Herbivore()
     assert herb.determine_to_move()
 
@@ -304,11 +303,11 @@ def test_kill_probability_gf_carn():
 
 def test_bool_carnivore_det_kill(plain_carnivore):
     kill_prob = plain_carnivore.determine_kill(0.20)
-    assert type(kill_prob) is numpy.bool_
+    assert type(kill_prob) is bool
 
 
 def test_det_kill_false(plain_carnivore, mocker):
-    mocker.patch("numpy.random.choice", return_value=False)
+    mocker.patch("random.choices", return_value=[False])
     assert not plain_carnivore.determine_kill(0.01)
 
 
@@ -387,7 +386,7 @@ def test_sick_herbivores_eat(mocker):
     sick_herb = Herbivore(weight=10)
     healthy_herb.increase_eat_weight(10)
 
-    mocker.patch("numpy.random.choice", return_value=True)
+    mocker.patch("random.choices", return_value=[True])
     sick_herb.increase_eat_weight(10)
 
     assert healthy_herb.weight > sick_herb.weight

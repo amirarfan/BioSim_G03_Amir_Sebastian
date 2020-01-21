@@ -1,4 +1,4 @@
-Island Simulation
+Simulation
 =================================
 
 .. toctree::

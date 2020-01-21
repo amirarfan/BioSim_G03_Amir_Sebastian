@@ -35,9 +35,7 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="GUI" href="gui.html" />
-    <link rel="prev" title="Cell" href="cell.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -81,19 +79,18 @@
               
             
             
-              <p class="caption"><span class="caption-text">BioSim Simulation :</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="simulation.html">Island Simulation</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="simulation.html">Simulation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="map.html">Map</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cell.html">Cell</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Animals</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Animals</a><ul class="simple">
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="gui.html">GUI</a></li>
 </ul>
 </li>
-</ul>
-<p class="caption"><span class="caption-text">Test Functions :</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="simulation_tests.html">Simulation Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">About us</a></li>
 </ul>
 
             
@@ -139,7 +136,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="simulation.html">Island Simulation</a> &raquo;</li>
+          <li><a href="simulation.html">Simulation</a> &raquo;</li>
         
       <li>Animals</li>
     
@@ -220,8 +217,9 @@
 <dl class="method">
 <dt id="biosim.animals.Animal._calculate_fitness">
 <em class="property">classmethod </em><code class="sig-name descname">_calculate_fitness</code><span class="sig-paren">(</span><em class="sig-param">weight</em>, <em class="sig-param">age</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.animals.Animal._calculate_fitness" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the fitness by using the ‘_q_sigmoid’ function, uses the
-parameters from the class.</p>
+<dd><p>Calculates the fitness by using the ‘calculate_fitness’
+function which uses the parameters from the class. ‘calculate_fitness’
+is a cythonized function.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\Phi =
 \begin{cases}
@@ -252,7 +250,7 @@ different sign values <span class="math notranslate nohighlight">\(+\)</span>, a
 <dt id="biosim.animals.Animal._determine_sick">
 <em class="property">classmethod </em><code class="sig-name descname">_determine_sick</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#biosim.animals.Animal._determine_sick" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines if the animal is to become sick, using the ‘p_sick’
-parameter and Numpy’s random.choice method.</p>
+parameter and random.choices method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl class="simple">
@@ -278,33 +276,6 @@ the standard deviation.</p>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl class="simple">
 <dt>start_weight = int or float</dt><dd><p>The birth weight value gotten from the normal distribution.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="biosim.animals.Animal._q_sigmoid">
-<em class="property">static </em><code class="sig-name descname">_q_sigmoid</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">x_half</em>, <em class="sig-param">rate</em>, <em class="sig-param">signum</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.animals.Animal._q_sigmoid" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the standard sigmoid function besides that the sign can be
-specified.</p>
-<p>It is given by:</p>
-<div class="math notranslate nohighlight">
-\[q^{\pm}(x, x_{\frac{1}{2}},\phi) =
-\frac{1}{1 + e^{\pm \phi (x - x_{\frac{1}{2})}}}\]</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>x: int or float</strong></dt><dd></dd>
-<dt><strong>x_half: int or float</strong></dt><dd></dd>
-<dt><strong>rate: int or float</strong></dt><dd></dd>
-<dt><strong>signum: +- 1</strong></dt><dd></dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>float</dt><dd><p>Sigmoid value given the inputs</p>
 </dd>
 </dl>
 </dd>
@@ -390,7 +361,7 @@ the birth-giving animal’s weight.</p>
 <code class="sig-name descname">determine_birth</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">nearby_animals</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.animals.Animal.determine_birth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines whether the animal is to give birth or not using
 the ‘compute_prob_birth’ function to gain a value. The function then
-uses numpy.random.choice to choose between True or False with fixed
+uses random.choices to choose between True or False with fixed
 probabilities.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -557,7 +528,7 @@ and specified attributes from Animal class.</p>
 <td><p>Calculates the probability of death for the animal instance, uses that probability and Numpy’s random.choice function to return a bool value.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#biosim.animals.Carnivore.determine_kill" title="biosim.animals.Carnivore.determine_kill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_kill</span></code></a>(self, min_fit_herb)</p></td>
-<td><p>Determine kill function which uses ‘_compute_kill_prob’ to calculate the probability and then uses Numpy’s random choice with fixed probability to determine if the carnivore is to kill the chosen herbivore.</p></td>
+<td><p>Determine kill function which uses ‘_compute_kill_prob’ to calculate the probability and then uses random choice with fixed probability to determine if the carnivore is to kill the chosen herbivore.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_to_move</span></code>(self)</p></td>
 <td><p>Calculates the probability to move, and then returns a bool value deciding whether animal is to move.</p></td>
@@ -610,7 +581,7 @@ determined through:</p>
 <dt id="biosim.animals.Carnivore.determine_kill">
 <code class="sig-name descname">determine_kill</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">min_fit_herb</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.animals.Carnivore.determine_kill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine kill function which uses ‘_compute_kill_prob’ to
-calculate the probability and then uses Numpy’s random choice with
+calculate the probability and then uses random choice with
 fixed probability to determine if the carnivore is to kill
 the chosen herbivore.</p>
 <dl class="field-list simple">
@@ -708,15 +679,6 @@ the attributes and methods from animal class.</p>
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="gui.html" class="btn btn-neutral float-right" title="GUI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="cell.html" class="btn btn-neutral float-left" title="Cell" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
