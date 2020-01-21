@@ -1,2 +1,5 @@
+PySimpleGUI
+pandas
+numpy
 pytest
 tox

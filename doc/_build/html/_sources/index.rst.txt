@@ -1,0 +1,55 @@
+.. BioSim documentation master file, created by
+   sphinx-quickstart on Mon Jan 20 11:57:17 2020.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+BioSim - Modelling the Ecosystem of Rossumøya
+==============================================
+The documentation for the BioSim project is presented on this website.
+
+The project
+-------------------------------------------
+The task was to create a simulation of Rossumøya consisting of Herbivores
+and Carnivores. The goal was to create a proper simulation including
+annual cycles which included, feeding, procreation, migration, aging and
+loss of weight. The task required us to create herbivores, carnivores, each
+landscape type, and the map which both the herbivores and carnivores were to
+be placed upon. This simulation represented a predator and prey behaviour,
+where the carnivores are the predators, and the herbivores the prey.
+
+For more information regarding the project you can download the project
+assignment from here:
+:download:`BioSim Project Task <mypdf.pdf>`
+
+Development Process
+-------------------------------------------
+The development process started with drafting a plan for the project, and
+created a map for the file structure. We wrote down the classes, subclasses,
+methods and tests we needed. Then we created a hierarchical map for our code.
+The code was written in test-driven development. We thought about what kind of
+tests we needed and created them before creating a method. This kind of
+development was very valuable and rewarding at the end.
+
+By following the plan we managed to have a decent progress each day, however
+we had to make some alterations to the hierarchical structure in the early days
+to avoid coupling. Luckily for us this dawned upon us very early in the
+process. Our idea was that each animal should be able to exist without a
+landscape type, and each landscape type should be able to exist without a map.
+
+The visualization process took part at the end where we visualized the
+island map, heatmap showing the distribution of the animals, and a graph
+showing the populations for both herbivores and carnivores.
+
+The profiling process was perhaps the most interesting, our assumptions of
+what took the most time was proven to be wrong. We tried optimising the code
+with ``jit`` from ``Numba`` this produced good results, however we wanted to
+try ``Cython``, and this optimized the code as well.
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   simulation
+
+   developers

@@ -1,0 +1,54 @@
+biosim package
+==============
+
+Submodules
+----------
+
+biosim.animals module
+---------------------
+
+.. automodule:: biosim.animals
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+biosim.cell module
+------------------
+
+.. automodule:: biosim.cell
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+biosim.gui module
+-----------------
+
+.. automodule:: biosim.gui
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+biosim.map module
+-----------------
+
+.. automodule:: biosim.map
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+biosim.simulation module
+------------------------
+
+.. automodule:: biosim.simulation
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: biosim
+   :members:
+   :undoc-members:
+   :show-inheritance:
