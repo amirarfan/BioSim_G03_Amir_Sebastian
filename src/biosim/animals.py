@@ -3,10 +3,17 @@
 __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
+# You may have to run 'python setup.py build_ext --inplace' to make this code
+# run. Be sure to have Cython installed, and a C++ compiler.
+# Mac uses xCode, on Windows you can download Visual Studio Build tool
+# Then add ..\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build
+# To system path. Contact me at amar@nmbu.no, if you have trouble
+# running the cython code on Mac or Windows.
+
+
 import numpy as np
 import random
 from compute_fit import calculate_fitness
-
 
 
 class Animal:
@@ -204,9 +211,9 @@ class Animal:
                     f"class parameters"
                 )
             if (
-                new_par_dict[par] <= 0
-                and par == "DeltaPhiMax"
-                and cls.__name__ == "Carnivore"
+                    new_par_dict[par] <= 0
+                    and par == "DeltaPhiMax"
+                    and cls.__name__ == "Carnivore"
             ):
                 raise ValueError(f"{par} must be strictly positive")
             elif new_par_dict[par] < 0 and par != "DeltaPhiMax":
