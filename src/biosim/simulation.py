@@ -39,14 +39,14 @@ class BioSim:
     }
 
     def __init__(
-        self,
-        island_map,
-        ini_pop,
-        seed,
-        ymax_animals=None,
-        cmax_animals=None,
-        img_base=None,
-        img_fmt="png",
+            self,
+            island_map,
+            ini_pop,
+            seed,
+            ymax_animals=None,
+            cmax_animals=None,
+            img_base=None,
+            img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -174,7 +174,7 @@ class BioSim:
         """
 
         if self._fig is None:
-            self._fig = plt.figure(figsize=(8, 8))
+            self._fig = plt.figure(figsize=(10, 8))
 
         if self._island_map is None:
             self._create_map()
@@ -335,6 +335,12 @@ class BioSim:
                 vmin=0,
                 vmax=self.cmax_animals["Herbivore"],
             )
+            cax = self._fig.add_axes([0.05, 0.5, 0.4, 0.02])
+            cbar =self._fig.colorbar(self.herb_img_axis, cax=cax, orientation='horizontal')
+            cbar.set_ticks([])
+            #cbar.set_ylabel('Min to Max')
+            cbar.ax.text(0.5, 0, 'Low', va='bottom', ha='left', color='white')
+            cbar.ax.text(50, 0, 'High', va='bottom', ha='right')
 
         self.herb_heat.set_xticks(range(len(self.map_rgb[0])))
         self.herb_heat.set_xticklabels(
