@@ -3,8 +3,9 @@
 __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
-import math
 import numpy as np
+from random import choices
+from .compute_fit import calculate_fitness
 
 
 class Animal:
@@ -138,8 +139,9 @@ class Animal:
     def _calculate_fitness(cls, weight, age):
         r"""
 
-        Calculates the fitness by using the '_q_sigmoid' function, uses the
-        parameters from the class.
+        Calculates the fitness by using the 'calculate_fitness'
+        function which uses the parameters from the class. 'calculate_fitness'
+        is a cythonized function.
 
         .. math::
             \Phi =
@@ -170,8 +172,8 @@ class Animal:
         if weight == 0:
             return 0
         else:
-            return cls._q_sigmoid(age, a_half, phi_age, +1) * cls._q_sigmoid(
-                weight, w_half, phi_weight, -1
+            return calculate_fitness(
+                age, a_half, phi_age, weight, w_half, phi_weight
             )
 
     def update_fitness(self):
@@ -235,9 +237,9 @@ class Animal:
 
         """
         probability_move = self._fitness * self.param["mu"]
-        return np.random.choice(
-            [True, False], p=[probability_move, 1 - probability_move]
-        )
+        return choices(
+            [True, False], weights=[probability_move, 1 - probability_move]
+        )[0]
 
     def determine_death(self):
         """
@@ -258,7 +260,7 @@ class Animal:
         elif self._fitness > 0.01:
             death_prob = self.param["omega"] * (1 - self._fitness)
 
-        return np.random.choice([True, False], p=[death_prob, 1 - death_prob])
+        return choices([True, False], weights=[death_prob, 1 - death_prob])[0]
 
     @staticmethod
     def compute_prob_birth(gamma, fitness, nearby_animals):
@@ -293,7 +295,7 @@ class Animal:
         """
         Determines whether the animal is to give birth or not using
         the 'compute_prob_birth' function to gain a value. The function then
-        uses numpy.random.choice to choose between True or False with fixed
+        uses random.choices to choose between True or False with fixed
         probabilities.
 
         Parameters
@@ -318,7 +320,7 @@ class Animal:
 
         if self._weight < zeta * (w_birth + sigma_birth):
             return False
-        return np.random.choice([True, False], p=[prob_birth, 1 - prob_birth])
+        return choices([True, False], weights=[prob_birth, 1 - prob_birth])[0]
 
     @classmethod
     def _normal_weight(cls):
@@ -369,7 +371,7 @@ class Animal:
         """
 
         Determines if the animal is to become sick, using the 'p_sick'
-        parameter and Numpy's random.choice method.
+        parameter and random.choices method.
 
         Returns
         -------
@@ -378,7 +380,7 @@ class Animal:
 
         """
         p_sick = cls.param["p_sick"]
-        return np.random.choice([True, False], p=[p_sick, 1 - p_sick])
+        return choices([True, False], weights=[p_sick, 1 - p_sick])[0]
 
     def increase_eat_weight(self, fodder):
         """
@@ -413,35 +415,6 @@ class Animal:
         eta = self.param["eta"]
         self._weight -= eta * self._weight
         self.update_fitness()
-
-    @staticmethod
-    def _q_sigmoid(x, x_half, rate, signum):
-        r"""
-        This is the standard sigmoid function besides that the sign can be
-        specified.
-
-        It is given by:
-
-        .. math::
-                q^{\pm}(x, x_{\frac{1}{2}},\phi) =
-                \frac{1}{1 + e^{\pm \phi (x - x_{\frac{1}{2})}}}
-
-
-
-        Parameters
-        ----------
-        x: int or float
-        x_half: int or float
-        rate: int or float
-        signum: +- 1
-
-        Returns
-        -------
-        float
-            Sigmoid value given the inputs
-
-        """
-        return 1 / (1 + math.exp(signum * rate * (x - x_half)))
 
 
 class Herbivore(Animal):
@@ -570,7 +543,7 @@ class Carnivore(Animal):
         """
 
         Determine kill function which uses '_compute_kill_prob' to
-        calculate the probability and then uses Numpy's random choice with
+        calculate the probability and then uses random choice with
         fixed probability to determine if the carnivore is to kill
         the chosen herbivore.
 
@@ -592,4 +565,4 @@ class Carnivore(Animal):
         kill_prob = self._compute_kill_prob(
             self.fitness, min_fit_herb, delta_phi_max
         )
-        return np.random.choice([True, False], p=[kill_prob, 1 - kill_prob])
+        return choices([True, False], weights=[kill_prob, 1 - kill_prob])[0]

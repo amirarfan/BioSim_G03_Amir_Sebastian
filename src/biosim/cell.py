@@ -4,7 +4,8 @@ __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 from .animals import Herbivore, Carnivore
-import numpy as np
+import math
+from random import choices
 
 
 class Cell:
@@ -182,7 +183,7 @@ class Cell:
         move is determined by the animal instance with the function
         'determine_to_move'. Which cell it will move to is determined
         by computing the move probability for each cell, and is chosen by using
-        Numpy's random choice method with fixed probabilities.
+        random choice method with fixed probabilities.
 
         Parameters
         ----------
@@ -198,9 +199,9 @@ class Cell:
                     if sum(move_prob) == 0:
                         break
                     else:
-                        chosen_cell = np.random.choice(
-                            neighbour_cells, p=move_prob
-                        )
+                        chosen_cell = choices(
+                            neighbour_cells, weights=move_prob
+                        )[0]
                         chosen_cell.insert_animal([animal])
                         remove_list.add(index)
             self.remove_multiple_animals(type_of_animal, remove_list)
@@ -342,7 +343,7 @@ class Cell:
         relative_abundance = self.compute_relative_abundance(specie)
         lambda_specie = specie.param["lambda"]
 
-        return np.exp(lambda_specie * relative_abundance)
+        return math.exp(lambda_specie * relative_abundance)
 
     def aging(self):
         """
