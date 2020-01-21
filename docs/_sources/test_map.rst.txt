@@ -1,0 +1,5 @@
+Tests for Map
+===========================
+
+.. automodule:: tests.test_map
+    :members:
