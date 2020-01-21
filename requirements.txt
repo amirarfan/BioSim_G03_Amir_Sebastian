@@ -1,5 +1,7 @@
+matplotlib
 PySimpleGUI
 pandas
 numpy
 pytest
 tox
+cython

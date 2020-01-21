@@ -4,10 +4,10 @@ __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 """
-Must be filled out
+Simulation of the Island with visualization
+
 """
 
-from biosim.animals import Herbivore, Carnivore
 from biosim.map import Map
 import numpy as np
 import pandas as pd
@@ -39,14 +39,14 @@ class BioSim:
     }
 
     def __init__(
-            self,
-            island_map,
-            ini_pop,
-            seed,
-            ymax_animals=None,
-            cmax_animals=None,
-            img_base=None,
-            img_fmt="png",
+        self,
+        island_map,
+        ini_pop,
+        seed,
+        ymax_animals=None,
+        cmax_animals=None,
+        img_base=None,
+        img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -336,11 +336,12 @@ class BioSim:
                 vmax=self.cmax_animals["Herbivore"],
             )
             cax = self._fig.add_axes([0.05, 0.5, 0.4, 0.02])
-            cbar =self._fig.colorbar(self.herb_img_axis, cax=cax, orientation='horizontal')
+            cbar = self._fig.colorbar(
+                self.herb_img_axis, cax=cax, orientation="horizontal"
+            )
             cbar.set_ticks([])
-            #cbar.set_ylabel('Min to Max')
-            cbar.ax.text(0.5, 0, 'Low', va='bottom', ha='left', color='white')
-            cbar.ax.text(50, 0, 'High', va='bottom', ha='right')
+            cbar.ax.text(0.5, 0, "Low", va="bottom", ha="left", color="white")
+            cbar.ax.text(50, 0, "High", va="bottom", ha="right")
 
         self.herb_heat.set_xticks(range(len(self.map_rgb[0])))
         self.herb_heat.set_xticklabels(

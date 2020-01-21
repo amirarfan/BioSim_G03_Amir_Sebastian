@@ -13,7 +13,7 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 import numpy as np
 import random
-from compute_fit import calculate_fitness
+from .compute_fit import calculate_fitness
 
 
 class Animal:
