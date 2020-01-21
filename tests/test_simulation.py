@@ -99,3 +99,29 @@ def test_herbs_des_sim(desert_sim):
     desert_sim.simulate(50)
 
 
+def test_herbs_and_carns_des_sim(desert_sim):
+    """
+    Test to see that Carnivores will outlive the Herbivores in the desert
+
+    """
+    ini_herbs = [
+        {
+            "loc": (10, 10),
+            "pop": [
+                {"species": "Herbivore", "age": 5, "weight": 20}
+                for _ in range(150)
+            ],
+        }
+    ]
+    ini_carns = [
+        {
+            "loc": (10, 10),
+            "pop": [
+                {"species": "Carnivore", "age": 5, "weight": 20}
+                for _ in range(40)
+            ],
+        }
+    ]
+    desert_sim.add_population(ini_herbs)
+    desert_sim.add_population(ini_carns)
+    desert_sim.simulate(10)
