@@ -153,8 +153,6 @@ class BioSim:
         self._setup_graphics()
 
         while self._year < self._final_year:
-            # print("Starting")
-            print(self._year)
 
             if self._year % vis_years == 0:
                 self._update_graphics()
@@ -230,13 +228,11 @@ class BioSim:
 
         """
 
-        print("Entering _save_graphics")
-
         if self.img_base is None:
             return
 
         print(
-            "Svaing to",
+            "Saving to",
             "{base}_{num:05d}.{type}".format(
                 base=self.img_base, num=self.img_count, type=self.img_fmt
             ),
