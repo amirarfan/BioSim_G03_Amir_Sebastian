@@ -6,7 +6,7 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 from .cell import Ocean, Mountain, Desert, Savannah, Jungle
 
 # noinspection PyUnresolvedReferences
-from .animals import Herbivore, Carnivore
+from animals import Herbivore, Carnivore
 import numpy as np
 
 

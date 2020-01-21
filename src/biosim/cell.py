@@ -3,7 +3,7 @@
 __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
-from .animals import Herbivore, Carnivore
+from animals import Herbivore, Carnivore
 import math
 import random
 

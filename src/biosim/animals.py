@@ -5,10 +5,8 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
 import numpy as np
 import random
-import pyximport
-pyximport.install()
+from compute_fit import calculate_fitness
 
-from biosim.compute_fit import calculate_fitness
 
 
 class Animal:
