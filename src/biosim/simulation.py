@@ -173,7 +173,7 @@ class BioSim:
         """
 
         if self._fig is None:
-            self._fig = plt.figure(figsize=(16, 9))
+            self._fig = plt.figure(figsize=(8, 8))
 
         if self._island_map is None:
             self._create_map()
