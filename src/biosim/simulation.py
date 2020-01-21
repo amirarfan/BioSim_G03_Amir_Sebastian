@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import subprocess
 import os
+import textwrap
 
 _FFMPEG_BINARY = "ffmpeg"
 _CONVERT_BINARY = "magick"
@@ -38,14 +39,14 @@ class BioSim:
     }
 
     def __init__(
-            self,
-            island_map,
-            ini_pop,
-            seed,
-            ymax_animals=None,
-            cmax_animals=None,
-            img_base=None,
-            img_fmt="png",
+        self,
+        island_map,
+        ini_pop,
+        seed,
+        ymax_animals=None,
+        cmax_animals=None,
+        img_base=None,
+        img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -152,8 +153,8 @@ class BioSim:
         self._setup_graphics()
 
         while self._year < self._final_year:
-            print("Starting")
-            print(self._final_year)
+            # print("Starting")
+            print(self._year)
 
             if self._year % vis_years == 0:
                 self._update_graphics()
@@ -495,3 +496,60 @@ class BioSim:
                 )
         else:
             raise ValueError("Unknown movie format: " + movie_fmt)
+
+
+if __name__ == "__main__":
+    geogr = """\
+                   OOOOOOOOOOOOOOOOOOOOO
+                   OOOOOOOOSMMMMJJJJJJJO
+                   OSSSSSJJJJMMJJJJJJJOO
+                   OSSSSSSSSSMMJJJJJJOOO
+                   OSSSSSJJJJJJJJJJJJOOO
+                   OSSSSSJJJDDJJJSJJJOOO
+                   OSSJJJJJDDDJJJSSSSOOO
+                   OOSSSSJJJDDJJJSOOOOOO
+                   OSSSJJJJJDDJJJJJJJOOO
+                   OSSSSJJJJDDJJJJOOOOOO
+                   OOSSSSJJJJJJJJOOOOOOO
+                   OOOSSSSJJJJJJJOOOOOOO
+                   OOOOOOOOOOOOOOOOOOOOO"""
+    geogr = textwrap.dedent(geogr)
+
+    ini_herbs = [
+        {
+            "loc": (10, 10),
+            "pop": [
+                {"species": "Herbivore", "age": 5, "weight": 20}
+                for _ in range(150)
+            ],
+        }
+    ]
+    ini_carns = [
+        {
+            "loc": (10, 10),
+            "pop": [
+                {"species": "Carnivore", "age": 5, "weight": 20}
+                for _ in range(40)
+            ],
+        }
+    ]
+
+    sim = BioSim(island_map=geogr, ini_pop=ini_herbs, seed=123456)
+
+    sim.set_animal_parameters("Herbivore", {"zeta": 3.2, "xi": 1.8})
+    sim.set_animal_parameters(
+        "Carnivore",
+        {
+            "a_half": 70,
+            "phi_age": 0.5,
+            "omega": 0.3,
+            "F": 65,
+            "DeltaPhiMax": 9.0,
+        },
+    )
+    sim.set_landscape_parameters("J", {"f_max": 700})
+
+    sim.simulate(num_years=100, vis_years=1, img_years=2000)
+
+    sim.add_population(population=ini_carns)
+    sim.simulate(num_years=100, vis_years=1, img_years=2000)

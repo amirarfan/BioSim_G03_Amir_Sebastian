@@ -1,4 +1,5 @@
 #include <math.h>
+// Creates the Approximation of exponential
 
 static union
 {

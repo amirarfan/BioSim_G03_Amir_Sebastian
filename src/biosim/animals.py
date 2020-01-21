@@ -3,9 +3,9 @@
 __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
-import math
 import numpy as np
 from random import choices
+from .compute_fit import calculate_fitness
 
 
 class Animal:
@@ -139,8 +139,9 @@ class Animal:
     def _calculate_fitness(cls, weight, age):
         r"""
 
-        Calculates the fitness by using the '_q_sigmoid' function, uses the
-        parameters from the class.
+        Calculates the fitness by using the 'calculate_fitness'
+        function which uses the parameters from the class. 'calculate_fitness'
+        is a cythonized function.
 
         .. math::
             \Phi =
@@ -171,8 +172,8 @@ class Animal:
         if weight == 0:
             return 0
         else:
-            return cls._q_sigmoid(age, a_half, phi_age, +1) * cls._q_sigmoid(
-                weight, w_half, phi_weight, -1
+            return calculate_fitness(
+                age, a_half, phi_age, weight, w_half, phi_weight
             )
 
     def update_fitness(self):
@@ -294,7 +295,7 @@ class Animal:
         """
         Determines whether the animal is to give birth or not using
         the 'compute_prob_birth' function to gain a value. The function then
-        uses numpy.random.choice to choose between True or False with fixed
+        uses random.choices to choose between True or False with fixed
         probabilities.
 
         Parameters
@@ -370,7 +371,7 @@ class Animal:
         """
 
         Determines if the animal is to become sick, using the 'p_sick'
-        parameter and Numpy's random.choice method.
+        parameter and random.choices method.
 
         Returns
         -------
@@ -414,35 +415,6 @@ class Animal:
         eta = self.param["eta"]
         self._weight -= eta * self._weight
         self.update_fitness()
-
-    @staticmethod
-    def _q_sigmoid(x, x_half, rate, signum):
-        r"""
-        This is the standard sigmoid function besides that the sign can be
-        specified.
-
-        It is given by:
-
-        .. math::
-                q^{\pm}(x, x_{\frac{1}{2}},\phi) =
-                \frac{1}{1 + e^{\pm \phi (x - x_{\frac{1}{2})}}}
-
-
-
-        Parameters
-        ----------
-        x: int or float
-        x_half: int or float
-        rate: int or float
-        signum: +- 1
-
-        Returns
-        -------
-        float
-            Sigmoid value given the inputs
-
-        """
-        return 1 / (1 + math.exp(signum * rate * (x - x_half)))
 
 
 class Herbivore(Animal):
@@ -571,7 +543,7 @@ class Carnivore(Animal):
         """
 
         Determine kill function which uses '_compute_kill_prob' to
-        calculate the probability and then uses Numpy's random choice with
+        calculate the probability and then uses random choice with
         fixed probability to determine if the carnivore is to kill
         the chosen herbivore.
 

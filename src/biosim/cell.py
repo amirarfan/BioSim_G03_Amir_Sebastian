@@ -183,7 +183,7 @@ class Cell:
         move is determined by the animal instance with the function
         'determine_to_move'. Which cell it will move to is determined
         by computing the move probability for each cell, and is chosen by using
-        Numpy's random choice method with fixed probabilities.
+        random choice method with fixed probabilities.
 
         Parameters
         ----------
