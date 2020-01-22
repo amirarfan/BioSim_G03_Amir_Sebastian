@@ -14,6 +14,7 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 import numpy as np
 import random
 from .compute_fit import calculate_fitness
+from numba import jit
 
 
 class Animal:
@@ -512,6 +513,7 @@ class Carnivore(Animal):
         super().__init__(weight, age)
 
     @staticmethod
+    @jit(nopython=True)
     def _compute_kill_prob(fit_carn, fit_herb, delta_phi_max):
         r"""
         Computes probability of a Carnivore killing Herbivore which is
