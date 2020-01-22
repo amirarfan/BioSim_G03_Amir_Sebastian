@@ -10,53 +10,53 @@ with this project. One could also add parameters, and other options.
 
 """
 
-import PySimpleGUI as sg
+import PySimpleGUI as SG
 from biosim.simulation import BioSim
 import matplotlib.pyplot as plt
 import textwrap
 
 if __name__ == "__main__":
-    sg.ChangeLookAndFeel("SystemDefault")
+    SG.ChangeLookAndFeel("SystemDefault")
 
-    sg.SetOptions(text_justification="right")
+    SG.SetOptions(text_justification="right")
 
     layout = [
-        [sg.Text("BioSim Parameters", font=("Helvetica", 16))],
+        [SG.Text("BioSim Parameters", font=("Helvetica", 16))],
         [
-            sg.Text("Years to simulate", size=(15, 1)),
-            sg.Spin(
+            SG.Text("Years to simulate", size=(15, 1)),
+            SG.Spin(
                 values=[i for i in range(150, 1000)],
                 initial_value=200,
                 size=(6, 1),
             ),
-            sg.Text("Seed", size=(18, 1)),
-            sg.Spin(
+            SG.Text("Seed", size=(18, 1)),
+            SG.Spin(
                 values=[i for i in range(1, 10000)],
                 initial_value=123456,
                 size=(6, 1),
             ),
         ],
         [
-            sg.Text("Number of Herbivores", size=(20, 1)),
-            sg.In(default_text=150, size=(5, 1)),
-            sg.Text("Number of Carnivores", size=(20, 1)),
-            sg.In(default_text=150, size=(5, 1)),
+            SG.Text("Number of Herbivores", size=(20, 1)),
+            SG.In(default_text=150, size=(5, 1)),
+            SG.Text("Number of Carnivores", size=(20, 1)),
+            SG.In(default_text=150, size=(5, 1)),
         ],
-        [sg.Text("_" * 100, size=(65, 1))],
-        [sg.Text("Map Type", font=("Helvetica", 15), justification="left")],
+        [SG.Text("_" * 100, size=(65, 1))],
+        [SG.Text("Map Type", font=("Helvetica", 15), justification="left")],
         [
-            sg.Text("Map", size=(15, 1)),
-            sg.Drop(
+            SG.Text("Map", size=(15, 1)),
+            SG.Drop(
                 values=("Standard", "Only Desert", "Only Jungle"),
                 auto_size_text=True,
             ),
-            sg.Text("When to add Carnivores", size=(15, 1)),
-            sg.Drop(values=(100, 200, 300)),
+            SG.Text("When to add Carnivores", size=(15, 1)),
+            SG.Drop(values=(100, 200, 300)),
         ],
-        [sg.Submit(), sg.Cancel()],
+        [SG.Submit(), SG.Cancel()],
     ]
 
-    window = sg.Window("BioSim", layout, font=("Helvetica", 12))
+    window = SG.Window("BioSim", layout, font=("Helvetica", 12))
 
     event, values = window.read()
 
@@ -77,11 +77,13 @@ if __name__ == "__main__":
         delay,
     ) = values.values()
 
+    if map_type is None:
+        raise ValueError("You must choose a map type!")
+
     if num_years < delay:
         raise ValueError("Carnivores cant be added after end of simulation")
 
-    if map_type is None:
-        raise ValueError("You must choose a map type!")
+    geogr = None
 
     if map_type == "Standard":
         geogr = """\
