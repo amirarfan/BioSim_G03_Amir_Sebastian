@@ -1,3 +1,5 @@
+@cython.cdivision(True)
+
 cdef extern from "approxexp.h": # calls the approx
     double exp_approx "EXP" (double)
 
