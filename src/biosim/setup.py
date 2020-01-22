@@ -1,6 +1,7 @@
 from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Build import build_ext
+# One might have to remove "libraries=["m"]" when building the code on windows
 
 ext_modules = [
     Extension(
