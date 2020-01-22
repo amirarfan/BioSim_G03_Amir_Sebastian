@@ -169,4 +169,4 @@ if __name__ == "__main__":
 
     plt.savefig("gui_sim.pdf")
 
-    input("Press ENTER to save figure as 'gui_sim.pdf'")
+    input("Press ENTER to save figure as 'gui_sim.pdf', or abort program")

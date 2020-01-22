@@ -1,0 +1,7 @@
+compute_fit.pyx
+setup.py
+compute_fit.egg-info/PKG-INFO
+compute_fit.egg-info/SOURCES.txt
+compute_fit.egg-info/dependency_links.txt
+compute_fit.egg-info/not-zip-safe
+compute_fit.egg-info/top_level.txt

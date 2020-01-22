@@ -45,11 +45,18 @@ what took the most time was proven to be wrong. We tried optimising the code
 with ``jit`` from ``Numba`` this produced good results, however we wanted to
 try ``Cython``, and this optimized the code as well.
 
+You can see the code documentation and some visual exmaples below. The
+implementation of the gui has the potential to be improved. Our implementation
+of the code also includes the ability to add a sick probability, thus you can
+simulate a cycle where an animal can get sick.
+
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   simulation
+   codedoc
+
+   examples
 
    developers

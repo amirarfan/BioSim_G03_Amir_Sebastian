@@ -10,11 +10,10 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 # To system path. Contact me at amar@nmbu.no, if you have trouble
 # running the cython code on Mac or Windows.
 
-
+from numba import jit
 import numpy as np
 import random
 from .compute_fit import calculate_fitness
-from numba import jit
 
 
 class Animal:
@@ -252,7 +251,7 @@ class Animal:
         """
 
         Calculates the probability of death for the animal instance, uses that
-        probability and Numpy's random.choice function to return a bool value.
+        probability and random.uniform function to return a bool value.
 
         Returns
         -------
@@ -302,7 +301,7 @@ class Animal:
         """
         Determines whether the animal is to give birth or not using
         the 'compute_prob_birth' function to gain a value. The function then
-        uses random.choices to choose between True or False with fixed
+        uses random.uniform to choose between True or False with fixed
         probabilities.
 
         Parameters
@@ -378,7 +377,7 @@ class Animal:
         """
 
         Determines if the animal is to become sick, using the 'p_sick'
-        parameter and random.choices method.
+        parameter and random.uniform method.
 
         Returns
         -------

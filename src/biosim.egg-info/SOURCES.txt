@@ -4,6 +4,8 @@ setup.py
 src/biosim/__init__.py
 src/biosim/animals.py
 src/biosim/cell.py
+src/biosim/compute_fit.c
+src/biosim/compute_fit.pyx
 src/biosim/gui.py
 src/biosim/map.py
 src/biosim/setup.py
