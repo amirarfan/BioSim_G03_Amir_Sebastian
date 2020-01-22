@@ -692,7 +692,7 @@ def test_annual_death(populated_savannah, mocker):
 
 
     """
-    mocker.patch("random.choices", return_value=[True])
+    mocker.patch("random.uniform", return_value=0)
     populated_savannah.annual_death()
     for animal_lists in populated_savannah.animal_classes.values():
         assert len(animal_lists) == 0

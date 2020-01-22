@@ -387,7 +387,7 @@ class Animal:
 
         """
         p_sick = cls.param["p_sick"]
-        return random.uniform(0,1) < p_sick
+        return random.uniform(0, 1) < p_sick
 
     def increase_eat_weight(self, fodder):
         """

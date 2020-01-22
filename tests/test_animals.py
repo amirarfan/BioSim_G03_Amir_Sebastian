@@ -214,7 +214,7 @@ def test_determine_death_is_bool():
 
 
 def test_determine_death_mocker(mocker):
-    mocker.patch("random.choices", return_value=[True])
+    mocker.patch("random.uniform", return_value=0)
     herb = Herbivore()
     assert herb.determine_death()
 
@@ -237,7 +237,7 @@ def test_move_probability_herb():
 
 
 def test_move_prob_herb_true(mocker):
-    mocker.patch("random.choices", return_value=[True])
+    mocker.patch("random.uniform", return_value=0)
     herb = Herbivore()
     assert herb.determine_to_move()
 
@@ -307,7 +307,7 @@ def test_bool_carnivore_det_kill(plain_carnivore):
 
 
 def test_det_kill_false(plain_carnivore, mocker):
-    mocker.patch("random.choices", return_value=[False])
+    mocker.patch("random.uniform", return_value=1)
     assert not plain_carnivore.determine_kill(0.01)
 
 
@@ -385,8 +385,9 @@ def test_sick_herbivores_eat(mocker):
     healthy_herb = Herbivore(weight=10)
     sick_herb = Herbivore(weight=10)
     healthy_herb.increase_eat_weight(10)
+    sick_herb.update_parameters({"p_sick": 1})
 
-    mocker.patch("random.choices", return_value=[True])
+    mocker.patch("random.uniform", return_value=0)
     sick_herb.increase_eat_weight(10)
 
     assert healthy_herb.weight > sick_herb.weight
