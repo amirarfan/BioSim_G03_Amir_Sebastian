@@ -40,14 +40,14 @@ class BioSim:
     }
 
     def __init__(
-            self,
-            island_map,
-            ini_pop,
-            seed,
-            ymax_animals=None,
-            cmax_animals=None,
-            img_base=None,
-            img_fmt="png",
+        self,
+        island_map,
+        ini_pop,
+        seed,
+        ymax_animals=None,
+        cmax_animals=None,
+        img_base=None,
+        img_fmt="png",
     ):
         """
         :param island_map: Multi-line string specifying island geography
@@ -160,7 +160,7 @@ class BioSim:
                 self._update_graphics()
 
             if self._year % img_years == 0:
-               self._save_graphics()
+                self._save_graphics()
 
             self._map.cycle()
 
@@ -554,7 +554,7 @@ if __name__ == "__main__":
     )
     sim.set_landscape_parameters("J", {"f_max": 700})
 
-    sim.simulate(num_years=100, vis_years=1, img_years=2000)
+    sim.simulate(num_years=100, vis_years=1)
 
     sim.add_population(population=ini_carns)
-    sim.simulate(num_years=100, vis_years=1, img_years=2000)
+    sim.simulate(num_years=100, vis_years=1)

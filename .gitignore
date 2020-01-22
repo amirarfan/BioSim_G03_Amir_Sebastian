@@ -2,3 +2,7 @@
 venv/Lib/site-packages/
 
 venv/
+
+*.mp4
+
+*.png
