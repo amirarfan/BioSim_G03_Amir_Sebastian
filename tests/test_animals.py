@@ -362,8 +362,8 @@ def test_gauss_distribution_shapiro():
      is more insignificant.
 
     """
-    herbivores = [Herbivore() for _ in range(10000)]
-    carnivores = [Carnivore() for _ in range(10000)]
+    herbivores = [Herbivore() for _ in range(5000)]
+    carnivores = [Carnivore() for _ in range(5000)]
     herb_weights = [herb.weight for herb in herbivores]
     carn_weights = [carn.weight for carn in carnivores]
     alpha = 0.05  # Sets the probability of rejecting the null hypothesis

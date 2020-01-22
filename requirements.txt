@@ -5,3 +5,4 @@ numpy
 pytest
 tox
 cython
+numba

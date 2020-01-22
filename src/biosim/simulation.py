@@ -14,6 +14,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import subprocess
+import random
 import os
 import textwrap
 
@@ -81,6 +82,7 @@ class BioSim:
 
         self._map.add_animals(ini_pop)
         np.random.seed(seed)
+        random.seed(seed)
 
         self._year = 0
         self._final_year = None
