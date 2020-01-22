@@ -8,7 +8,6 @@ src/biosim/compute_fit.c
 src/biosim/compute_fit.pyx
 src/biosim/gui.py
 src/biosim/map.py
-src/biosim/setup.py
 src/biosim/simulation.py
 src/biosim.egg-info/PKG-INFO
 src/biosim.egg-info/SOURCES.txt

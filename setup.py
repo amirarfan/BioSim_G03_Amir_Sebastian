@@ -1,5 +1,5 @@
-# from setuptools import setup
-from distutils.core import setup
+from setuptools import setup
+# from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Build import build_ext
 
@@ -21,5 +21,6 @@ setup(
     author_email="amar@nmbu.no & sebabeck@nmbu.no",
     cmdclass={"build_ext": build_ext},
     ext_modules=ext_modules,
+    include_package_data=True,
     package_dir={"": "src"},
 )

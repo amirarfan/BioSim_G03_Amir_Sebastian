@@ -2,3 +2,4 @@
 setup.cfg
 setup.py
 src/biosim/compute_fit.pyx
+src/biosim/approxexp.h

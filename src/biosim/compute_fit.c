@@ -590,8 +590,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__compute_fit
-#define __PYX_HAVE_API__compute_fit
+#define __PYX_HAVE__biosim__compute_fit
+#define __PYX_HAVE_API__biosim__compute_fit
 /* Early includes */
 #include "approxexp.h"
 #ifdef _OPENMP
@@ -1007,14 +1007,14 @@ static int __Pyx_check_binary_version(void);
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
-/* Module declarations from 'compute_fit' */
-static PyObject *__pyx_f_11compute_fit_sigmoidal(double, double, double, int, int __pyx_skip_dispatch); /*proto*/
-static PyObject *__pyx_f_11compute_fit_calculate_fitness(int, double, double, double, double, double, int __pyx_skip_dispatch); /*proto*/
-#define __Pyx_MODULE_NAME "compute_fit"
-extern int __pyx_module_is_main_compute_fit;
-int __pyx_module_is_main_compute_fit = 0;
+/* Module declarations from 'biosim.compute_fit' */
+static PyObject *__pyx_f_6biosim_11compute_fit_sigmoidal(double, double, double, int, int __pyx_skip_dispatch); /*proto*/
+static PyObject *__pyx_f_6biosim_11compute_fit_calculate_fitness(int, double, double, double, double, double, int __pyx_skip_dispatch); /*proto*/
+#define __Pyx_MODULE_NAME "biosim.compute_fit"
+extern int __pyx_module_is_main_biosim__compute_fit;
+int __pyx_module_is_main_biosim__compute_fit = 0;
 
-/* Implementation of 'compute_fit' */
+/* Implementation of 'biosim.compute_fit' */
 static const char __pyx_k_x[] = "x";
 static const char __pyx_k_age[] = "age";
 static const char __pyx_k_main[] = "__main__";
@@ -1043,11 +1043,11 @@ static PyObject *__pyx_n_s_w_half;
 static PyObject *__pyx_n_s_weight;
 static PyObject *__pyx_n_s_x;
 static PyObject *__pyx_n_s_x_half;
-static PyObject *__pyx_pf_11compute_fit_sigmoidal(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_x, double __pyx_v_x_half, double __pyx_v_rate, int __pyx_v_signum); /* proto */
-static PyObject *__pyx_pf_11compute_fit_2calculate_fitness(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_age, double __pyx_v_a_half, double __pyx_v_phi_age, double __pyx_v_weight, double __pyx_v_w_half, double __pyx_v_phi_weight); /* proto */
+static PyObject *__pyx_pf_6biosim_11compute_fit_sigmoidal(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_x, double __pyx_v_x_half, double __pyx_v_rate, int __pyx_v_signum); /* proto */
+static PyObject *__pyx_pf_6biosim_11compute_fit_2calculate_fitness(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_age, double __pyx_v_a_half, double __pyx_v_phi_age, double __pyx_v_weight, double __pyx_v_w_half, double __pyx_v_phi_weight); /* proto */
 /* Late includes */
 
-/* "compute_fit.pyx":4
+/* "biosim/compute_fit.pyx":4
  *     double exp_approx "EXP" (double)
  * 
  * cpdef sigmoidal(double x, double x_half, double rate, int signum):             # <<<<<<<<<<<<<<
@@ -1055,15 +1055,15 @@ static PyObject *__pyx_pf_11compute_fit_2calculate_fitness(CYTHON_UNUSED PyObjec
  *     This is the standard sigmoid function besides that the sign can be
  */
 
-static PyObject *__pyx_pw_11compute_fit_1sigmoidal(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_11compute_fit_sigmoidal(double __pyx_v_x, double __pyx_v_x_half, double __pyx_v_rate, int __pyx_v_signum, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6biosim_11compute_fit_1sigmoidal(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_6biosim_11compute_fit_sigmoidal(double __pyx_v_x, double __pyx_v_x_half, double __pyx_v_rate, int __pyx_v_signum, CYTHON_UNUSED int __pyx_skip_dispatch) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   double __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("sigmoidal", 0);
 
-  /* "compute_fit.pyx":30
+  /* "biosim/compute_fit.pyx":30
  * 
  *     """
  *     return 1 / (1 + exp_approx(signum * rate * (x - x_half)))             # <<<<<<<<<<<<<<
@@ -1082,7 +1082,7 @@ static PyObject *__pyx_f_11compute_fit_sigmoidal(double __pyx_v_x, double __pyx_
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "compute_fit.pyx":4
+  /* "biosim/compute_fit.pyx":4
  *     double exp_approx "EXP" (double)
  * 
  * cpdef sigmoidal(double x, double x_half, double rate, int signum):             # <<<<<<<<<<<<<<
@@ -1093,7 +1093,7 @@ static PyObject *__pyx_f_11compute_fit_sigmoidal(double __pyx_v_x, double __pyx_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("compute_fit.sigmoidal", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("biosim.compute_fit.sigmoidal", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1102,9 +1102,9 @@ static PyObject *__pyx_f_11compute_fit_sigmoidal(double __pyx_v_x, double __pyx_
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_11compute_fit_1sigmoidal(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_11compute_fit_sigmoidal[] = "\n    This is the standard sigmoid function besides that the sign can be\n        specified.\n\n        It is given by:\n\n        .. math::\n                q^{\\pm}(x, x_{\\frac{1}{2}},\\phi) =\n                \\frac{1}{1 + e^{\\pm \\phi (x - x_{\\frac{1}{2})}}}\n\n\n\n        Parameters\n        ----------\n        x: int or float\n        x_half: int or float\n        rate: int or float\n        signum: +- 1\n\n        Returns\n        -------\n        float\n            Sigmoid value given the inputs\n\n    ";
-static PyObject *__pyx_pw_11compute_fit_1sigmoidal(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6biosim_11compute_fit_1sigmoidal(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_6biosim_11compute_fit_sigmoidal[] = "\n    This is the standard sigmoid function besides that the sign can be\n        specified.\n\n        It is given by:\n\n        .. math::\n                q^{\\pm}(x, x_{\\frac{1}{2}},\\phi) =\n                \\frac{1}{1 + e^{\\pm \\phi (x - x_{\\frac{1}{2})}}}\n\n\n\n        Parameters\n        ----------\n        x: int or float\n        x_half: int or float\n        rate: int or float\n        signum: +- 1\n\n        Returns\n        -------\n        float\n            Sigmoid value given the inputs\n\n    ";
+static PyObject *__pyx_pw_6biosim_11compute_fit_1sigmoidal(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   double __pyx_v_x;
   double __pyx_v_x_half;
   double __pyx_v_rate;
@@ -1174,24 +1174,24 @@ static PyObject *__pyx_pw_11compute_fit_1sigmoidal(PyObject *__pyx_self, PyObjec
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("sigmoidal", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 4, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("compute_fit.sigmoidal", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("biosim.compute_fit.sigmoidal", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_11compute_fit_sigmoidal(__pyx_self, __pyx_v_x, __pyx_v_x_half, __pyx_v_rate, __pyx_v_signum);
+  __pyx_r = __pyx_pf_6biosim_11compute_fit_sigmoidal(__pyx_self, __pyx_v_x, __pyx_v_x_half, __pyx_v_rate, __pyx_v_signum);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_11compute_fit_sigmoidal(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_x, double __pyx_v_x_half, double __pyx_v_rate, int __pyx_v_signum) {
+static PyObject *__pyx_pf_6biosim_11compute_fit_sigmoidal(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_x, double __pyx_v_x_half, double __pyx_v_rate, int __pyx_v_signum) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("sigmoidal", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_11compute_fit_sigmoidal(__pyx_v_x, __pyx_v_x_half, __pyx_v_rate, __pyx_v_signum, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6biosim_11compute_fit_sigmoidal(__pyx_v_x, __pyx_v_x_half, __pyx_v_rate, __pyx_v_signum, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1200,7 +1200,7 @@ static PyObject *__pyx_pf_11compute_fit_sigmoidal(CYTHON_UNUSED PyObject *__pyx_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("compute_fit.sigmoidal", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("biosim.compute_fit.sigmoidal", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1208,7 +1208,7 @@ static PyObject *__pyx_pf_11compute_fit_sigmoidal(CYTHON_UNUSED PyObject *__pyx_
   return __pyx_r;
 }
 
-/* "compute_fit.pyx":32
+/* "biosim/compute_fit.pyx":32
  *     return 1 / (1 + exp_approx(signum * rate * (x - x_half)))
  * 
  * cpdef calculate_fitness(int age, double a_half, double phi_age, double weight,             # <<<<<<<<<<<<<<
@@ -1216,8 +1216,8 @@ static PyObject *__pyx_pf_11compute_fit_sigmoidal(CYTHON_UNUSED PyObject *__pyx_
  *                          double phi_weight):
  */
 
-static PyObject *__pyx_pw_11compute_fit_3calculate_fitness(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_11compute_fit_calculate_fitness(int __pyx_v_age, double __pyx_v_a_half, double __pyx_v_phi_age, double __pyx_v_weight, double __pyx_v_w_half, double __pyx_v_phi_weight, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_6biosim_11compute_fit_3calculate_fitness(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_6biosim_11compute_fit_calculate_fitness(int __pyx_v_age, double __pyx_v_a_half, double __pyx_v_phi_age, double __pyx_v_weight, double __pyx_v_w_half, double __pyx_v_phi_weight, CYTHON_UNUSED int __pyx_skip_dispatch) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1225,25 +1225,25 @@ static PyObject *__pyx_f_11compute_fit_calculate_fitness(int __pyx_v_age, double
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("calculate_fitness", 0);
 
-  /* "compute_fit.pyx":40
+  /* "biosim/compute_fit.pyx":40
  * 
  *     """
  *     return sigmoidal(age, a_half, phi_age, +1) * sigmoidal(             # <<<<<<<<<<<<<<
  *                 weight, w_half, phi_weight, -1  )
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_11compute_fit_sigmoidal(__pyx_v_age, __pyx_v_a_half, __pyx_v_phi_age, 1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6biosim_11compute_fit_sigmoidal(__pyx_v_age, __pyx_v_a_half, __pyx_v_phi_age, 1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
 
-  /* "compute_fit.pyx":41
+  /* "biosim/compute_fit.pyx":41
  *     """
  *     return sigmoidal(age, a_half, phi_age, +1) * sigmoidal(
  *                 weight, w_half, phi_weight, -1  )             # <<<<<<<<<<<<<<
  */
-  __pyx_t_2 = __pyx_f_11compute_fit_sigmoidal(__pyx_v_weight, __pyx_v_w_half, __pyx_v_phi_weight, -1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_6biosim_11compute_fit_sigmoidal(__pyx_v_weight, __pyx_v_w_half, __pyx_v_phi_weight, -1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "compute_fit.pyx":40
+  /* "biosim/compute_fit.pyx":40
  * 
  *     """
  *     return sigmoidal(age, a_half, phi_age, +1) * sigmoidal(             # <<<<<<<<<<<<<<
@@ -1257,7 +1257,7 @@ static PyObject *__pyx_f_11compute_fit_calculate_fitness(int __pyx_v_age, double
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "compute_fit.pyx":32
+  /* "biosim/compute_fit.pyx":32
  *     return 1 / (1 + exp_approx(signum * rate * (x - x_half)))
  * 
  * cpdef calculate_fitness(int age, double a_half, double phi_age, double weight,             # <<<<<<<<<<<<<<
@@ -1270,7 +1270,7 @@ static PyObject *__pyx_f_11compute_fit_calculate_fitness(int __pyx_v_age, double
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("compute_fit.calculate_fitness", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("biosim.compute_fit.calculate_fitness", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1279,9 +1279,9 @@ static PyObject *__pyx_f_11compute_fit_calculate_fitness(int __pyx_v_age, double
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_11compute_fit_3calculate_fitness(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_11compute_fit_2calculate_fitness[] = "\n    \n    Calculates the fitness using sigmoidal function.\n    \n    ";
-static PyObject *__pyx_pw_11compute_fit_3calculate_fitness(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6biosim_11compute_fit_3calculate_fitness(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_6biosim_11compute_fit_2calculate_fitness[] = "\n    \n    Calculates the fitness using sigmoidal function.\n    \n    ";
+static PyObject *__pyx_pw_6biosim_11compute_fit_3calculate_fitness(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_v_age;
   double __pyx_v_a_half;
   double __pyx_v_phi_age;
@@ -1373,24 +1373,24 @@ static PyObject *__pyx_pw_11compute_fit_3calculate_fitness(PyObject *__pyx_self,
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("calculate_fitness", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 32, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("compute_fit.calculate_fitness", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("biosim.compute_fit.calculate_fitness", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_11compute_fit_2calculate_fitness(__pyx_self, __pyx_v_age, __pyx_v_a_half, __pyx_v_phi_age, __pyx_v_weight, __pyx_v_w_half, __pyx_v_phi_weight);
+  __pyx_r = __pyx_pf_6biosim_11compute_fit_2calculate_fitness(__pyx_self, __pyx_v_age, __pyx_v_a_half, __pyx_v_phi_age, __pyx_v_weight, __pyx_v_w_half, __pyx_v_phi_weight);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_11compute_fit_2calculate_fitness(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_age, double __pyx_v_a_half, double __pyx_v_phi_age, double __pyx_v_weight, double __pyx_v_w_half, double __pyx_v_phi_weight) {
+static PyObject *__pyx_pf_6biosim_11compute_fit_2calculate_fitness(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_age, double __pyx_v_a_half, double __pyx_v_phi_age, double __pyx_v_weight, double __pyx_v_w_half, double __pyx_v_phi_weight) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("calculate_fitness", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_11compute_fit_calculate_fitness(__pyx_v_age, __pyx_v_a_half, __pyx_v_phi_age, __pyx_v_weight, __pyx_v_w_half, __pyx_v_phi_weight, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6biosim_11compute_fit_calculate_fitness(__pyx_v_age, __pyx_v_a_half, __pyx_v_phi_age, __pyx_v_weight, __pyx_v_w_half, __pyx_v_phi_weight, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1399,7 +1399,7 @@ static PyObject *__pyx_pf_11compute_fit_2calculate_fitness(CYTHON_UNUSED PyObjec
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("compute_fit.calculate_fitness", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("biosim.compute_fit.calculate_fitness", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1408,8 +1408,8 @@ static PyObject *__pyx_pf_11compute_fit_2calculate_fitness(CYTHON_UNUSED PyObjec
 }
 
 static PyMethodDef __pyx_methods[] = {
-  {"sigmoidal", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_11compute_fit_1sigmoidal, METH_VARARGS|METH_KEYWORDS, __pyx_doc_11compute_fit_sigmoidal},
-  {"calculate_fitness", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_11compute_fit_3calculate_fitness, METH_VARARGS|METH_KEYWORDS, __pyx_doc_11compute_fit_2calculate_fitness},
+  {"sigmoidal", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6biosim_11compute_fit_1sigmoidal, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6biosim_11compute_fit_sigmoidal},
+  {"calculate_fitness", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6biosim_11compute_fit_3calculate_fitness, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6biosim_11compute_fit_2calculate_fitness},
   {0, 0, 0, 0}
 };
 
@@ -1722,14 +1722,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_compute_fit) {
+  if (__pyx_module_is_main_biosim__compute_fit) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "compute_fit")) {
-      if (unlikely(PyDict_SetItemString(modules, "compute_fit", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "biosim.compute_fit")) {
+      if (unlikely(PyDict_SetItemString(modules, "biosim.compute_fit", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -1750,7 +1750,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "compute_fit.pyx":1
+  /* "biosim/compute_fit.pyx":1
  * cdef extern from "approxexp.h": # calls the approx             # <<<<<<<<<<<<<<
  *     double exp_approx "EXP" (double)
  * 
@@ -1767,11 +1767,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init compute_fit", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init biosim.compute_fit", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init compute_fit");
+    PyErr_SetString(PyExc_ImportError, "init biosim.compute_fit");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
