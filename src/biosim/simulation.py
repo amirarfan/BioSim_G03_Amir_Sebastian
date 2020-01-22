@@ -154,11 +154,11 @@ class BioSim:
 
         while self._year < self._final_year:
             print(self._year)
-            # if self._year % vis_years == 0:
-            #   self._update_graphics()
+            if self._year % vis_years == 0:
+                self._update_graphics()
 
-            # if self._year % img_years == 0:
-            #   self._save_graphics()
+            if self._year % img_years == 0:
+               self._save_graphics()
 
             self._map.cycle()
 
