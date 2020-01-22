@@ -80,16 +80,9 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="simulation.html">Simulation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="map.html">Map</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cell.html">Cell</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Animals</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="gui.html">GUI</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="codedoc.html">Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="developers.html">About us</a></li>
 </ul>
 
@@ -135,8 +128,6 @@
   <ul class="wy-breadcrumbs">
     
       <li><a href="index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="simulation.html">Simulation</a> &raquo;</li>
         
       <li>Animals</li>
     
@@ -198,7 +189,7 @@
 <td><p>Determines whether the animal is to give birth or not using the ‘compute_prob_birth’ function to gain a value.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#biosim.animals.Animal.determine_death" title="biosim.animals.Animal.determine_death"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_death</span></code></a>(self)</p></td>
-<td><p>Calculates the probability of death for the animal instance, uses that probability and Numpy’s random.choice function to return a bool value.</p></td>
+<td><p>Calculates the probability of death for the animal instance, uses that probability and random.uniform function to return a bool value.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#biosim.animals.Animal.determine_to_move" title="biosim.animals.Animal.determine_to_move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_to_move</span></code></a>(self)</p></td>
 <td><p>Calculates the probability to move, and then returns a bool value deciding whether animal is to move.</p></td>
@@ -250,7 +241,7 @@ different sign values <span class="math notranslate nohighlight">\(+\)</span>, a
 <dt id="biosim.animals.Animal._determine_sick">
 <em class="property">classmethod </em><code class="sig-name descname">_determine_sick</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#biosim.animals.Animal._determine_sick" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines if the animal is to become sick, using the ‘p_sick’
-parameter and random.choices method.</p>
+parameter and random.uniform method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl class="simple">
@@ -361,7 +352,7 @@ the birth-giving animal’s weight.</p>
 <code class="sig-name descname">determine_birth</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">nearby_animals</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.animals.Animal.determine_birth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines whether the animal is to give birth or not using
 the ‘compute_prob_birth’ function to gain a value. The function then
-uses random.choices to choose between True or False with fixed
+uses random.uniform to choose between True or False with fixed
 probabilities.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -384,7 +375,7 @@ to give birth.</p>
 <dt id="biosim.animals.Animal.determine_death">
 <code class="sig-name descname">determine_death</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.animals.Animal.determine_death" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the probability of death for the animal instance, uses that
-probability and Numpy’s random.choice function to return a bool value.</p>
+probability and random.uniform function to return a bool value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl class="simple">
@@ -525,7 +516,7 @@ and specified attributes from Animal class.</p>
 <td><p>Determines whether the animal is to give birth or not using the ‘compute_prob_birth’ function to gain a value.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_death</span></code>(self)</p></td>
-<td><p>Calculates the probability of death for the animal instance, uses that probability and Numpy’s random.choice function to return a bool value.</p></td>
+<td><p>Calculates the probability of death for the animal instance, uses that probability and random.uniform function to return a bool value.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#biosim.animals.Carnivore.determine_kill" title="biosim.animals.Carnivore.determine_kill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_kill</span></code></a>(self, min_fit_herb)</p></td>
 <td><p>Determine kill function which uses ‘_compute_kill_prob’ to calculate the probability and then uses random choice with fixed probability to determine if the carnivore is to kill the chosen herbivore.</p></td>
@@ -544,9 +535,9 @@ and specified attributes from Animal class.</p>
 </tr>
 </tbody>
 </table>
-<dl class="method">
+<dl class="attribute">
 <dt id="biosim.animals.Carnivore._compute_kill_prob">
-<em class="property">static </em><code class="sig-name descname">_compute_kill_prob</code><span class="sig-paren">(</span><em class="sig-param">fit_carn</em>, <em class="sig-param">fit_herb</em>, <em class="sig-param">delta_phi_max</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.animals.Carnivore._compute_kill_prob" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_compute_kill_prob</code><span class="sig-paren">(</span><em class="sig-param">fit_carn</em>, <em class="sig-param">fit_herb</em>, <em class="sig-param">delta_phi_max</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.animals.Carnivore._compute_kill_prob" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes probability of a Carnivore killing Herbivore which is
 determined through:</p>
 <div class="math notranslate nohighlight">
@@ -649,7 +640,7 @@ the attributes and methods from animal class.</p>
 <td><p>Determines whether the animal is to give birth or not using the ‘compute_prob_birth’ function to gain a value.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_death</span></code>(self)</p></td>
-<td><p>Calculates the probability of death for the animal instance, uses that probability and Numpy’s random.choice function to return a bool value.</p></td>
+<td><p>Calculates the probability of death for the animal instance, uses that probability and random.uniform function to return a bool value.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_to_move</span></code>(self)</p></td>
 <td><p>Calculates the probability to move, and then returns a bool value deciding whether animal is to move.</p></td>
