@@ -389,7 +389,7 @@ class Cell:
 
         """
         for animal_class in animal_list:
-            if type(self).__name__ in Animal.forbidden_landscape:
+            if type(self).__name__ not in Animal.allowed_ladndscape:
                 raise TypeError(f"This cell is inhabitable.")
             self.animal_classes[type(animal_class).__name__].append(
                 animal_class
@@ -416,7 +416,7 @@ class Cell:
             if animal_name not in self.allowed_species.keys():
                 raise ValueError(f"The animal type is not allowed")
 
-            if cell_name in Animal.forbidden_landscape:
+            if cell_name not in Animal.allowed_ladndscape:
                 raise ValueError(
                     f"This cell is inhabitable for specie: {animal_name}"
                 )
@@ -436,11 +436,7 @@ class Cell:
             The total number of animals per cell
 
         """
-        tot_animals = 0
-        for list_animals in self.animal_classes.values():
-            tot_animals += len(list_animals)
-
-        return tot_animals
+        return sum(len(lst) for lst in self.animal_classes.values())
 
     def num_species_per_cell(self):
         """

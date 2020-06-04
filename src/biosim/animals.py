@@ -23,7 +23,39 @@ class Animal:
     """
 
     param = {}
-    forbidden_landscape = ["Ocean", "Mountain"]
+    allowed_ladndscape = ["Jungle", "Desert", "Savannah"]
+
+    @classmethod
+    def update_parameters(cls, new_par_dict):
+        """
+        Updates the current parameters and also checks that no parameters are
+        negative.
+
+        Parameters
+        ----------
+        new_par_dict: Dictionary
+                    New dictionary containing the new parameters which need to
+                    be updated.
+
+        """
+        for par in new_par_dict.keys():
+            if par not in cls.param:
+                raise ValueError(
+                    f"Invalid input: {par} is not a key in "
+                    f"class parameters"
+                )
+            if (
+                new_par_dict[par] <= 0
+                and par == "DeltaPhiMax"
+                and cls.__name__ == "Carnivore"
+            ):
+                raise ValueError(f"{par} must be strictly positive")
+            elif new_par_dict[par] < 0 and par != "DeltaPhiMax":
+                raise ValueError(f"{par} must be positive")
+            elif new_par_dict[par] > 1 and (par == "eta" or par == "p_sick"):
+                raise ValueError(f"{par} must be less or equal to 1")
+
+        cls.param.update(new_par_dict)
 
     def __init__(self, weight=None, age=None):
         """
@@ -121,7 +153,7 @@ class Animal:
         if val < 0:
             raise ValueError("Weight must be higher than 0")
         self._weight = val
-        self._should_update_fitness()
+        self._should_update_fitness = True
 
     @property
     def fitness(self):
@@ -187,38 +219,6 @@ class Animal:
         method
         """
         self._fitness = self._calculate_fitness(self._weight, self._age)
-
-    @classmethod
-    def update_parameters(cls, new_par_dict):
-        """
-        Updates the current parameters and also checks that no parameters are
-        negative.
-
-        Parameters
-        ----------
-        new_par_dict: Dictionary
-                    New dictionary containing the new parameters which need to
-                    be updated.
-
-        """
-        for par in new_par_dict.keys():
-            if par not in cls.param:
-                raise ValueError(
-                    f"Invalid input: {par} is not a key in "
-                    f"class parameters"
-                )
-            if (
-                    new_par_dict[par] <= 0
-                    and par == "DeltaPhiMax"
-                    and cls.__name__ == "Carnivore"
-            ):
-                raise ValueError(f"{par} must be strictly positive")
-            elif new_par_dict[par] < 0 and par != "DeltaPhiMax":
-                raise ValueError(f"{par} must be positive")
-            elif new_par_dict[par] > 1 and (par == "eta" or par == "p_sick"):
-                raise ValueError(f"{par} must be less or equal to 1")
-
-        cls.param.update(new_par_dict)
 
     def add_age(self):
         """
