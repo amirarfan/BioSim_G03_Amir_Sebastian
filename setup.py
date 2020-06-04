@@ -1,4 +1,5 @@
 from setuptools import setup
+
 # from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Build import build_ext
@@ -9,7 +10,16 @@ ext_modules = [
     Extension(
         "biosim.compute_fit",
         ["src/biosim/compute_fit.pyx"],
-        libraries=["m"],
+        # libraries=["m"],
+        extra_compile_args=["-ffast-math", "-O3"],
+    )
+]
+
+ext_modules = [
+    Extension(
+        "biosim.det_kill",
+        ["src/biosim/det_kill.pyx"],
+        # libraries=["m"],
         extra_compile_args=["-ffast-math", "-O3"],
     )
 ]

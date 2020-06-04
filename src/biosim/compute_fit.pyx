@@ -1,3 +1,5 @@
+from libc.math cimport exp
+
 cdef extern from "approxexp.h": # calls the approx
     double exp_approx "EXP" (double)
 
@@ -27,7 +29,7 @@ cpdef sigmoidal(double x, double x_half, double rate, int signum):
             Sigmoid value given the inputs
 
     """
-    return 1 / (1 + exp_approx(signum * rate * (x - x_half)))
+    return 1 / (1 + exp(signum * rate * (x - x_half)))
 
 cpdef calculate_fitness(int age, double a_half, double phi_age, double weight,
                          double w_half,

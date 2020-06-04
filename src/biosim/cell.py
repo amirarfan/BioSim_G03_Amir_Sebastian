@@ -3,7 +3,7 @@
 __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
-from .animals import Herbivore, Carnivore
+from .animals import Animal, Herbivore, Carnivore
 import math
 import random
 
@@ -388,22 +388,12 @@ class Cell:
 
 
         """
-        cell_name = type(self).__name__
         for animal_class in animal_list:
-            animal_name = type(animal_class).__name__
-            if animal_name == "Herbivore" and (
-                cell_name == "Ocean" or cell_name == "Mountain"
-            ):
-                raise ValueError(
-                    f"This cell is inhabitable for specie: {animal_name}"
-                )
-            elif animal_name == "Carnivore" and (
-                cell_name == "Ocean" or cell_name == "Mountain"
-            ):
-                raise ValueError(
-                    f"This cell is inhabitable for specie: {animal_name}"
-                )
-            self.animal_classes[animal_name].append(animal_class)
+            if type(self).__name__ in Animal.forbidden_landscape:
+                raise TypeError(f"This cell is inhabitable.")
+            self.animal_classes[type(animal_class).__name__].append(
+                animal_class
+            )
 
     def add_animal(self, list_animal_dicts):
         """
@@ -420,28 +410,13 @@ class Cell:
         for dicts in list_animal_dicts:
             animal_name = dicts["species"]
 
-            try:
-                age = dicts["age"]
-            except KeyError:
-                age = None
-
-            try:
-                weight = dicts["weight"]
-            except KeyError:
-                weight = None
+            age = dicts.get("age", None)
+            weight = dicts.get("weight", None)
 
             if animal_name not in self.allowed_species.keys():
                 raise ValueError(f"The animal type is not allowed")
 
-            if animal_name == "Herbivore" and (
-                cell_name == "Ocean" or cell_name == "Mountain"
-            ):
-                raise ValueError(
-                    f"This cell is inhabitable for specie: {animal_name}"
-                )
-            elif animal_name == "Carnivore" and (
-                cell_name == "Ocean" or cell_name == "Mountain"
-            ):
+            if cell_name in Animal.forbidden_landscape:
                 raise ValueError(
                     f"This cell is inhabitable for specie: {animal_name}"
                 )

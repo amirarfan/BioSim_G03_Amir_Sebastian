@@ -14,6 +14,7 @@ from numba import jit
 import numpy as np
 import random
 from .compute_fit import calculate_fitness
+from .det_kill import det_kill
 
 
 class Animal:
@@ -22,6 +23,7 @@ class Animal:
     """
 
     param = {}
+    forbidden_landscape = ["Ocean", "Mountain"]
 
     def __init__(self, weight=None, age=None):
         """
@@ -51,12 +53,10 @@ class Animal:
         else:
             self._weight = self._normal_weight()
 
+        self._should_update_fitness = False
         self._fitness = None
 
         self.is_sick = False
-
-        if self._fitness is None:
-            self.update_fitness()
 
     @property
     def age(self):
@@ -121,7 +121,7 @@ class Animal:
         if val < 0:
             raise ValueError("Weight must be higher than 0")
         self._weight = val
-        self.update_fitness()
+        self._should_update_fitness()
 
     @property
     def fitness(self):
@@ -135,13 +135,10 @@ class Animal:
             The current fitness value of the animal instance
 
         """
+        if self._should_update_fitness or self._fitness is None:
+            self.update_fitness()
+            self._should_update_fitness = False
         return self._fitness
-
-    @fitness.setter
-    def fitness(self, value):
-        if value < 0:
-            raise ValueError("Custom fitness must be higher than 0")
-        self._fitness = value
 
     @classmethod
     def _calculate_fitness(cls, weight, age):
@@ -211,9 +208,9 @@ class Animal:
                     f"class parameters"
                 )
             if (
-                new_par_dict[par] <= 0
-                and par == "DeltaPhiMax"
-                and cls.__name__ == "Carnivore"
+                    new_par_dict[par] <= 0
+                    and par == "DeltaPhiMax"
+                    and cls.__name__ == "Carnivore"
             ):
                 raise ValueError(f"{par} must be strictly positive")
             elif new_par_dict[par] < 0 and par != "DeltaPhiMax":
@@ -230,7 +227,7 @@ class Animal:
 
         """
         self._age += 1
-        self.update_fitness()
+        self._should_update_fitness = True
 
     def determine_to_move(self):
         """
@@ -244,7 +241,7 @@ class Animal:
             Returns True if Animal is to move, or false if it is not to move
 
         """
-        probability_move = self._fitness * self.param["mu"]
+        probability_move = self.fitness * self.param["mu"]
         return random.uniform(0, 1) < probability_move
 
     def determine_death(self):
@@ -261,10 +258,10 @@ class Animal:
 
         """
         death_prob = 0
-        if self._fitness == 0:
+        if self.fitness == 0:
             return True
-        elif self._fitness > 0.01:
-            death_prob = self.param["omega"] * (1 - self._fitness)
+        elif self.fitness > 0.01:
+            death_prob = self.param["omega"] * (1 - self.fitness)
 
         return random.uniform(0, 1) < death_prob
 
@@ -321,7 +318,7 @@ class Animal:
         w_birth = self.param["w_birth"]
         sigma_birth = self.param["sigma_birth"]
         prob_birth = self.compute_prob_birth(
-            gamma, self._fitness, nearby_animals
+            gamma, self.fitness, nearby_animals
         )
 
         if self._weight < zeta * (w_birth + sigma_birth):
@@ -370,7 +367,7 @@ class Animal:
         """
         xi = self.param["xi"]
         self._weight -= xi * child_weight
-        self.update_fitness()
+        self._should_update_fitness = True
 
     @classmethod
     def _determine_sick(cls):
@@ -409,7 +406,7 @@ class Animal:
             self._weight += beta * fodder * loss_rate
         else:
             self._weight += beta * fodder
-        self.update_fitness()
+        self._should_update_fitness = True
 
     def decrease_annual_weight(self):
         r"""
@@ -420,7 +417,7 @@ class Animal:
         """
         eta = self.param["eta"]
         self._weight -= eta * self._weight
-        self.update_fitness()
+        self._should_update_fitness = True
 
 
 class Herbivore(Animal):
@@ -505,46 +502,46 @@ class Carnivore(Animal):
         """
         super().__init__(weight, age)
 
-    @staticmethod
-    @jit(nopython=True)
-    def _compute_kill_prob(fit_carn, fit_herb, delta_phi_max):
-        r"""
-        Computes probability of a Carnivore killing Herbivore which is
-        determined through:
-
-        .. math::
-            p =
-            \begin{cases}
-            0 & \text{if }\Phi_{carn}\le \Phi_{herb}\\
-            \frac{\Phi_{carn} - \Phi_{herb}}{\Delta\Phi_{max}} &
-            \text{if } 0 \le \Phi_{carn} - \Phi_{herb} \le \Delta\Phi_{max}\\
-            1 & \text{otherwise}
-            \end{cases}
-
-
-
-        Parameters
-        ----------
-        fit_carn: int or float
-            Fitness of the Carnivore which is the predator
-        fit_herb: int or float
-            Fitness of the Herbivore which is the prey
-        delta_phi_max: int or float
-            Parameter for Carnivore
-
-
-        Returns
-        -------
-        float or int
-            The probability of the carnivore killing the herbivore
-
-        """
-        if fit_carn <= fit_herb:
-            return 0
-        elif 0 < fit_carn - fit_herb < delta_phi_max:
-            return (fit_carn - fit_herb) / delta_phi_max
-        else:
-            return 1
+    # @staticmethod
+    # @jit(nopython=True, fastmath=True)
+    # def _compute_kill_prob(fit_carn, fit_herb, delta_phi_max):
+    #     r"""
+    #     Computes probability of a Carnivore killing Herbivore which is
+    #     determined through:
+    #
+    #     .. math::
+    #         p =
+    #         \begin{cases}
+    #         0 & \text{if }\Phi_{carn}\le \Phi_{herb}\\
+    #         \frac{\Phi_{carn} - \Phi_{herb}}{\Delta\Phi_{max}} &
+    #         \text{if } 0 \le \Phi_{carn} - \Phi_{herb} \le \Delta\Phi_{max}\\
+    #         1 & \text{otherwise}
+    #         \end{cases}
+    #
+    #
+    #
+    #     Parameters
+    #     ----------
+    #     fit_carn: int or float
+    #         Fitness of the Carnivore which is the predator
+    #     fit_herb: int or float
+    #         Fitness of the Herbivore which is the prey
+    #     delta_phi_max: int or float
+    #         Parameter for Carnivore
+    #
+    #
+    #     Returns
+    #     -------
+    #     float or int
+    #         The probability of the carnivore killing the herbivore
+    #
+    #     """
+    #     if fit_carn <= fit_herb:
+    #         return 0
+    #     elif 0 < fit_carn - fit_herb < delta_phi_max:
+    #         return (fit_carn - fit_herb) / delta_phi_max
+    #     else:
+    #         return 1
 
     def determine_kill(self, min_fit_herb):
         """
@@ -569,7 +566,4 @@ class Carnivore(Animal):
         """
 
         delta_phi_max = self.param["DeltaPhiMax"]
-        kill_prob = self._compute_kill_prob(
-            self.fitness, min_fit_herb, delta_phi_max
-        )
-        return random.uniform(0, 1) < kill_prob
+        return det_kill(self.fitness, min_fit_herb, delta_phi_max)
