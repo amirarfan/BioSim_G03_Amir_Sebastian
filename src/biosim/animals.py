@@ -9,6 +9,7 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 # Then add ..\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build
 # To system path. Contact me at amar@nmbu.no, if you have trouble
 # running the cython code on Mac or Windows.
+import math
 
 from numba import jit
 import numpy as np
@@ -23,7 +24,7 @@ class Animal:
     """
 
     param = {}
-    allowed_ladndscape = ["Jungle", "Desert", "Savannah"]
+    allowed_landscape = ["Jungle", "Desert", "Savannah"]
 
     @classmethod
     def update_parameters(cls, new_par_dict):
@@ -84,6 +85,8 @@ class Animal:
             self._weight = weight
         else:
             self._weight = self._normal_weight()
+
+        self.has_migrated = False
 
         self._should_update_fitness = False
         self._fitness = None
@@ -243,6 +246,110 @@ class Animal:
         """
         probability_move = self.fitness * self.param["mu"]
         return random.uniform(0, 1) < probability_move
+
+    def compute_move_prob(self, neighbour_cells):
+        """
+
+        Computes the probability to move to each neighbouring cell
+
+        Parameters
+        ----------
+        animal_type: class instance
+                     Takes in a specific class instance
+        neighbour_cells:
+                    Takes in the neighbouring cells of the cell the animal
+                    class instance is located at
+
+        Returns
+        -------
+
+        list
+            List containing probability to move to each cell
+
+
+        """
+        cell_propensity = []
+        for cell in neighbour_cells:
+            propensity_cell = self.propensity(cell)
+            cell_propensity.append(propensity_cell)
+
+        total_propensity = sum(cell_propensity)
+
+        computed_propensities = []
+        for cell_prop in cell_propensity:
+            try:
+                prob = cell_prop / total_propensity
+            except ZeroDivisionError:
+                prob = 0
+            computed_propensities.append(prob)
+        return computed_propensities
+
+    def propensity(self, cell):
+        r"""
+
+        Computes and returns the propensity to move, the relative abundance is
+        calculated through the 'compute_relative_abundance' function.
+        The formula for propensity is given by:
+
+        .. math::
+            \pi_{i\rightarrow j} =
+            \begin{cases}
+            0 & \text{if } j \text{is Mountain or Ocean}\\
+            e^{\lambda \epsilon_{j}} & \text{otherwise}
+            \end{cases}
+
+
+        Parameters
+        ----------
+        cell: cell instance
+            The cell instance of neighbouring cells.
+
+        Returns
+        -------
+        float
+            The propensity to move
+
+        """
+        cell_name = type(cell).__name__
+        if cell_name not in self.allowed_landscape:
+            return 0
+
+        relative_abundance = self.compute_relative_abundance(cell)
+        lambda_specie = self.param["lambda"]
+
+        return math.exp(lambda_specie * relative_abundance)
+
+    @classmethod
+    def compute_relative_abundance(cls, cell):
+        r"""
+
+        Computes the relative abundance for either herbivore or carnivore,
+        depending on the specie type.
+
+        The relative abundance is computed through this formula:
+
+        .. math::
+            \epsilon_{k} = \frac{f_{k}}{(n_{k}+1)F^{\text{'}}}
+
+        Where :math:`\epsilon_{k}` is the relative abundance. :math:`f_{k}` is
+        the current fodder for cell k, which is different for carnivores
+        and herbivores. :math:`n_{k}` is the amount of same species in cell
+        k, and :math:`F^{\text{'}}` is how much food the animal wants to eat.
+
+        Parameters
+        ----------
+        cell: Cell instance
+            The cell instance one needs to calculate the relative abundance
+            for.
+
+        Returns
+        -------
+        float
+            The relative abundance of the current cell
+
+                """
+
+        pass
 
     def determine_death(self):
         """
@@ -461,6 +568,17 @@ class Herbivore(Animal):
         """
         super().__init__(weight, age)
 
+    @classmethod
+    def compute_relative_abundance(cls, cell):
+        animal_name = cls.__name__
+        amount_same_spec = len(cell.animal_classes[animal_name])
+        food_wanting = cls.param["F"]
+        curr_fod = cell.current_fodder
+        if curr_fod == 0:
+            return 0
+        else:
+            return curr_fod / ((amount_same_spec + 1) * food_wanting)
+
 
 class Carnivore(Animal):
     """
@@ -567,3 +685,16 @@ class Carnivore(Animal):
 
         delta_phi_max = self.param["DeltaPhiMax"]
         return det_kill(self.fitness, min_fit_herb, delta_phi_max)
+
+    @classmethod
+    def compute_relative_abundance(cls, cell):
+        animal_name = cls.__name__
+        amount_same_spec = len(cell.animal_classes[animal_name])
+        food_wanting = cls.param["F"]
+        curr_food = sum(
+            herbivore.weight for herbivore in cell.animal_classes["Herbivore"]
+        )
+        if curr_food == 0:
+            return 0
+        else:
+            return curr_food / ((amount_same_spec + 1) * food_wanting)
