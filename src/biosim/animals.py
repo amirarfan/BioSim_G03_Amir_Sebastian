@@ -245,7 +245,7 @@ class Animal:
 
         """
         probability_move = self.fitness * self.param["mu"]
-        return random.uniform(0, 1) < probability_move
+        return np.random.random() < probability_move
 
     def compute_move_prob(self, neighbour_cells):
         """
@@ -370,7 +370,7 @@ class Animal:
         elif self.fitness > 0.01:
             death_prob = self.param["omega"] * (1 - self.fitness)
 
-        return random.uniform(0, 1) < death_prob
+        return np.random.random() < death_prob
 
     @staticmethod
     def compute_prob_birth(gamma, fitness, nearby_animals):
@@ -430,7 +430,7 @@ class Animal:
 
         if self._weight < zeta * (w_birth + sigma_birth):
             return False
-        return random.uniform(0, 1) < prob_birth
+        return np.random.random() < prob_birth
 
     @classmethod
     def _normal_weight(cls):
@@ -490,7 +490,7 @@ class Animal:
 
         """
         p_sick = cls.param["p_sick"]
-        return random.uniform(0, 1) < p_sick
+        return np.random.random() < p_sick
 
     def increase_eat_weight(self, fodder):
         """

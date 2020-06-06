@@ -12,10 +12,13 @@ ext_modules = [
         ["src/biosim/compute_fit.pyx"],
         # libraries=["m"],
         extra_compile_args=["-ffast-math", "-O3"],
-    )
-]
-
-ext_modules = [
+    ),
+    Extension(
+        "biosim.weighted_prob",
+        ["src/biosim/weighted_prob.pyx"],
+        # libraries=["m"],
+        extra_compile_args=["-ffast-math", "-O3"],
+    ),
     Extension(
         "biosim.det_kill",
         ["src/biosim/det_kill.pyx"],
@@ -23,6 +26,24 @@ ext_modules = [
         extra_compile_args=["-ffast-math", "-O3"],
     )
 ]
+
+# ext_modules = [
+#     Extension(
+#         "biosim.det_kill",
+#         ["src/biosim/det_kill.pyx"],
+#         # libraries=["m"],
+#         extra_compile_args=["-ffast-math", "-O3"],
+#     )
+# ]
+#
+# ext_modules = [
+#     Extension(
+#         "biosim.weighted_prob",
+#         ["src/biosim/weighted_prob.pyx"],
+#         # libraries=["m"],
+#         extra_compile_args=["-ffast-math", "-O3"],
+#     )
+# ]
 
 setup(
     name="biosim",

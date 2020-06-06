@@ -1,4 +1,4 @@
-import random
+import numpy as np
 
 cpdef det_kill(double fit_carn,  double fit_herb, double delta_phi_max):
     r"""
@@ -39,5 +39,5 @@ cpdef det_kill(double fit_carn,  double fit_herb, double delta_phi_max):
     else:
         kill_prob = 1
 
-    return random.uniform(0,1)<kill_prob
+    return np.random.random()<kill_prob
 

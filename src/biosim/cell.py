@@ -3,9 +3,13 @@
 __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
+from numba import jit
+from .weighted_prob import weighted_prob
 from .animals import Animal, Herbivore, Carnivore
 import math
 import random
+import numpy as np
+
 
 
 class Cell:
@@ -199,13 +203,19 @@ class Cell:
                     if sum(move_prob) == 0:
                         break
                     else:
-                        chosen_cell = random.choices(
-                            neighbour_cells, weights=move_prob
-                        )[0]
+                        idx = weighted_prob(move_prob)
+                        chosen_cell = neighbour_cells[idx]
                         chosen_cell.insert_animal([animal])
                         animal.has_migrated = True
                         remove_list.add(index)
             self.remove_multiple_animals(type_of_animal, remove_list)
+
+    # @staticmethod
+    # @jit
+    # def _weighted_probability(weights):
+    #     cum_sum = cumsum(weights)
+    #     idx = sum(cum_sum < rand())
+    #     return idx
 
     def annual_death(self):
         """
