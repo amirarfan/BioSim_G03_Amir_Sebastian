@@ -24,7 +24,7 @@ ext_modules = [
         ["src/biosim/det_kill.pyx"],
         # libraries=["m"],
         extra_compile_args=["-ffast-math", "-O3"],
-    )
+    ),
 ]
 
 # ext_modules = [

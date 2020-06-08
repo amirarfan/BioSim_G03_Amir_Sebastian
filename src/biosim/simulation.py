@@ -107,6 +107,8 @@ class BioSim:
         self.herb_img_axis = None
         self.carn_img_axis = None
 
+        self.year_counter_active = False
+
         if ymax_animals is None:
             self.ymax_animals = 20000
         else:
@@ -188,6 +190,19 @@ class BioSim:
         self._create_herb_line()
         self._create_carn_line()
 
+        self.year_format = "Year: {:5d}"
+
+        if not self.year_counter_active:
+            self.txt = self._fig.text(
+                0.1,
+                0.95,
+                self.year_format.format(0),
+                ha="center",
+                va="center",
+                bbox=dict(boxstyle="round", ec=(0, 0, 0), fc="none",),
+            )
+            self.year_counter_active = True
+
         if self.herb_heat is None:
             self.herb_heat = self._fig.add_subplot(2, 2, 1)
             self.herb_heat.set_title("Herbivore Heat Map")
@@ -219,7 +234,7 @@ class BioSim:
         self._update_specie_lines()
         self._update_herb_heatmap(herb_array)
         self._update_carn_heatmap(carn_array)
-
+        self.txt.set_text(self.year_format.format(self.year))
         plt.pause(1e-6)
 
     def _save_graphics(self):

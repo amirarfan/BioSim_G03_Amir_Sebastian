@@ -11,7 +11,6 @@ import random
 import numpy as np
 
 
-
 class Cell:
     """
     Cell base class, which refers to a area or a square in a map. From this

@@ -77,4 +77,4 @@ if __name__ == "__main__":
     # plt.savefig("check_sim.pdf")
 
 # input("Press ENTER")
-print(time.time()-start_t)
+print(time.time() - start_t)
