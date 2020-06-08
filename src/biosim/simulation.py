@@ -194,8 +194,8 @@ class BioSim:
 
         if not self.year_counter_active:
             self.txt = self._fig.text(
-                0.1,
-                0.95,
+                0.09,
+                0.97,
                 self.year_format.format(0),
                 ha="center",
                 va="center",
