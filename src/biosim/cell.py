@@ -8,6 +8,7 @@ from .weighted_prob import weighted_prob
 from .animals import Animal, Herbivore, Carnivore
 import math
 import random
+import itertools
 import numpy as np
 
 
@@ -78,9 +79,10 @@ class Cell:
         Makes all animals in the current cell lose their annual weight.
 
         """
-        for animal_list in self.animal_classes.values():
-            for animal_classes in animal_list:
-                animal_classes.decrease_annual_weight()
+        for animal_classes in itertools.chain.from_iterable(
+            self.animal_classes.values()
+        ):
+            animal_classes.decrease_annual_weight()
 
     def eat_herbivore(self):
         r"""
@@ -363,9 +365,10 @@ class Cell:
         'animals.py' to add one age.
 
         """
-        for all_animals in self.animal_classes.values():
-            for animal in all_animals:
-                animal.add_age()
+        for animal_classes in itertools.chain.from_iterable(
+            self.animal_classes.values()
+        ):
+            animal_classes.add_age()
 
     def delete_single_animal(self, animal):
         """
