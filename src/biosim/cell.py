@@ -66,12 +66,14 @@ class Cell:
 
         """
         for animal_list in self.animal_classes.values():
-            children_born = []
-            for animal_class in animal_list:
-                if animal_class.determine_birth(len(animal_list)):
-                    new_child = type(animal_class)()
-                    children_born.append(new_child)
-                    animal_class.decrease_birth_weight(new_child.weight)
+            children_born = [
+                child
+                for child in (
+                    creature.determine_birth(len(animal_list))
+                    for creature in animal_list
+                )
+                if child is not None
+            ]
             animal_list.extend(children_born)
 
     def annual_weight_loss(self):

@@ -8,6 +8,7 @@ from biosim.cell import Ocean, Mountain, Desert, Savannah, Jungle
 # noinspection PyUnresolvedReferences
 from .animals import Herbivore, Carnivore
 import numpy as np
+import itertools
 
 
 class Map:
@@ -176,12 +177,11 @@ class Map:
 
 
         """
-        for list_loc in self.map:
-            for cell in list_loc:
-                if type(cell).__name__ in self.allowed_cells:
-                    cell.gen_fodder()
-                    cell.eat_herbivore()
-                    cell.eat_carnivore()
+        for cell in itertools.chain.from_iterable(self.map):
+            if type(cell).__name__ in self.allowed_cells:
+                cell.gen_fodder()
+                cell.eat_herbivore()
+                cell.eat_carnivore()
 
     def mate_all_animals(self):
         """
@@ -189,10 +189,9 @@ class Map:
 
 
         """
-        for list_loc in self.map:
-            for cell in list_loc:
-                if type(cell).__name__ in self.allowed_cells:
-                    cell.mating()
+        for cell in itertools.chain.from_iterable(self.map):
+            if type(cell).__name__ in self.allowed_cells:
+                cell.mating()
 
     def age_all_animals(self):
         """
@@ -200,10 +199,9 @@ class Map:
         Ages all animals with one year, using the aging function from 'cell.py'
 
         """
-        for list_loc in self.map:
-            for cell in list_loc:
-                if type(cell).__name__ in self.allowed_cells:
-                    cell.aging()
+        for cell in itertools.chain.from_iterable(self.map):
+            if type(cell).__name__ in self.allowed_cells:
+                cell.aging()
 
     def annual_weight_loss_all_animals(self):
         """
@@ -212,11 +210,9 @@ class Map:
         the annual_weight_loss function from 'cell.py'
 
         """
-
-        for list_loc in self.map:
-            for cell in list_loc:
-                if type(cell).__name__ in self.allowed_cells:
-                    cell.annual_weight_loss()
+        for cell in itertools.chain.from_iterable(self.map):
+            if type(cell).__name__ in self.allowed_cells:
+                cell.annual_weight_loss()
 
     def annual_death_all_animals(self):
         """
@@ -224,29 +220,9 @@ class Map:
         Checks all animals annual death, by using annual_death from 'cell.py'
 
         """
-        for list_loc in self.map:
-            for cell in list_loc:
-                if type(cell).__name__ in self.allowed_cells:
-                    cell.annual_death()
-
-    def num_animals_on_map(self):
-        """
-
-        Calculates the total amount of animals on the map, by entering
-        each cell and checking how many animals are there.
-
-        Returns
-        -------
-        int
-            The amount of animals on the whole map
-        """
-
-        tot_animals = 0
-        for cell_list in self.map:
-            for cell in cell_list:
-                tot_animals += cell.num_animals_per_cell()
-
-        return tot_animals
+        for cell in itertools.chain.from_iterable(self.map):
+            if type(cell).__name__ in self.allowed_cells:
+                cell.annual_death()
 
     def num_species_on_map(self):
         """
@@ -263,11 +239,10 @@ class Map:
         """
         tot_herbivores = 0
         tot_carnivores = 0
-        for cell_list in self.map:
-            for cells in cell_list:
-                curr_herbivore, curr_carnivore = cells.num_species_per_cell()
-                tot_herbivores += curr_herbivore
-                tot_carnivores += curr_carnivore
+        for cells in itertools.chain.from_iterable(self.map):
+            curr_herbivore, curr_carnivore = cells.num_species_per_cell()
+            tot_herbivores += curr_herbivore
+            tot_carnivores += curr_carnivore
 
         return tot_herbivores, tot_carnivores
 

@@ -428,7 +428,7 @@ class BioSim:
     @property
     def num_animals(self):
         """Total number of animals on island."""
-        self._num_animals = self._map.num_animals_on_map()
+        self._num_animals = sum(self._map.num_species_on_map())
         print(self._num_animals)
         return self._num_animals
 

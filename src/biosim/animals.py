@@ -372,41 +372,17 @@ class Animal:
 
         return np.random.random() < death_prob
 
-    @staticmethod
-    def compute_prob_birth(gamma, fitness, nearby_animals):
-        r"""
-
-        Computes the probability of birth for the animal, using the equation
-
-        .. math::
-            \text{min}(1, \gamma \times \Phi \times (N-1))
-
-        Parameters
-        ----------
-        gamma: int or float
-            Gamma parameter which is gotten from the animal class parameters.
-            It is the probability factor for giving birth.
-        fitness: int or float
-            Fitness value for the animal instance
-        nearby_animals: int
-            How many animals of the same specie is in the same area as the
-            animal.
-
-
-        Returns
-        -------
-        float
-            The probability of giving birth.
-
-        """
-        return min(1, gamma * fitness * (nearby_animals - 1))
-
     def determine_birth(self, nearby_animals):
-        """
+        r"""
         Determines whether the animal is to give birth or not using
         the 'compute_prob_birth' function to gain a value. The function then
         uses random.uniform to choose between True or False with fixed
         probabilities.
+
+          Computes the probability of birth for the animal, using the equation
+
+        .. math::
+            \text{min}(1, \gamma \times \Phi \times (N-1))
 
         Parameters
         ----------
@@ -424,13 +400,19 @@ class Animal:
         zeta = self.param["zeta"]
         w_birth = self.param["w_birth"]
         sigma_birth = self.param["sigma_birth"]
-        prob_birth = self.compute_prob_birth(
-            gamma, self.fitness, nearby_animals
-        )
+        xi = self.param["xi"]
 
-        if self._weight < zeta * (w_birth + sigma_birth):
-            return False
-        return np.random.random() < prob_birth
+        if nearby_animals < 2 or self._weight < zeta * (w_birth + sigma_birth):
+            return None
+        prob_birth = min(1, gamma * self.fitness * (nearby_animals - 1))
+        if np.random.random() < prob_birth:
+            child_weight = self._normal_weight()
+            if xi * child_weight > self.weight:
+                return None
+            self.decrease_birth_weight(child_weight)
+            return type(self)(weight=child_weight)
+        else:
+            return None
 
     @classmethod
     def _normal_weight(cls):
