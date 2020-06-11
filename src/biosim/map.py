@@ -237,15 +237,16 @@ class Map:
             The amount of carnivores on the map
 
         """
-        tot_herbivores = 0
-        tot_carnivores = 0
-        for cells in itertools.chain.from_iterable(self.map):
-            curr_herbivore, curr_carnivore = cells.num_species_per_cell()
-            tot_herbivores += curr_herbivore
-            tot_carnivores += curr_carnivore
+        # tot_herbivores = 0
+        # tot_carnivores = 0
+        # for cells in itertools.chain.from_iterable(self.map):
+        #     curr_herbivore, curr_carnivore = cells.num_species_per_cell()
+        #     tot_herbivores += curr_herbivore
+        #     tot_carnivores += curr_carnivore
 
-        return tot_herbivores, tot_carnivores
+        return (sum(x) for x in zip(*[cells.num_species_per_cell() for cells in itertools.chain.from_iterable(self.map)]))
 
+        # (sum(x) for x in zip(*[cells.num_species_per_cell() for cells in itertools.chain.from_iterable(self.map)]))
     @staticmethod
     def update_animal_params_all_cells(specie, params):
         """
