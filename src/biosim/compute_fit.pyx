@@ -1,8 +1,5 @@
 from libc.math cimport exp
 
-cdef extern from "approxexp.h": # calls the approx
-    double exp_approx "EXP" (double)
-
 cpdef sigmoidal(double x, double x_half, double rate, int signum):
     r"""
     This is the standard sigmoid function besides that the sign can be
