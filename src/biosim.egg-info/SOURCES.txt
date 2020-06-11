@@ -1,6 +1,9 @@
 pyproject.toml
 setup.cfg
 setup.py
+src/biosim/compute_fit.pyx
+src/biosim/det_kill.pyx
+src/biosim/weighted_prob.pyx
 src/biosim/__init__.py
 src/biosim/animals.py
 src/biosim/cell.py
