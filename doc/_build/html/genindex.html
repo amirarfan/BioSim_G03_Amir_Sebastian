@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
@@ -9,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; BioSim 0.0.1 documentation</title>
+  <title>Index &mdash; BioSim 1.0.2 documentation</title>
   
 
   
@@ -22,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -180,8 +179,6 @@
 </li>
       <li><a href="map.html#biosim.map.Map._check_even_string">_check_even_string() (biosim.map.Map static method)</a>
 </li>
-      <li><a href="animals.html#biosim.animals.Carnivore._compute_kill_prob">_compute_kill_prob (biosim.animals.Carnivore attribute)</a>
-</li>
       <li><a href="simulation.html#biosim.simulation.BioSim._create_carn_line">_create_carn_line() (biosim.simulation.BioSim method)</a>
 </li>
       <li><a href="simulation.html#biosim.simulation.BioSim._create_herb_line">_create_herb_line() (biosim.simulation.BioSim method)</a>
@@ -226,11 +223,13 @@
 </li>
       <li><a href="cell.html#biosim.cell.Cell.aging">aging() (biosim.cell.Cell method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="map.html#biosim.map.Map.all_animals_eat">all_animals_eat() (biosim.map.Map method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="map.html#biosim.map.Map.allowed_cells">allowed_cells (biosim.map.Map attribute)</a>
+</li>
+      <li><a href="animals.html#biosim.animals.Animal.allowed_landscape">allowed_landscape (biosim.animals.Animal attribute)</a>
 </li>
       <li><a href="animals.html#biosim.animals.Animal">Animal (class in biosim.animals)</a>
 </li>
@@ -252,16 +251,36 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulation.html#biosim.simulation.BioSim">BioSim (class in biosim.simulation)</a>
 </li>
-      <li><a href="animals.html#module-biosim.animals">biosim.animals (module)</a>
+      <li>
+    biosim.animals
+
+      <ul>
+        <li><a href="animals.html#module-biosim.animals">module</a>
 </li>
+      </ul></li>
+      <li>
+    biosim.cell
+
+      <ul>
+        <li><a href="cell.html#module-biosim.cell">module</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="cell.html#module-biosim.cell">biosim.cell (module)</a>
+      <li>
+    biosim.map
+
+      <ul>
+        <li><a href="map.html#module-biosim.map">module</a>
 </li>
-      <li><a href="map.html#module-biosim.map">biosim.map (module)</a>
+      </ul></li>
+      <li>
+    biosim.simulation
+
+      <ul>
+        <li><a href="simulation.html#module-biosim.simulation">module</a>
 </li>
-      <li><a href="simulation.html#module-biosim.simulation">biosim.simulation (module)</a>
-</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -272,14 +291,18 @@
 </li>
       <li><a href="cell.html#biosim.cell.Cell">Cell (class in biosim.cell)</a>
 </li>
-      <li><a href="cell.html#biosim.cell.Cell.compute_move_prob">compute_move_prob() (biosim.cell.Cell static method)</a>
+      <li><a href="animals.html#biosim.animals.Animal.compute_move_prob">compute_move_prob() (biosim.animals.Animal method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="animals.html#biosim.animals.Animal.compute_prob_birth">compute_prob_birth() (biosim.animals.Animal static method)</a>
+      <li><a href="animals.html#biosim.animals.Animal.compute_relative_abundance">compute_relative_abundance() (biosim.animals.Animal class method)</a>
+
+      <ul>
+        <li><a href="animals.html#biosim.animals.Carnivore.compute_relative_abundance">(biosim.animals.Carnivore class method)</a>
 </li>
-      <li><a href="cell.html#biosim.cell.Cell.compute_relative_abundance">compute_relative_abundance() (biosim.cell.Cell method)</a>
+        <li><a href="animals.html#biosim.animals.Herbivore.compute_relative_abundance">(biosim.animals.Herbivore class method)</a>
 </li>
+      </ul></li>
       <li><a href="map.html#biosim.map.Map.cycle">cycle() (biosim.map.Map method)</a>
 </li>
   </ul></td>
@@ -388,12 +411,25 @@
 </li>
       <li><a href="map.html#biosim.map.Map.mate_all_animals">mate_all_animals() (biosim.map.Map method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="cell.html#biosim.cell.Cell.mating">mating() (biosim.cell.Cell method)</a>
 </li>
       <li><a href="cell.html#biosim.cell.Cell.migration">migration() (biosim.cell.Cell method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    module
+
+      <ul>
+        <li><a href="animals.html#module-biosim.animals">biosim.animals</a>
+</li>
+        <li><a href="cell.html#module-biosim.cell">biosim.cell</a>
+</li>
+        <li><a href="map.html#module-biosim.map">biosim.map</a>
+</li>
+        <li><a href="simulation.html#module-biosim.simulation">biosim.simulation</a>
+</li>
+      </ul></li>
       <li><a href="cell.html#biosim.cell.Mountain">Mountain (class in biosim.cell)</a>
 </li>
       <li><a href="map.html#biosim.map.Map.move_all_animals">move_all_animals() (biosim.map.Map method)</a>
@@ -405,8 +441,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulation.html#biosim.simulation.BioSim.num_animals">num_animals() (biosim.simulation.BioSim property)</a>
-</li>
-      <li><a href="map.html#biosim.map.Map.num_animals_on_map">num_animals_on_map() (biosim.map.Map method)</a>
 </li>
       <li><a href="cell.html#biosim.cell.Cell.num_animals_per_cell">num_animals_per_cell() (biosim.cell.Cell method)</a>
 </li>
@@ -448,7 +482,7 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="cell.html#biosim.cell.Cell.propensity">propensity() (biosim.cell.Cell method)</a>
+      <li><a href="animals.html#biosim.animals.Animal.propensity">propensity() (biosim.animals.Animal method)</a>
 </li>
   </ul></td>
 </tr></table>

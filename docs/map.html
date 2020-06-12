@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Map &mdash; BioSim 0.0.1 documentation</title>
+  <title>Map &mdash; BioSim 1.0.2 documentation</title>
   
 
   
@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -150,9 +150,9 @@
             
   <div class="section" id="module-biosim.map">
 <span id="map"></span><h1>Map<a class="headerlink" href="#module-biosim.map" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="biosim.map.Map">
-<em class="property">class </em><code class="sig-prename descclassname">biosim.map.</code><code class="sig-name descname">Map</code><span class="sig-paren">(</span><em class="sig-param">map_string</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">biosim.map.</code><code class="sig-name descname">Map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">map_string</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map class which will represent a map containing different cells</p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -191,29 +191,26 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#biosim.map.Map.move_all_animals" title="biosim.map.Map.move_all_animals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_all_animals</span></code></a>(self)</p></td>
 <td><p>Moves all animals in the map, using the migration function from ‘cell.py’</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.map.Map.num_animals_on_map" title="biosim.map.Map.num_animals_on_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_animals_on_map</span></code></a>(self)</p></td>
-<td><p>Calculates the total amount of animals on the map, by entering each cell and checking how many animals are there.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#biosim.map.Map.num_species_on_map" title="biosim.map.Map.num_species_on_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_species_on_map</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.map.Map.num_species_on_map" title="biosim.map.Map.num_species_on_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_species_on_map</span></code></a>(self)</p></td>
 <td><p>Calculates and returns the total amount of per specie on the map</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.map.Map.update_animal_params_all_cells" title="biosim.map.Map.update_animal_params_all_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_animal_params_all_cells</span></code></a>(specie, params)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#biosim.map.Map.update_animal_params_all_cells" title="biosim.map.Map.update_animal_params_all_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_animal_params_all_cells</span></code></a>(specie, params)</p></td>
 <td><p>Updates parameters for specified specie in all cells.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#biosim.map.Map.update_param_all_cells" title="biosim.map.Map.update_param_all_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_param_all_cells</span></code></a>(self, landscape, params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#biosim.map.Map.update_param_all_cells" title="biosim.map.Map.update_param_all_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_param_all_cells</span></code></a>(self, landscape, params)</p></td>
 <td><p>Updates parameters for all cells which are specified to be updated.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map._check_even_string">
-<em class="property">static </em><code class="sig-name descname">_check_even_string</code><span class="sig-paren">(</span><em class="sig-param">map_string</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map._check_even_string" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">_check_even_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">map_string</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map._check_even_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if string is even for all lines</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map.add_animals">
-<code class="sig-name descname">add_animals</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">ini_list</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.add_animals" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_animals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">ini_list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.add_animals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds animals to the map using the specified location and specie type
 from ini_list</p>
 <dl class="field-list simple">
@@ -226,51 +223,51 @@ from ini_list</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map.age_all_animals">
-<code class="sig-name descname">age_all_animals</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.age_all_animals" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">age_all_animals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.age_all_animals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ages all animals with one year, using the aging function from ‘cell.py’</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map.all_animals_eat">
-<code class="sig-name descname">all_animals_eat</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.all_animals_eat" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">all_animals_eat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.all_animals_eat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Feeds all animals on the map using eat_herbivore and eat_carnivore
 functions from ‘cell.py’</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="biosim.map.Map.allowed_cells">
 <code class="sig-name descname">allowed_cells</code><em class="property"> = ['Jungle', 'Savannah', 'Desert']</em><a class="headerlink" href="#biosim.map.Map.allowed_cells" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map.annual_death_all_animals">
-<code class="sig-name descname">annual_death_all_animals</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.annual_death_all_animals" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">annual_death_all_animals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.annual_death_all_animals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks all animals annual death, by using annual_death from ‘cell.py’</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map.annual_weight_loss_all_animals">
-<code class="sig-name descname">annual_weight_loss_all_animals</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.annual_weight_loss_all_animals" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">annual_weight_loss_all_animals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.annual_weight_loss_all_animals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Makes all animals lose their annual amount of weigh using
 the annual_weight_loss function from ‘cell.py’</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map.cycle">
-<code class="sig-name descname">cycle</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.cycle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">cycle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.cycle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simulates the annual cycle for all animals on the map</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="biosim.map.Map.dict_cells">
 <code class="sig-name descname">dict_cells</code><em class="property"> = {'D': &lt;class 'biosim.cell.Desert'&gt;, 'J': &lt;class 'biosim.cell.Jungle'&gt;, 'M': &lt;class 'biosim.cell.Mountain'&gt;, 'O': &lt;class 'biosim.cell.Ocean'&gt;, 'S': &lt;class 'biosim.cell.Savannah'&gt;}</em><a class="headerlink" href="#biosim.map.Map.dict_cells" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map.get_neighbour">
-<code class="sig-name descname">get_neighbour</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">loc</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.get_neighbour" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_neighbour</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">loc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.get_neighbour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a location loc, the get_neighbour function returns the
 4 neighbours someone or something can move to.</p>
 <dl class="field-list simple">
@@ -288,9 +285,9 @@ the annual_weight_loss function from ‘cell.py’</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map.map_factory">
-<em class="property">classmethod </em><code class="sig-name descname">map_factory</code><span class="sig-paren">(</span><em class="sig-param">list_to_alter</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.map_factory" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">map_factory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">list_to_alter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.map_factory" title="Permalink to this definition">¶</a></dt>
 <dd><p>A map factory function which transforms a list containing strings into
 a list containing cell instances.</p>
 <dl class="field-list simple">
@@ -310,37 +307,22 @@ transformed to class types.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map.mate_all_animals">
-<code class="sig-name descname">mate_all_animals</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.mate_all_animals" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mate_all_animals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.mate_all_animals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mates all animals on the map using the mating function from ‘cell.py’</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map.move_all_animals">
-<code class="sig-name descname">move_all_animals</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.move_all_animals" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">move_all_animals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.move_all_animals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Moves all animals in the map, using the migration function from
 ‘cell.py’</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="biosim.map.Map.num_animals_on_map">
-<code class="sig-name descname">num_animals_on_map</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.num_animals_on_map" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the total amount of animals on the map, by entering
-each cell and checking how many animals are there.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><dl class="simple">
-<dt>int</dt><dd><p>The amount of animals on the whole map</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map.num_species_on_map">
-<code class="sig-name descname">num_species_on_map</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.num_species_on_map" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">num_species_on_map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.num_species_on_map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates and returns the total amount of per specie on the map</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -354,9 +336,9 @@ each cell and checking how many animals are there.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map.update_animal_params_all_cells">
-<em class="property">static </em><code class="sig-name descname">update_animal_params_all_cells</code><span class="sig-paren">(</span><em class="sig-param">specie</em>, <em class="sig-param">params</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.update_animal_params_all_cells" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">update_animal_params_all_cells</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">specie</span></em>, <em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.update_animal_params_all_cells" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates parameters for specified specie in all cells.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -370,9 +352,9 @@ each cell and checking how many animals are there.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="biosim.map.Map.update_param_all_cells">
-<code class="sig-name descname">update_param_all_cells</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">landscape</em>, <em class="sig-param">params</em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.update_param_all_cells" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update_param_all_cells</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">landscape</span></em>, <em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#biosim.map.Map.update_param_all_cells" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates parameters for all cells which are specified to be updated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

@@ -1,5 +1,0 @@
-Tests for Animal
-===========================
-
-.. automodule:: tests.test_animals
-    :members:
