@@ -3,9 +3,13 @@
 __author__ = "Amir Arfan, Sebastian Becker"
 __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 
-from .animals import Herbivore, Carnivore
+from numba import jit
+from .weighted_prob import weighted_prob
+from .animals import Animal, Herbivore, Carnivore
 import math
 import random
+import itertools
+import numpy as np
 
 
 class Cell:
@@ -62,12 +66,14 @@ class Cell:
 
         """
         for animal_list in self.animal_classes.values():
-            children_born = []
-            for animal_class in animal_list:
-                if animal_class.determine_birth(len(animal_list)):
-                    new_child = type(animal_class)()
-                    children_born.append(new_child)
-                    animal_class.decrease_birth_weight(new_child.weight)
+            children_born = [
+                child
+                for child in (
+                    creature.determine_birth(len(animal_list))
+                    for creature in animal_list
+                )
+                if child is not None
+            ]
             animal_list.extend(children_born)
 
     def annual_weight_loss(self):
@@ -75,9 +81,10 @@ class Cell:
         Makes all animals in the current cell lose their annual weight.
 
         """
-        for animal_list in self.animal_classes.values():
-            for animal_classes in animal_list:
-                animal_classes.decrease_annual_weight()
+        for animal_classes in itertools.chain.from_iterable(
+            self.animal_classes.values()
+        ):
+            animal_classes.decrease_annual_weight()
 
     def eat_herbivore(self):
         r"""
@@ -194,17 +201,24 @@ class Cell:
         for type_of_animal, animal_list in self.animal_classes.items():
             remove_list = set()
             for index, animal in enumerate(animal_list):
-                if animal.determine_to_move():
-                    move_prob = self.compute_move_prob(animal, neighbour_cells)
+                if animal.determine_to_move() and not animal.has_migrated:
+                    move_prob = animal.compute_move_prob(neighbour_cells)
                     if sum(move_prob) == 0:
                         break
                     else:
-                        chosen_cell = random.choices(
-                            neighbour_cells, weights=move_prob
-                        )[0]
+                        idx = weighted_prob(move_prob)
+                        chosen_cell = neighbour_cells[idx]
                         chosen_cell.insert_animal([animal])
+                        animal.has_migrated = True
                         remove_list.add(index)
             self.remove_multiple_animals(type_of_animal, remove_list)
+
+    # @staticmethod
+    # @jit
+    # def _weighted_probability(weights):
+    #     cum_sum = cumsum(weights)
+    #     idx = sum(cum_sum < rand())
+    #     return idx
 
     def annual_death(self):
         """
@@ -218,132 +232,133 @@ class Cell:
         for type_of_animal, animal_list in self.animal_classes.items():
             remove_list = set()
             for index, animal in enumerate(animal_list):
+                animal.has_migrated = False  # Prepares for the next cycle
                 if animal.determine_death():
                     remove_list.add(index)
             self.remove_multiple_animals(type_of_animal, remove_list)
 
-    @staticmethod
-    def compute_move_prob(animal_type, neighbour_cells):
-        """
+    # @staticmethod
+    # def compute_move_prob(animal_type, neighbour_cells):
+    #     """
+    #
+    #     Computes the probability to move to each neighbouring cell
+    #
+    #     Parameters
+    #     ----------
+    #     animal_type: class instance
+    #                  Takes in a specific class instance
+    #     neighbour_cells:
+    #                 Takes in the neighbouring cells of the cell the animal
+    #                 class instance is located at
+    #
+    #     Returns
+    #     -------
+    #
+    #     list
+    #         List containing probability to move to each cell
+    #
+    #
+    #     """
+    #     cell_propensity = []
+    #     for cell in neighbour_cells:
+    #         propensity_cell = cell.propensity(animal_type)
+    #         cell_propensity.append(propensity_cell)
+    #
+    #     total_propensity = sum(cell_propensity)
+    #
+    #     computed_propensities = []
+    #     for cell_prop in cell_propensity:
+    #         try:
+    #             prob = cell_prop / total_propensity
+    #         except ZeroDivisionError:
+    #             prob = 0
+    #         computed_propensities.append(prob)
+    #     return computed_propensities
 
-        Computes the probability to move to each neighbouring cell
+    # def compute_relative_abundance(self, animal_class):
+    #     r"""
+    #
+    #     Computes the relative abundance for either herbivore or carnivore,
+    #     depending on the specie type.
+    #
+    #     The relative abundance is computed through this formula:
+    #
+    #     .. math::
+    #         \epsilon_{k} = \frac{f_{k}}{(n_{k}+1)F^{\text{'}}}
+    #
+    #     Where :math:`\epsilon_{k}` is the relative abundance. :math:`f_{k}` is
+    #     the current fodder for cell k, which is different for carnivores
+    #     and herbivores. :math:`n_{k}` is the amount of same species in cell
+    #     k, and :math:`F^{\text{'}}` is how much food the animal wants to eat.
+    #
+    #     Parameters
+    #     ----------
+    #     animal_class: class instance
+    #                 The class instance one needs to calculate relative
+    #                 abundance for
+    #
+    #     Returns
+    #     -------
+    #     float
+    #         The relative abundance of the current cell
+    #
+    #             """
+    #
+    #     animal_name = type(animal_class).__name__
+    #     amount_same_spec = len(self.animal_classes[animal_name])
+    #     food_wanting = animal_class.param["F"]
+    #     curr_fod = 0
+    #     if animal_name == "Herbivore":
+    #         curr_fod = self.current_fodder
+    #     elif animal_name == "Carnivore":
+    #         herb_weight_list = [
+    #             herbivore.weight
+    #             for herbivore in self.animal_classes["Herbivore"]
+    #         ]
+    #         curr_fod = sum(herb_weight_list)
+    #
+    #     if curr_fod == 0:
+    #         return 0
+    #     else:
+    #         return curr_fod / ((amount_same_spec + 1) * food_wanting)
 
-        Parameters
-        ----------
-        animal_type: class instance
-                     Takes in a specific class instance
-        neighbour_cells:
-                    Takes in the neighbouring cells of the cell the animal
-                    class instance is located at
-
-        Returns
-        -------
-
-        list
-            List containing probability to move to each cell
-
-
-        """
-        total_propensity = 0
-        cell_propensity = []
-        for cell in neighbour_cells:
-            propenisty_cell = cell.propensity(animal_type)
-            cell_propensity.append(propenisty_cell)
-            total_propensity += propenisty_cell
-
-        computed_propensities = []
-        for cell_prop in cell_propensity:
-            try:
-                prob = cell_prop / total_propensity
-            except ZeroDivisionError:
-                prob = 0
-            computed_propensities.append(prob)
-        return computed_propensities
-
-    def compute_relative_abundance(self, animal_class):
-        r"""
-
-        Computes the relative abundance for either herbivore or carnivore,
-        depending on the specie type.
-
-        The relative abundance is computed through this formula:
-
-        .. math::
-            \epsilon_{k} = \frac{f_{k}}{(n_{k}+1)F^{\text{'}}}
-
-        Where :math:`\epsilon_{k}` is the relative abundance. :math:`f_{k}` is
-        the current fodder for cell k, which is different for carnivores
-        and herbivores. :math:`n_{k}` is the amount of same species in cell
-        k, and :math:`F^{\text{'}}` is how much food the animal wants to eat.
-
-        Parameters
-        ----------
-        animal_class: class instance
-                    The class instance one needs to calculate relative
-                    abundance for
-
-        Returns
-        -------
-        float
-            The relative abundance of the current cell
-
-                """
-
-        animal_name = type(animal_class).__name__
-        amount_same_spec = len(self.animal_classes[animal_name])
-        food_wanting = animal_class.param["F"]
-        curr_fod = 0
-        if animal_name == "Herbivore":
-            curr_fod = self.current_fodder
-        elif animal_name == "Carnivore":
-            herb_weight_list = [
-                herbivore.weight
-                for herbivore in self.animal_classes["Herbivore"]
-            ]
-            curr_fod = sum(herb_weight_list)
-
-        if curr_fod == 0:
-            return 0
-        else:
-            return curr_fod / ((amount_same_spec + 1) * food_wanting)
-
-    def propensity(self, specie):
-        r"""
-
-        Computes and returns the propensity to move, the relative abundance is
-        calculated through the 'compute_relative_abundance' function.
-        The formula for propensity is given by:
-
-        .. math::
-            \pi_{i\rightarrow j} =
-            \begin{cases}
-            0 & \text{if } j \text{is Mountain or Ocean}\\
-            e^{\lambda \epsilon_{j}} & \text{otherwise}
-            \end{cases}
-
-
-        Parameters
-        ----------
-        specie: class instance
-            The class instance of animal to be used in the function
-
-        Returns
-        -------
-        float
-            The propensity to move
-
-        """
-        name = type(specie).__name__
-        cell_name = type(self).__name__
-        if (name == "Herbivore" or name == "Carnivore") and (
-            cell_name == "Ocean" or cell_name == "Mountain"
-        ):
-            return 0
-
-        relative_abundance = self.compute_relative_abundance(specie)
-        lambda_specie = specie.param["lambda"]
-
-        return math.exp(lambda_specie * relative_abundance)
+    # def propensity(self, specie):
+    #     r"""
+    #
+    #     Computes and returns the propensity to move, the relative abundance is
+    #     calculated through the 'compute_relative_abundance' function.
+    #     The formula for propensity is given by:
+    #
+    #     .. math::
+    #         \pi_{i\rightarrow j} =
+    #         \begin{cases}
+    #         0 & \text{if } j \text{is Mountain or Ocean}\\
+    #         e^{\lambda \epsilon_{j}} & \text{otherwise}
+    #         \end{cases}
+    #
+    #
+    #     Parameters
+    #     ----------
+    #     specie: class instance
+    #         The class instance of animal to be used in the function
+    #
+    #     Returns
+    #     -------
+    #     float
+    #         The propensity to move
+    #
+    #     """
+    #     name = type(specie).__name__
+    #     cell_name = type(self).__name__
+    #     if (name == "Herbivore" or name == "Carnivore") and (
+    #         cell_name == "Ocean" or cell_name == "Mountain"
+    #     ):
+    #         return 0
+    #
+    #     relative_abundance = self.compute_relative_abundance(specie)
+    #     lambda_specie = specie.param["lambda"]
+    #
+    #     return math.exp(lambda_specie * relative_abundance)
 
     def aging(self):
         """
@@ -352,9 +367,10 @@ class Cell:
         'animals.py' to add one age.
 
         """
-        for all_animals in self.animal_classes.values():
-            for animal in all_animals:
-                animal.add_age()
+        for animal_classes in itertools.chain.from_iterable(
+            self.animal_classes.values()
+        ):
+            animal_classes.add_age()
 
     def delete_single_animal(self, animal):
         """
@@ -388,22 +404,12 @@ class Cell:
 
 
         """
-        cell_name = type(self).__name__
         for animal_class in animal_list:
-            animal_name = type(animal_class).__name__
-            if animal_name == "Herbivore" and (
-                cell_name == "Ocean" or cell_name == "Mountain"
-            ):
-                raise ValueError(
-                    f"This cell is inhabitable for specie: {animal_name}"
-                )
-            elif animal_name == "Carnivore" and (
-                cell_name == "Ocean" or cell_name == "Mountain"
-            ):
-                raise ValueError(
-                    f"This cell is inhabitable for specie: {animal_name}"
-                )
-            self.animal_classes[animal_name].append(animal_class)
+            if type(self).__name__ not in Animal.allowed_landscape:
+                raise TypeError(f"This cell is inhabitable.")
+            self.animal_classes[type(animal_class).__name__].append(
+                animal_class
+            )
 
     def add_animal(self, list_animal_dicts):
         """
@@ -420,28 +426,13 @@ class Cell:
         for dicts in list_animal_dicts:
             animal_name = dicts["species"]
 
-            try:
-                age = dicts["age"]
-            except KeyError:
-                age = None
-
-            try:
-                weight = dicts["weight"]
-            except KeyError:
-                weight = None
+            age = dicts.get("age", None)
+            weight = dicts.get("weight", None)
 
             if animal_name not in self.allowed_species.keys():
                 raise ValueError(f"The animal type is not allowed")
 
-            if animal_name == "Herbivore" and (
-                cell_name == "Ocean" or cell_name == "Mountain"
-            ):
-                raise ValueError(
-                    f"This cell is inhabitable for specie: {animal_name}"
-                )
-            elif animal_name == "Carnivore" and (
-                cell_name == "Ocean" or cell_name == "Mountain"
-            ):
+            if cell_name not in Animal.allowed_landscape:
                 raise ValueError(
                     f"This cell is inhabitable for specie: {animal_name}"
                 )
@@ -461,11 +452,7 @@ class Cell:
             The total number of animals per cell
 
         """
-        tot_animals = 0
-        for list_animals in self.animal_classes.values():
-            tot_animals += len(list_animals)
-
-        return tot_animals
+        return sum(len(lst) for lst in self.animal_classes.values())
 
     def num_species_per_cell(self):
         """

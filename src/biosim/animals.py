@@ -9,11 +9,13 @@ __email__ = "amar@nmbu.no, sebabeck@nmbu.no"
 # Then add ..\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build
 # To system path. Contact me at amar@nmbu.no, if you have trouble
 # running the cython code on Mac or Windows.
+import math
 
 from numba import jit
 import numpy as np
 import random
 from .compute_fit import calculate_fitness
+from .det_kill import det_kill
 
 
 class Animal:
@@ -22,6 +24,39 @@ class Animal:
     """
 
     param = {}
+    allowed_landscape = ["Jungle", "Desert", "Savannah"]
+
+    @classmethod
+    def update_parameters(cls, new_par_dict):
+        """
+        Updates the current parameters and also checks that no parameters are
+        negative.
+
+        Parameters
+        ----------
+        new_par_dict: Dictionary
+                    New dictionary containing the new parameters which need to
+                    be updated.
+
+        """
+        for par in new_par_dict.keys():
+            if par not in cls.param:
+                raise ValueError(
+                    f"Invalid input: {par} is not a key in "
+                    f"class parameters"
+                )
+            if (
+                new_par_dict[par] <= 0
+                and par == "DeltaPhiMax"
+                and cls.__name__ == "Carnivore"
+            ):
+                raise ValueError(f"{par} must be strictly positive")
+            elif new_par_dict[par] < 0 and par != "DeltaPhiMax":
+                raise ValueError(f"{par} must be positive")
+            elif new_par_dict[par] > 1 and (par == "eta" or par == "p_sick"):
+                raise ValueError(f"{par} must be less or equal to 1")
+
+        cls.param.update(new_par_dict)
 
     def __init__(self, weight=None, age=None):
         """
@@ -51,12 +86,12 @@ class Animal:
         else:
             self._weight = self._normal_weight()
 
+        self.has_migrated = False
+
+        self._should_update_fitness = False
         self._fitness = None
 
         self.is_sick = False
-
-        if self._fitness is None:
-            self.update_fitness()
 
     @property
     def age(self):
@@ -121,7 +156,7 @@ class Animal:
         if val < 0:
             raise ValueError("Weight must be higher than 0")
         self._weight = val
-        self.update_fitness()
+        self._should_update_fitness = True
 
     @property
     def fitness(self):
@@ -135,13 +170,10 @@ class Animal:
             The current fitness value of the animal instance
 
         """
+        if self._should_update_fitness or self._fitness is None:
+            self.update_fitness()
+            self._should_update_fitness = False
         return self._fitness
-
-    @fitness.setter
-    def fitness(self, value):
-        if value < 0:
-            raise ValueError("Custom fitness must be higher than 0")
-        self._fitness = value
 
     @classmethod
     def _calculate_fitness(cls, weight, age):
@@ -191,38 +223,6 @@ class Animal:
         """
         self._fitness = self._calculate_fitness(self._weight, self._age)
 
-    @classmethod
-    def update_parameters(cls, new_par_dict):
-        """
-        Updates the current parameters and also checks that no parameters are
-        negative.
-
-        Parameters
-        ----------
-        new_par_dict: Dictionary
-                    New dictionary containing the new parameters which need to
-                    be updated.
-
-        """
-        for par in new_par_dict.keys():
-            if par not in cls.param:
-                raise ValueError(
-                    f"Invalid input: {par} is not a key in "
-                    f"class parameters"
-                )
-            if (
-                new_par_dict[par] <= 0
-                and par == "DeltaPhiMax"
-                and cls.__name__ == "Carnivore"
-            ):
-                raise ValueError(f"{par} must be strictly positive")
-            elif new_par_dict[par] < 0 and par != "DeltaPhiMax":
-                raise ValueError(f"{par} must be positive")
-            elif new_par_dict[par] > 1 and (par == "eta" or par == "p_sick"):
-                raise ValueError(f"{par} must be less or equal to 1")
-
-        cls.param.update(new_par_dict)
-
     def add_age(self):
         """
         Updates the '_age' variable in the class instance by one, also updates
@@ -230,7 +230,7 @@ class Animal:
 
         """
         self._age += 1
-        self.update_fitness()
+        self._should_update_fitness = True
 
     def determine_to_move(self):
         """
@@ -244,8 +244,112 @@ class Animal:
             Returns True if Animal is to move, or false if it is not to move
 
         """
-        probability_move = self._fitness * self.param["mu"]
-        return random.uniform(0, 1) < probability_move
+        probability_move = self.fitness * self.param["mu"]
+        return np.random.random() < probability_move
+
+    def compute_move_prob(self, neighbour_cells):
+        """
+
+        Computes the probability to move to each neighbouring cell
+
+        Parameters
+        ----------
+        animal_type: class instance
+                     Takes in a specific class instance
+        neighbour_cells:
+                    Takes in the neighbouring cells of the cell the animal
+                    class instance is located at
+
+        Returns
+        -------
+
+        list
+            List containing probability to move to each cell
+
+
+        """
+        cell_propensity = []
+        for cell in neighbour_cells:
+            propensity_cell = self.propensity(cell)
+            cell_propensity.append(propensity_cell)
+
+        total_propensity = sum(cell_propensity)
+
+        computed_propensities = []
+        for cell_prop in cell_propensity:
+            try:
+                prob = cell_prop / total_propensity
+            except ZeroDivisionError:
+                prob = 0
+            computed_propensities.append(prob)
+        return computed_propensities
+
+    def propensity(self, cell):
+        r"""
+
+        Computes and returns the propensity to move, the relative abundance is
+        calculated through the 'compute_relative_abundance' function.
+        The formula for propensity is given by:
+
+        .. math::
+            \pi_{i\rightarrow j} =
+            \begin{cases}
+            0 & \text{if } j \text{is Mountain or Ocean}\\
+            e^{\lambda \epsilon_{j}} & \text{otherwise}
+            \end{cases}
+
+
+        Parameters
+        ----------
+        cell: cell instance
+            The cell instance of neighbouring cells.
+
+        Returns
+        -------
+        float
+            The propensity to move
+
+        """
+        cell_name = type(cell).__name__
+        if cell_name not in self.allowed_landscape:
+            return 0
+
+        relative_abundance = self.compute_relative_abundance(cell)
+        lambda_specie = self.param["lambda"]
+
+        return math.exp(lambda_specie * relative_abundance)
+
+    @classmethod
+    def compute_relative_abundance(cls, cell):
+        r"""
+
+        Computes the relative abundance for either herbivore or carnivore,
+        depending on the specie type.
+
+        The relative abundance is computed through this formula:
+
+        .. math::
+            \epsilon_{k} = \frac{f_{k}}{(n_{k}+1)F^{\text{'}}}
+
+        Where :math:`\epsilon_{k}` is the relative abundance. :math:`f_{k}` is
+        the current fodder for cell k, which is different for carnivores
+        and herbivores. :math:`n_{k}` is the amount of same species in cell
+        k, and :math:`F^{\text{'}}` is how much food the animal wants to eat.
+
+        Parameters
+        ----------
+        cell: Cell instance
+            The cell instance one needs to calculate the relative abundance
+            for.
+
+        Returns
+        -------
+        float
+            The relative abundance of the current cell
+
+                """
+
+        pass
 
     def determine_death(self):
         """
@@ -261,48 +365,24 @@ class Animal:
 
         """
         death_prob = 0
-        if self._fitness == 0:
+        if self.fitness == 0:
             return True
-        elif self._fitness > 0.01:
-            death_prob = self.param["omega"] * (1 - self._fitness)
+        elif self.fitness > 0.01:
+            death_prob = self.param["omega"] * (1 - self.fitness)
 
-        return random.uniform(0, 1) < death_prob
-
-    @staticmethod
-    def compute_prob_birth(gamma, fitness, nearby_animals):
-        r"""
-
-        Computes the probability of birth for the animal, using the equation
-
-        .. math::
-            \text{min}(1, \gamma \times \Phi \times (N-1))
-
-        Parameters
-        ----------
-        gamma: int or float
-            Gamma parameter which is gotten from the animal class parameters.
-            It is the probability factor for giving birth.
-        fitness: int or float
-            Fitness value for the animal instance
-        nearby_animals: int
-            How many animals of the same specie is in the same area as the
-            animal.
-
-
-        Returns
-        -------
-        float
-            The probability of giving birth.
-
-        """
-        return min(1, gamma * fitness * (nearby_animals - 1))
+        return np.random.random() < death_prob
 
     def determine_birth(self, nearby_animals):
-        """
+        r"""
         Determines whether the animal is to give birth or not using
         the 'compute_prob_birth' function to gain a value. The function then
         uses random.uniform to choose between True or False with fixed
         probabilities.
+
+          Computes the probability of birth for the animal, using the equation
+
+        .. math::
+            \text{min}(1, \gamma \times \Phi \times (N-1))
 
         Parameters
         ----------
@@ -320,13 +400,19 @@ class Animal:
         zeta = self.param["zeta"]
         w_birth = self.param["w_birth"]
         sigma_birth = self.param["sigma_birth"]
-        prob_birth = self.compute_prob_birth(
-            gamma, self._fitness, nearby_animals
-        )
+        xi = self.param["xi"]
 
-        if self._weight < zeta * (w_birth + sigma_birth):
-            return False
-        return random.uniform(0, 1) < prob_birth
+        if nearby_animals < 2 or self._weight < zeta * (w_birth + sigma_birth):
+            return None
+        prob_birth = min(1, gamma * self.fitness * (nearby_animals - 1))
+        if np.random.random() < prob_birth:
+            child_weight = self._normal_weight()
+            if xi * child_weight > self.weight:
+                return None
+            self.decrease_birth_weight(child_weight)
+            return type(self)(weight=child_weight)
+        else:
+            return None
 
     @classmethod
     def _normal_weight(cls):
@@ -370,7 +456,7 @@ class Animal:
         """
         xi = self.param["xi"]
         self._weight -= xi * child_weight
-        self.update_fitness()
+        self._should_update_fitness = True
 
     @classmethod
     def _determine_sick(cls):
@@ -386,7 +472,7 @@ class Animal:
 
         """
         p_sick = cls.param["p_sick"]
-        return random.uniform(0, 1) < p_sick
+        return np.random.random() < p_sick
 
     def increase_eat_weight(self, fodder):
         """
@@ -409,7 +495,7 @@ class Animal:
             self._weight += beta * fodder * loss_rate
         else:
             self._weight += beta * fodder
-        self.update_fitness()
+        self._should_update_fitness = True
 
     def decrease_annual_weight(self):
         r"""
@@ -420,7 +506,7 @@ class Animal:
         """
         eta = self.param["eta"]
         self._weight -= eta * self._weight
-        self.update_fitness()
+        self._should_update_fitness = True
 
 
 class Herbivore(Animal):
@@ -464,6 +550,17 @@ class Herbivore(Animal):
         """
         super().__init__(weight, age)
 
+    @classmethod
+    def compute_relative_abundance(cls, cell):
+        animal_name = cls.__name__
+        amount_same_spec = len(cell.animal_classes[animal_name])
+        food_wanting = cls.param["F"]
+        curr_fod = cell.current_fodder
+        if curr_fod == 0:
+            return 0
+        else:
+            return curr_fod / ((amount_same_spec + 1) * food_wanting)
+
 
 class Carnivore(Animal):
     """
@@ -505,46 +602,46 @@ class Carnivore(Animal):
         """
         super().__init__(weight, age)
 
-    @staticmethod
-    @jit(nopython=True)
-    def _compute_kill_prob(fit_carn, fit_herb, delta_phi_max):
-        r"""
-        Computes probability of a Carnivore killing Herbivore which is
-        determined through:
-
-        .. math::
-            p =
-            \begin{cases}
-            0 & \text{if }\Phi_{carn}\le \Phi_{herb}\\
-            \frac{\Phi_{carn} - \Phi_{herb}}{\Delta\Phi_{max}} &
-            \text{if } 0 \le \Phi_{carn} - \Phi_{herb} \le \Delta\Phi_{max}\\
-            1 & \text{otherwise}
-            \end{cases}
-
-
-
-        Parameters
-        ----------
-        fit_carn: int or float
-            Fitness of the Carnivore which is the predator
-        fit_herb: int or float
-            Fitness of the Herbivore which is the prey
-        delta_phi_max: int or float
-            Parameter for Carnivore
-
-
-        Returns
-        -------
-        float or int
-            The probability of the carnivore killing the herbivore
-
-        """
-        if fit_carn <= fit_herb:
-            return 0
-        elif 0 < fit_carn - fit_herb < delta_phi_max:
-            return (fit_carn - fit_herb) / delta_phi_max
-        else:
-            return 1
+    # @staticmethod
+    # @jit(nopython=True, fastmath=True)
+    # def _compute_kill_prob(fit_carn, fit_herb, delta_phi_max):
+    #     r"""
+    #     Computes probability of a Carnivore killing Herbivore which is
+    #     determined through:
+    #
+    #     .. math::
+    #         p =
+    #         \begin{cases}
+    #         0 & \text{if }\Phi_{carn}\le \Phi_{herb}\\
+    #         \frac{\Phi_{carn} - \Phi_{herb}}{\Delta\Phi_{max}} &
+    #         \text{if } 0 \le \Phi_{carn} - \Phi_{herb} \le \Delta\Phi_{max}\\
+    #         1 & \text{otherwise}
+    #         \end{cases}
+    #
+    #
+    #
+    #     Parameters
+    #     ----------
+    #     fit_carn: int or float
+    #         Fitness of the Carnivore which is the predator
+    #     fit_herb: int or float
+    #         Fitness of the Herbivore which is the prey
+    #     delta_phi_max: int or float
+    #         Parameter for Carnivore
+    #
+    #
+    #     Returns
+    #     -------
+    #     float or int
+    #         The probability of the carnivore killing the herbivore
+    #
+    #     """
+    #     if fit_carn <= fit_herb:
+    #         return 0
+    #     elif 0 < fit_carn - fit_herb < delta_phi_max:
+    #         return (fit_carn - fit_herb) / delta_phi_max
+    #     else:
+    #         return 1
 
     def determine_kill(self, min_fit_herb):
         """
@@ -569,7 +666,17 @@ class Carnivore(Animal):
         """
 
         delta_phi_max = self.param["DeltaPhiMax"]
-        kill_prob = self._compute_kill_prob(
-            self.fitness, min_fit_herb, delta_phi_max
+        return det_kill(self.fitness, min_fit_herb, delta_phi_max)
+
+    @classmethod
+    def compute_relative_abundance(cls, cell):
+        animal_name = cls.__name__
+        amount_same_spec = len(cell.animal_classes[animal_name])
+        food_wanting = cls.param["F"]
+        curr_food = sum(
+            herbivore.weight for herbivore in cell.animal_classes["Herbivore"]
         )
-        return random.uniform(0, 1) < kill_prob
+        if curr_food == 0:
+            return 0
+        else:
+            return curr_food / ((amount_same_spec + 1) * food_wanting)

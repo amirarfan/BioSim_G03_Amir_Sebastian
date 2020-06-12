@@ -1,7 +1,9 @@
-from setuptools import setup
+from setuptools import setup, dist
+
 # from distutils.core import setup
+dist.Distribution().fetch_build_eggs(['Cython>=0.15.1', 'numpy>=1.10'])
 from distutils.extension import Extension
-from Cython.Build import build_ext
+from Cython.Distutils import build_ext
 
 # One might have to remove "libraries=["m"]" when building the code on windows
 
@@ -9,9 +11,21 @@ ext_modules = [
     Extension(
         "biosim.compute_fit",
         ["src/biosim/compute_fit.pyx"],
-        libraries=["m"],
+        # libraries=["m"],
         extra_compile_args=["-ffast-math", "-O3"],
-    )
+    ),
+    Extension(
+        "biosim.weighted_prob",
+        ["src/biosim/weighted_prob.pyx"],
+        # libraries=["m"],
+        extra_compile_args=["-ffast-math", "-O3"],
+    ),
+    Extension(
+        "biosim.det_kill",
+        ["src/biosim/det_kill.pyx"],
+        # libraries=["m"],
+        extra_compile_args=["-ffast-math", "-O3"],
+    ),
 ]
 
 setup(
