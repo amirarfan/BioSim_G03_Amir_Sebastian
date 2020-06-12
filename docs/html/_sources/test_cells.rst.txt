@@ -1,4 +1,0 @@
-Tests for Cells
-===========================
-.. automodule:: tests.test_cell
-    :members:

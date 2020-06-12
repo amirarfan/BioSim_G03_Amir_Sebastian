@@ -6,9 +6,7 @@ an hierarchical structure and we recommend that you browse through them in
 this order.
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Code Documentation :
-   simulation
-   map
-   cell
-   animals
+    simulation
+    map
+    cell
+    animals
