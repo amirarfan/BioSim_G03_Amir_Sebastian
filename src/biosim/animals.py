@@ -126,7 +126,7 @@ class Animal:
             raise ValueError("Age must be a positive integer")
 
         self._age = val
-        self.update_fitness()
+        self._should_update_fitness = True
 
     @property
     def weight(self):
@@ -171,7 +171,7 @@ class Animal:
 
         """
         if self._should_update_fitness or self._fitness is None:
-            self.update_fitness()
+            self._fitness = self._calculate_fitness(self._weight, self._age)
             self._should_update_fitness = False
         return self._fitness
 
@@ -215,13 +215,6 @@ class Animal:
             return calculate_fitness(
                 age, a_half, phi_age, weight, w_half, phi_weight
             )
-
-    def update_fitness(self):
-        """
-        Updates the 'self._fitness' variable using '_calculate_fitness'
-        method
-        """
-        self._fitness = self._calculate_fitness(self._weight, self._age)
 
     def add_age(self):
         """
