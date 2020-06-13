@@ -82,7 +82,7 @@ class Cell:
 
         """
         for animal_classes in itertools.chain.from_iterable(
-            self.animal_classes.values()
+                self.animal_classes.values()
         ):
             animal_classes.decrease_annual_weight()
 
@@ -110,24 +110,20 @@ class Cell:
         """
 
         # The fittest herbivore is to eat first
-        sorted_herbivores = sorted(
-            self.animal_classes["Herbivore"],
+
+        self.animal_classes["Herbivore"].sort(
             key=lambda animal: animal.fitness,
             reverse=True,
         )
 
-        for animals in sorted_herbivores:
+        for animals in self.animal_classes["Herbivore"]:
             fodder_eat = animals.param["F"]
 
-            if self.current_fodder == 0:
+            if self.current_fodder <= 0:
                 break
-
-            if fodder_eat <= self.current_fodder:
-                animals.increase_eat_weight(fodder_eat)
-                self.current_fodder -= fodder_eat
-            elif 0 < self.current_fodder < fodder_eat:
-                animals.increase_eat_weight(self.current_fodder)
-                self.current_fodder -= self.current_fodder
+            eat_amount = min(self.current_fodder, fodder_eat)
+            animals.increase_eat_weight(eat_amount)
+            self.current_fodder -= eat_amount
 
     def eat_carnivore(self):
         r"""
@@ -151,16 +147,7 @@ class Cell:
                 key=lambda animal: animal.fitness
             )
             for car in self.animal_classes["Carnivore"]:
-                remove_herb = set()
-                food_des = car.param["F"]
-                current_food = 0
-                for index, herb in enumerate(self.animal_classes["Herbivore"]):
-                    if food_des <= current_food:
-                        break
-                    if car.determine_kill(herb.fitness):
-                        current_food += herb.weight
-                        car.increase_eat_weight(herb.weight)
-                        remove_herb.add(index)
+                remove_herb = car.hunt(self.animal_classes["Herbivore"])
                 self.remove_multiple_animals("Herbivore", remove_herb)
 
     def remove_multiple_animals(self, specie, animals_to_remove):
@@ -368,7 +355,7 @@ class Cell:
 
         """
         for animal_classes in itertools.chain.from_iterable(
-            self.animal_classes.values()
+                self.animal_classes.values()
         ):
             animal_classes.add_age()
 
@@ -569,7 +556,7 @@ class Savannah(Cell):
 
         """
         self.current_fodder = self.current_fodder + self.param["alpha"] * (
-            self.param["f_max"] - self.current_fodder
+                self.param["f_max"] - self.current_fodder
         )
 
 

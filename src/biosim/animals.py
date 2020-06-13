@@ -668,6 +668,20 @@ class Carnivore(Animal):
         delta_phi_max = self.param["DeltaPhiMax"]
         return det_kill(self.fitness, min_fit_herb, delta_phi_max)
 
+    def hunt(self, herb_list):
+        remove_herb = set()
+        food_des = self.param["F"]
+        current_food = 0
+        for index, herb in enumerate(herb_list):
+            if food_des <= current_food or self.fitness <= herb.fitness:
+                break
+            if det_kill(self.fitness, herb.fitness, self.param["DeltaPhiMax"]):
+                amount_eat = min(herb.weight, food_des - current_food)
+                current_food += amount_eat
+                self.increase_eat_weight(amount_eat)
+                remove_herb.add(index)
+        return remove_herb
+
     @classmethod
     def compute_relative_abundance(cls, cell):
         animal_name = cls.__name__
