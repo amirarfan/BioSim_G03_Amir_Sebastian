@@ -9,9 +9,11 @@ src/biosim/animals.py
 src/biosim/cell.py
 src/biosim/compute_fit.c
 src/biosim/compute_fit.pyx
+src/biosim/det_kill.pyx
 src/biosim/gui.py
 src/biosim/map.py
 src/biosim/simulation.py
+src/biosim/weighted_prob.pyx
 src/biosim.egg-info/PKG-INFO
 src/biosim.egg-info/SOURCES.txt
 src/biosim.egg-info/dependency_links.txt
